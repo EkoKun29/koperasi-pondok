@@ -10,12 +10,12 @@
         <table id="datatable-basic" class="table-auto border-collapse w-full">
             <thead>
                 <tr class="text-left bg-gray-200">
-                    <th class="border px-4 py-2">No Nota</th>
+                    <th class="border px-4 py-2">Nota</th>
+                    <th class="border px-4 py-2">Nama Koperasi</th>
                     <th class="border px-4 py-2">Tanggal</th>
-                    <th class="border px-4 py-2">Nama Konsumen</th>
+                    <th class="border px-4 py-2">Nama Personil</th>
+                    <th class="border px-4 py-2">Shift</th>
                     <th class="border px-4 py-2">Total</th>
-                    <th class="border px-4 py-2">Kembalian</th>
-                    <th class="border px-4 py-2">Action</th>
                 </tr>
             </thead>
             <tbody>

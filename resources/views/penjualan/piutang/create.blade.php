@@ -48,13 +48,14 @@
                         <table id="tbl_penjualan_cash" class="table-auto w-full">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="px-4 py-2 border">#</th>
-                                    <th class="px-4 py-2 border">Nama Barang</th>
-                                    <th class="px-4 py-2 border">Harga</th>
-                                    <th class="px-4 py-2 border">Qty</th>
-                                    <th class="px-4 py-2 border">Potongan Harga</th>
-                                    <th class="px-4 py-2 border">Sub Total</th>
-                                    <th class="px-4 py-2 border">Action</th>
+                                    <th class="border px-4 py-2">No Nota</th>
+                                    <th class="border px-4 py-2">Tanggal Transaksi</th>
+                                    <th class="border px-4 py-2">Nama Pembeli</th>
+                                    <th class="border px-4 py-2">Nama Koperasi</th>
+                                    <th class="border px-4 py-2">Nama Personil</th>
+                                    <th class="border px-4 py-2">Shift</th>
+                                    <th class="border px-4 py-2">Total</th>
+                                    <th class="border px-4 py-2">Action</th>
                                 </tr>
                             </thead>
                             <tbody id="tbl_body_penjualan_cash">
