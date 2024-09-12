@@ -9,8 +9,6 @@
               <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/']" aria-current="page">Dashboard</li>
             </ol>
             <h6 class="mb-0 font-bold capitalize">Dashboard</h6>
-          </nav>
-
-          
+          </nav>  
         </div>
-      </nav>
+</nav>
