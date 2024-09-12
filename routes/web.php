@@ -1,10 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Auth\RegisterController;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
-
+use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\PenjualanPiutangController;
+use App\Http\Controllers\PenjualanNonProduksiController;
+use App\Http\Controllers\PenjualanBarangTerjualController;
+use App\Http\Controllers\PenjualanProduksiTitipanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +39,12 @@ Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 
 //Home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+//Penjualan Piutang
+Route::resource('penjualan-piutang', PenjualanPiutangController::class);
+
+//Penjualan Non Produksi
+Route::resource('penjualan-nonproduksi', PenjualanNonProduksiController::class);
+
+//Penjualan Produksi Titipan
+Route::resource('penjualan-produksititipan', PenjualanProduksiTitipanController::class);
