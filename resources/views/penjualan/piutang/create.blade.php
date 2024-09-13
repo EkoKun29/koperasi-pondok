@@ -6,7 +6,7 @@
         <div class="container mx-auto">
             <div>
                 <div class="flex justify-between items-center">
-                    <h6 class="h2 text-black">Buat Penjualan Piutang</h6>
+                    <h6 class="h2 text-black">Masukkan Data Penjualan Piutang</h6>
                 </div>
             </div>
         </div>
@@ -18,22 +18,36 @@
         <div class="w-full">
             <div class="bg-white shadow-md rounded-lg">
                 <!-- Card header -->
-                <div class="px-6 py-4 border-b border-gray-200">
-                    <h3 class="text-lg font-semibold">Silahkan Masukkan Data Penjualan</h3>
-                </div>
                 <div class="p-6">
                     <div class="flex">
                         <div class="w-full md:w-1/2">
                             <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700">Nama Konsumen</label>
-                                <input type="text" class="form-input mt-1 block w-full" id="nama_konsumen"
-                                       placeholder="Nama Konsumen" name="nama_konsumen">
+                                <label class="block text-sm font-medium text-gray-700"><b>Nama Pembeli</b></label>
+                                <input type="text" id="nama_pembeli" name="nama_pembeli" placeholder="Pembeli" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" style="border-color: grey;">
                             </div>
                             <div class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700">Total Pembayaran</label>
-                                <h1 class="text-2xl font-bold" id="TotalPembayaran">Rp 0</h1>
+                                <label class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
+                                <input type="text" id="nama_personil" name="nama_personil" placeholder="Penjual" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" style="border-color: grey;">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700"><b>Shift</b></label>
+                                <select name="shift" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="shift" style="border: 2px solid grey;border-radius: 8px;">
+                                    <option disabled selected>Pilih Shift</option>
+                                    <option value="Pagi">Pagi</option>
+                                    <option value="Sore">Sore</option>
+                                    <option value="Malam">Malam</option>
+                                </select>
                             </div>
                         </div>
+                        <div class="flex justify-center h-screen">
+                        <div class="w-full md:w-1/2 bg-white p-6 shadow rounded">
+                            <div class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700"><b>Total Pembayaran</b></label>
+                                <h1 class="text-2xl font-bold mt-2" id="TotalPembayaran">Rp. 0</h1>
+                            </div>
+                        </div>
+</div>
+
                     </div>
 
                     {{-- Add Product Button --}}
@@ -48,13 +62,12 @@
                         <table id="tbl_penjualan_cash" class="table-auto w-full">
                             <thead class="bg-gray-100">
                                 <tr>
-                                    <th class="border px-4 py-2">No Nota</th>
-                                    <th class="border px-4 py-2">Tanggal Transaksi</th>
-                                    <th class="border px-4 py-2">Nama Pembeli</th>
-                                    <th class="border px-4 py-2">Nama Koperasi</th>
-                                    <th class="border px-4 py-2">Nama Personil</th>
-                                    <th class="border px-4 py-2">Shift</th>
-                                    <th class="border px-4 py-2">Total</th>
+                                    <th class="border px-4 py-2">#</th>
+                                    <th class="border px-4 py-2">Nama Barang</th>
+                                    <th class="border px-4 py-2">Harga Jual</th>
+                                    <th class="border px-4 py-2">Jumlah</th>
+                                    <th class="border px-4 py-2">Keterangan</th>
+                                    <th class="border px-4 py-2">Total Harga</th>
                                     <th class="border px-4 py-2">Action</th>
                                 </tr>
                             </thead>
