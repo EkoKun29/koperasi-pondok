@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('penjualan_non_produksis', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_user');
+            $table->string('no_nota')->unique();
+            $table->string('nama_koperasi')->nullable();
+            $table->string('nama_personil')->nullable();
+            $table->string('shift')->nullable();
+            $table->integer('total');
+            $table->uuid('uuid')->nullable()->index();
             $table->timestamps();
         });
     }
