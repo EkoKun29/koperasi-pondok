@@ -44,13 +44,20 @@
 @endsection
 
 @push('js')
-<script type="text/javascript">
-  $(document).ready(function() {
-      $('#datatable-basic').DataTable({
-          "language": {
-              "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
-          }
-      });
-  });
+<script>
+ $(document).ready(function() {
+    // Cek dan hancurkan DataTable jika sudah ada
+    if ($.fn.DataTable.isDataTable('#datatable-basic')) {
+        $('#datatable-basic').DataTable().destroy();
+    }
+    
+    // Inisialisasi DataTable
+    $('#datatable-basic').DataTable({
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
+        }
+    });
+});
+
 </script>
 @endpush

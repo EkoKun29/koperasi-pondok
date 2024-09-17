@@ -8,6 +8,7 @@ use App\Http\Controllers\PenjualanPiutangController;
 use App\Http\Controllers\PenjualanNonProduksiController;
 use App\Http\Controllers\PenjualanBarangTerjualController;
 use App\Http\Controllers\PenjualanProduksiTitipanController;
+use App\Http\Controllers\NamaBarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,9 +43,15 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //Penjualan Piutang
 Route::resource('penjualan-piutang', PenjualanPiutangController::class);
+Route::post('penjualan-piutang/create', [PenjualanPiutangController::class, 'store'])->name('penjualan-piutang.store');
+Route::get('penjualan-piutang/print', [PenjualanPiutangController::class, 'print'])->name('penjualan-piutang.print');
+
 
 //Penjualan Non Produksi
 Route::resource('penjualan-nonproduksi', PenjualanNonProduksiController::class);
-
+    
 //Penjualan Produksi Titipan
 Route::resource('penjualan-produksititipan', PenjualanProduksiTitipanController::class);
+
+Route::resource('barang', App\Http\Controllers\NamaBarangController::class);
+Route::get('/barang-sync', [App\Http\Controllers\NamaBarangController::class, 'sync'])->name('barang.sync');

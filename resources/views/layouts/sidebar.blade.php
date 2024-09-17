@@ -250,7 +250,7 @@
         <!-- Dropdown Submenu -->
         <ul class="flex flex-col pl-0 mb-0 hidden" id="submenu-database">
           <li class="mt-0.5 w-full">
-            <a style="text-decoration: none;color: inherit;" class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors" href="#">
+            <a style="text-decoration: none;color: inherit;" class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ route('barang.index') }}">
               <div class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5">
                 <svg xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" fill="currentColor" class="bi bi-bag-plus" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 7.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V12a.5.5 0 0 1-1 0v-1.5H6a.5.5 0 0 1 0-1h1.5V8a.5.5 0 0 1 .5-.5"/>
@@ -260,7 +260,7 @@
               Produk
             </a>
           </li>
-          <li class="mt-0.5 w-full">
+          {{-- <li class="mt-0.5 w-full">
             <a style="text-decoration: none;color: inherit;" class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors" href="#">
               <div class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5">
               <svg xmlns="http://www.w3.org/2000/svg" width="12px" height="12px" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -270,7 +270,7 @@
               </div>
               Personil
             </a>
-          </li>
+          </li> --}}
         </ul>
       </li>
 
