@@ -11,8 +11,8 @@ class DetailPenjualanPiutang extends Model
     protected $fillable = ['uuid_penjualan', 'nama_barang', 'harga', 'qty', 'keterangan', 'subtotal'];
 
 
-    public function penjualan_piutang()
+    public function penjualanPiutang()
     {
-        return $this->belongsTo(PenjualanPiutang::class);
+        return $this->belongsTo(PenjualanPiutang::class, 'uuid_penjualan', 'uuid');
     }
 }

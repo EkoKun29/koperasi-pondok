@@ -44,6 +44,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 //Penjualan Piutang
 Route::resource('penjualan-piutang', PenjualanPiutangController::class);
 Route::post('penjualan-piutang/create', [PenjualanPiutangController::class, 'store'])->name('penjualan-piutang.store');
+Route::get('penjualan-piutang/delete/{uuid}', [PenjualanPiutangController::class, 'DeletePenjualan'])->name('delete-penjualan-piutang');
 Route::get('penjualan-piutang/print', [PenjualanPiutangController::class, 'print'])->name('penjualan-piutang.print');
 
 

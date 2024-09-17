@@ -17,11 +17,12 @@ class PenjualanPiutang extends Model
         'nama_personil',
         'shift',
         'total',
+        'uuid',
     ];
     
-    public function detailPenjualanPiutang()
+    public function details()
     {
-        return $this->hasMany(DetailPenjualanPiutang::class);
+        return $this->hasMany(DetailPenjualanPiutang::class, 'uuid_penjualan', 'uuid');
     }
 
     public function User(){
@@ -32,6 +33,14 @@ class PenjualanPiutang extends Model
         parent::boot();
         static::creating(function (PenjualanPiutang $item) {
             $item->uuid = Str::uuid()->toString();
+        });
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($penjualanPiutang) {
+            // Menghapus semua detail yang terkait
+            $penjualanPiutang->details()->delete();
         });
     }
 }

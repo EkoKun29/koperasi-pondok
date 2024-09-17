@@ -144,7 +144,10 @@ class PenjualanPiutangController extends Controller
      */
     public function show(PenjualanPiutang $penjualanPiutang)
     {
-        //
+        $data = NamaBarang::all();
+        $piutang = PenjualanPiutang::find($penjualanPiutang->uuid)->get();
+        $detail = DetailPenjualanPiutang::where('uuid_penjualan', $penjualanPiutang->uuid)->get();
+        return view('penjualan.piutang.detail', compact('piutang', 'detail', 'data'));
     }
 
     /**
@@ -152,7 +155,8 @@ class PenjualanPiutangController extends Controller
      */
     public function edit(PenjualanPiutang $penjualanPiutang)
     {
-        //
+        $detail = DetailPenjualanPiutang::where('uuid_penjualan', $penjualanPiutang->uuid)->get();
+        return view('penjualan.piutang.edit', compact('penjualanPiutang', 'detail'));
     }
 
     /**
@@ -160,14 +164,43 @@ class PenjualanPiutangController extends Controller
      */
     public function update(Request $request, PenjualanPiutang $penjualanPiutang)
     {
-        //
+        $detailPenjualanPiutang = DetailPenjualanPiutang::where('uuid_penjualan', $penjualanPiutang->uuid)->get();
+        foreach($detailPenjualanPiutang as $dpp){
+            $dpp->nama_barang = $request->barang;
+            $dpp->qty = $request->qty;
+            $dpp->harga = $request->harga;
+            $dpp->keterangan = $request->keterangan;
+            $dpp->subtotal = $request->qty * $request->harga;
+            $dpp->save();
+        }
+
+        //update total penjualan piutang
+        $detailPenjualanPiutang = DetailPenjualanPiutang::where('uuid_penjualan',$penjualanPiutang->uuid)->get();
+        $penjualanPiutang->total = $detailPenjualanPiutang->sum('subtotal');
+        $penjualanPiutang->save();
+
+        return redirect()->back()->with('success', 'Data berhasil diubah');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(PenjualanPiutang $penjualanPiutang)
+    public function DeletePenjualan($uuid)
     {
-        //
+        $piutang = PenjualanPiutang::where('uuid', $uuid)->first();
+        if ($piutang) {
+            $piutang->delete(); // Ini akan memicu cascade delete jika sudah diatur di model dan database
+            return redirect()->back()->with('success', 'Data berhasil dihapus');
+        } else {
+            return redirect()->back()->with('error', 'Data tidak ditemukan');
+        }
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
+
+    public function print(PenjualanPiutang $penjualanPiutang)
+    {
+        $piutang = $penjualanPiutang;
+        $detail = DetailPenjualanPiutang::where('uuid_penjualan', $penjualanPiutang->uuid)->get();
+        return view('penjualan.piutang.print', compact('piutang', 'detail'));
     }
 }

@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('keterangan')->nullable();
             $table->integer('subtotal');
             $table->uuid('uuid_penjualan')->nullable()->index();
+            $table->foreign('uuid_penjualan')
+                  ->references('uuid')
+                  ->on('penjualan_piutangs')
+                  ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -33,8 +33,8 @@
                         <div class="d-flex">
                               <a href="#"
                                 class="btn btn-info btn-sm">Detail</a>
-                              <a href="#"
-                                class="btn btn-danger btn-sm">Hapus</a>
+                             <a href="{{ route('delete-penjualan-piutang', $piu['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $piu->no_nota }} Ini ??')"
+                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
                               <a href="#"
                                 class="btn btn-secondary btn-sm">Print</a>
                         </div>
