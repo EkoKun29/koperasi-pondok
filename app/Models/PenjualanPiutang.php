@@ -20,6 +20,13 @@ class PenjualanPiutang extends Model
         'uuid',
     ];
     
+    protected $primaryKey = 'uuid';
+
+    // Jika UUID adalah tipe string
+    protected $keyType = 'string';
+    
+    // Jika UUID tidak increment
+    public $incrementing = false;
     public function details()
     {
         return $this->hasMany(DetailPenjualanPiutang::class, 'uuid_penjualan', 'uuid');

@@ -13,9 +13,7 @@ use App\Models\User;
 
 class PenjualanPiutangController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
         if (Auth::user()->role == 'admin') {
@@ -67,92 +65,68 @@ class PenjualanPiutangController extends Controller
     }
     
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $data = NamaBarang::all();
         return view('penjualan.piutang.create', compact('data'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'nama_pembeli' => 'required|string',
-            'nama_personil' => 'required|string',
-            'shift' => 'required|string',
-            'total' => 'required|numeric',
-            'data' => 'required|array',
-            'data.*.nama_barang' => 'required|string',
-            'data.*.harga' => 'required|numeric',
-            'data.*.qty' => 'required|integer',
-            'data.*.subtotal' => 'required|numeric',
-            'data.*.keterangan' => 'required|string',
-        ]);
-    
-        try {
-            // Logika penyimpanan data
-            $header = PenjualanPiutang::create([
-                'no_nota' => $this->generateNota(),
-                'id_user' => Auth::user()->id,
-                'nama_pembeli' => $request->nama_pembeli,
-                'nama_koperasi' => 'KAMPUS ' . Auth::user()->role,
-                'nama_personil' => $request->nama_personil,
-                'shift' => $request->shift,
-                'total' => 0, // Set total sementara ke 0
-            ]);
-    
-            $total = 0;
-            foreach ($request->data as $item) {
-                DetailPenjualanPiutang::create([
-                    'uuid_penjualan' => $header->uuid,
-                    'nama_barang' => $item['nama_barang'],
-                    'harga' => $item['harga'],
-                    'qty' => $item['qty'],
-                    'subtotal' => $item['subtotal'],
-                    'keterangan' => $item['keterangan'],
-                ]);
-    
-                // Hitung total
-                $total += $item['subtotal'];
-            }
-    
-            // Update total pada header
-            $header->total = $total;
-            $header->save();
-    
-            // Log jika berhasil
-            Log::info('Penjualan berhasil disimpan');
-    
-            return response()->json(['success' => true]);
-    
-        } catch (\Exception $e) {
-            // Log error detail
-            Log::error('Error saving data: ' . $e->getMessage());
-            return response()->json(['error' => 'Terjadi kesalahan saat menyimpan data.'], 500);
-        }
-    }
-    
+{
+    // Validasi input
+    $request->validate([
+        'nama_pembeli' => 'required|string',
+        'nama_personil' => 'required|string',
+        'shift' => 'required|string',
+        'total' => 'required|numeric',
+        'data' => 'required|array',
+    ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PenjualanPiutang $penjualanPiutang)
+    // Buat Penjualan Piutang baru
+    $penjualanPiutang = PenjualanPiutang::create([
+        'no_nota' => $this->generateNota(),
+        'id_user' => Auth::user()->id,
+        'nama_pembeli' => $request->nama_pembeli,
+        'nama_koperasi' => 'KAMPUS ' . Auth::user()->role,
+        'nama_personil' => $request->nama_personil,
+        'shift' => $request->shift,
+        'total' => $request->total,
+    ]);
+
+    // Simpan detail barang
+    foreach ($request->data as $item) {
+        DetailPenjualanPiutang::create([
+            'uuid_penjualan' => $penjualanPiutang->uuid,
+            'nama_barang' => $item['nama_barang'],
+            'harga' => $item['harga'],
+            'qty' => $item['qty'],
+            'keterangan' => $item['keterangan'],
+            'subtotal' => $item['subtotal'],
+        ]);
+    }
+
+    // Kembalikan UUID untuk redirect
+    return response()->json(['success' => true, 'uuid' => $penjualanPiutang->uuid]);
+}
+
+
+    
+    public function show($uuid)
     {
         $data = NamaBarang::all();
-        $piutang = PenjualanPiutang::find($penjualanPiutang->uuid)->get();
-        $detail = DetailPenjualanPiutang::where('uuid_penjualan', $penjualanPiutang->uuid)->get();
+        $piutang = PenjualanPiutang::where('uuid', $uuid)->first();
+        if (!$piutang) {
+            return redirect()->back()->with('error', 'Penjualan Piutang tidak ditemukan');
+        }
+        $detail = DetailPenjualanPiutang::where('uuid_penjualan', $piutang->uuid)->get();
+
+        if ($detail->isEmpty()) {
+            dd('Detail Penjualan Piutang tidak ditemukan');
+        }
+
         return view('penjualan.piutang.detail', compact('piutang', 'detail', 'data'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(PenjualanPiutang $penjualanPiutang)
     {
         $detail = DetailPenjualanPiutang::where('uuid_penjualan', $penjualanPiutang->uuid)->get();
@@ -197,10 +171,26 @@ class PenjualanPiutangController extends Controller
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 
-    public function print(PenjualanPiutang $penjualanPiutang)
+    public function DeleteDetailPenjualan($id)
     {
-        $piutang = $penjualanPiutang;
-        $detail = DetailPenjualanPiutang::where('uuid_penjualan', $penjualanPiutang->uuid)->get();
+        $detail = DetailPenjualanPiutang::where('id', $id)->first();
+
+        // Mengakses data induk berdasarkan ID detail
+        $penjualanPiutang = $detail->penjualanPiutang;
+
+        $penjualanPiutang->total -= $detail->subtotal;
+        $penjualanPiutang->save();
+
+        $detail->delete();
+
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
+    }
+
+
+    public function print($uuid)
+    {
+        $piutang = PenjualanPiutang::where('uuid', $uuid)->firstOrFail();
+        $detail = DetailPenjualanPiutang::where('uuid_penjualan', $piutang->uuid)->get();
         return view('penjualan.piutang.print', compact('piutang', 'detail'));
     }
 }
