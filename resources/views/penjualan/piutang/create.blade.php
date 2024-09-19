@@ -226,9 +226,11 @@
     }
 
     // Event handler untuk reset form setelah modal ditutup
+    $(document).ready(function() {
     $('#modalTambahBarang').on('hidden.bs.modal', function () {
         $('#createPenjualanPiutang')[0].reset();
     });
+});
 
     // Submit semua data
     function submitAll() { 
