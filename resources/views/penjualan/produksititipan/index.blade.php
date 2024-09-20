@@ -1,10 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
+<nav class="relative flex flex-wrap items-center justify-between px-0 py-2 mx-6 transition-all shadow-none duration-250 ease-soft-in rounded-2xl lg:flex-nowrap lg:justify-start" navbar-main navbar-scroll="true">
+    <div class="flex items-center justify-between w-full px-4 py-1 mx-auto flex-wrap-inherit">
+        <div class="flex items-center mt-2 grow sm:mt-0 sm:mr-6 md:mr-0 lg:flex lg:basis-auto">
+            <ul class="flex flex-row justify-end pl-0 mb-0 list-none md-max:w-full">
+                <li class="flex items-center pl-4 xl:hidden">
+                    <a href="javascript:;" class="block p-0 text-sm transition-all ease-nav-brand text-slate-500" sidenav-trigger>
+                        <div class="w-4.5 overflow-hidden">
+                            <i class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
+                            <i class="ease-soft mb-0.75 relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
+                            <i class="ease-soft relative block h-0.5 rounded-sm bg-slate-500 transition-all"></i>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">Penjualan Produksi Titipan</h1>
+    <h1 class="text-xl font-semibold mb-4">Penjualan Titipan</h1>
     <div class="mx-4">
-        <a class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('penjualan-produksititipan.create') }}">Tambah Data</a>
+        <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('penjualan-produksititipan.create') }}">Tambah Data</a>
       </div>
     <div class="table-responsive">
         <table id="datatable-basic" class="table-auto border-collapse w-full">
@@ -16,27 +34,31 @@
                     <th class="border px-4 py-2">Nama Personil</th>
                     <th class="border px-4 py-2">Shift</th>
                     <th class="border px-4 py-2">Total</th>
+                    <th class="border px-4 py-2">Total</th>
+                    
                 </tr>
             </thead>
             <tbody>
-                {{-- @foreach($transactions as $transaction)
+                @foreach($titipan as $t)
                 <tr>
-                    <td class="border px-4 py-2">{{ $transaction->no_nota }}</td>
-                    <td class="border px-4 py-2">{{ $transaction->tanggal }}</td>
-                    <td class="border px-4 py-2">{{ $transaction->nama_konsumen }}</td>
-                    <td class="border px-4 py-2">{{ number_format($transaction->total, 2) }}</td>
-                    <td class="border px-4 py-2">{{ number_format($transaction->kembalian, 2) }}</td>
+                    <td class="border px-4 py-2">{{ $t->no_nota }}</td>
+                    <td class="border px-4 py-2">{{ $t->nama_koperasi }}</td>
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($t->created_at)->format('d-m-Y') }}</td>
+                    <td class="border px-4 py-2">{{ $t->nama_personil }}</td>
+                    <td class="border px-4 py-2">{{ $t->shift }}</td>
+                    <td class="border px-4 py-2">{{ number_format($t->total,2) }}</td>
                     <td class="border px-4 py-2">
-                        <a href="{{ route('transactions.show', $transaction->id) }}" class="text-blue-600 hover:underline">View</a>
-                        <a href="{{ route('transactions.edit', $transaction->id) }}" class="text-green-600 hover:underline ml-2">Edit</a>
-                        <form action="{{ route('transactions.destroy', $transaction->id) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline ml-2" onclick="return confirm('Are you sure?')">Delete</button>
-                        </form>
+                        <div class="d-flex">
+                              <a href="{{ route('penjualan-titipan.detail', $t['uuid']) }}"
+                                class="btn btn-info btn-sm">Detail</a>
+                             <a href="{{ route('delete-penjualan-titipan', $t['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $t->no_nota }} Ini ??')"
+                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
+                              <a href="{{ route('penjualan-titipan.print', $t['uuid']) }}"
+                                class="btn btn-secondary btn-sm">Print</a>
+                        </div>
                     </td>
                 </tr>
-                @endforeach --}}
+                @endforeach
             </tbody>
         </table>
     </div>
