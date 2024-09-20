@@ -6,12 +6,13 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NamaBarangController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BarangTerjualController;
-use App\Http\Controllers\PembelianTitipanController;
 use App\Http\Controllers\PembelianCashController;
+use App\Http\Controllers\PembelianTitipanController;
 use App\Http\Controllers\PenjualanPiutangController;
 use App\Http\Controllers\PenjualanNonProduksiController;
 use App\Http\Controllers\PenjualanBarangTerjualController;
 use App\Http\Controllers\PenjualanProduksiTitipanController;
+use App\Http\Controllers\PembelianHutangNonProduksiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -93,6 +94,15 @@ Route::get('pembelian-cash/detail/{uuid}', [PembelianCashController::class, 'sho
 Route::get('pembelian-cash/delete/{uuid}', [PembelianCashController::class, 'DeletePembelian'])->name('delete-pembelian-cash'); 
 Route::get('pembelian-cash/detail/delete/{id}', [PembelianCashController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-cash-detail'); 
 Route::get('pembelian-cash/print/{uuid}', [PembelianCashController::class, 'print'])->name('pembelian-cash.print');
+
+//Pembelian Hutang Non Produksi
+Route::resource('pembelian-hutangnonproduksi', PembelianHutangNonProduksiController::class);
+Route::post('pembelian-hutangnonproduksi/create', [PembelianHutangNonProduksiController::class, 'store'])->name('pembelian-hutangnonproduksi.store');
+Route::get('pembelian-hutangnonproduksi/detail/{uuid}', [PembelianHutangNonProduksiController::class, 'show'])->name('pembelian-hutangnonproduksi.detail');
+Route::get('pembelian-hutangnonproduksi/delete/{uuid}', [PembelianHutangNonProduksiController::class, 'DeletePembelian'])->name('delete-pembelian-hutangnonproduksi');
+Route::get('pembelian-hutangnonproduksi/detail/delete/{id}', [PembelianHutangNonProduksiController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-hutangnonproduksi-detail');
+Route::get('pembelian-hutangnonproduksi/print/{uuid}', [PembelianHutangNonProduksiController::class, 'print'])->name('pembelian-hutangnonproduksi.print');
+
 
 Route::resource('barang', App\Http\Controllers\NamaBarangController::class);
 Route::get('/barang-sync', [App\Http\Controllers\NamaBarangController::class, 'sync'])->name('barang.sync');

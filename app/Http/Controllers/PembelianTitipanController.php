@@ -126,7 +126,7 @@ class PembelianTitipanController extends Controller
 
     public function edit(PembelianTitipan $pembelianTitipan)
     {
-        $detail = DetailPembelianTitipan::where('uuid_penjualan', $pembelianTitipan->uuid)->get();
+        $detail = DetailPembelianTitipan::where('uuid_pembeliantitipan', $pembelianTitipan->uuid)->get();
         return view('pembelian.titipan.edit', compact('pembelianTitipan', 'detail'));
     }
 
@@ -158,7 +158,7 @@ class PembelianTitipanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function DeletePenjualan($uuid)
+    public function DeletePembelian($uuid)
     {
         $titipan = PembelianTitipan::where('uuid', $uuid)->first();
         if ($titipan) {
@@ -170,7 +170,7 @@ class PembelianTitipanController extends Controller
         return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 
-    public function DeleteDetailPenjualan($id)
+    public function DeleteDetailPembelian($id)
     {
         $detail = DetailPembelianTitipan::where('id', $id)->first();
 
