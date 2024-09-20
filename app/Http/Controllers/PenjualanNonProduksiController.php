@@ -47,7 +47,7 @@ class PenjualanNonProduksiController extends Controller
         $inisial = Auth::user()->role;
     
         // Temukan nota terbaru dengan inisial yang sama, urutkan berdasarkan id secara menurun
-        $lastNote = PenjualanNonProduksi::where('no_nota', 'like', 'PPK' . $inisial . '%')
+        $lastNote = PenjualanNonProduksi::where('no_nota', 'like', 'PNPK' . $inisial . '%')
                                     ->orderBy('id', 'desc')
                                     ->first();
     
@@ -60,7 +60,7 @@ class PenjualanNonProduksiController extends Controller
             $numericPart = 1; // Mulai dari 1 jika tidak ada record sebelumnya
         }
     
-        return 'PPK' . $inisial . '-' . $numericPart;
+        return 'PNPK' . $inisial . '-' . $numericPart;
     }
     /**
      * Show the form for creating a new resource.

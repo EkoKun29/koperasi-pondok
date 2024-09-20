@@ -3,13 +3,14 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\NamaBarangController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BarangTerjualController;
+use App\Http\Controllers\PembelianTitipanController;
 use App\Http\Controllers\PenjualanPiutangController;
 use App\Http\Controllers\PenjualanNonProduksiController;
 use App\Http\Controllers\PenjualanBarangTerjualController;
 use App\Http\Controllers\PenjualanProduksiTitipanController;
-use App\Http\Controllers\NamaBarangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,6 +76,16 @@ Route::get('barang-terjual/detail/{uuid}', [BarangTerjualController::class, 'sho
 Route::get('barang-terjual/delete/{uuid}', [BarangTerjualController::class, 'DeleteBarangTerjual'])->name('delete-barang-terjual');
 Route::get('barang-terjual/detail/delete/{id}', [BarangTerjualController::class, 'DeleteDetailTerjual'])->name('delete-barang-terjual-detail');
 Route::get('barang-terjual/print/{uuid}', [BarangTerjualController::class, 'print'])->name('barang-terjual.print');
+
+//Pembelian Titipan
+Route::resource('pembelian-titipan', PembelianTitipanController::class);
+Route::post('pembelian-titipan/create', [PembelianTitipanController::class, 'store'])->name('pembelian-titipan.store');
+Route::get('pembelian-titipan/detail/{uuid}', [PembelianTitipanController::class, 'show'])->name('pembelian-titipan.detail');
+Route::get('pembelian-titipan/delete/{uuid}', [PembelianTitipanController::class, 'DeletePenjualan'])->name('delete-pembelian-titipan');
+Route::get('pembelian-titipan/detail/delete/{id}', [PembelianTitipanController::class, 'DeleteDetailPenjualan'])->name('delete-pembelian-titipan-detail');
+Route::get('pembelian-titipan/print/{uuid}', [PembelianTitipanController::class, 'print'])->name('pembelian-titipan.print');
+
+
 
 Route::resource('barang', App\Http\Controllers\NamaBarangController::class);
 Route::get('/barang-sync', [App\Http\Controllers\NamaBarangController::class, 'sync'])->name('barang.sync');
