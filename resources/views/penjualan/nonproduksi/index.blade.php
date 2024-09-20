@@ -46,14 +46,14 @@
                     <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($np->created_at)->format('d-m-Y') }}</td>
                     <td class="border px-4 py-2">{{ $np->nama_personil }}</td>
                     <td class="border px-4 py-2">{{ $np->shift }}</td>
-                    <td class="border px-4 py-2">{{ number_format($piu->total,2) }}</td>
+                    <td class="border px-4 py-2">{{ number_format($np->total,2) }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
-                              <a href="{{ route('penjualan-piutang.detail', $np['uuid']) }}"
+                              <a href="{{ route('penjualan-nonproduksi.detail', $np['uuid']) }}"
                                 class="btn btn-info btn-sm">Detail</a>
-                             <a href="{{ route('delete-penjualan-piutang', $np['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $np->no_nota }} Ini ??')"
+                             <a href="{{ route('delete-penjualan-nonproduksi', $np['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $np->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
-                              <a href="{{ route('penjualan-piutang.print', $np['uuid']) }}"
+                              <a href="{{ route('penjualan-nonproduksi.print', $np['uuid']) }}"
                                 class="btn btn-secondary btn-sm">Print</a>
                         </div>
                     </td>
