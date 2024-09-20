@@ -57,14 +57,13 @@
     <div class="ticket">
         <p class="centered"><b><strong>KOPERASI KAMPUS {{ Auth::user()->role }}</strong></b>
             <br>
-            <b><strong>NOTA BARANG TERJUAL</strong></b>
+            <b><strong>NOTA PEMBELIAN CASH</strong></b>
         </p>
         <p style="font-size: 1.2em; ">
             <strong>
-            <br>KARYAWAN : {{  $terjual->nama_personil }}
-            <br>NOTA : {{ $terjual->no_nota }}
-            <br>TANGGAL : {{ $terjual->created_at->format('d/m/y') }}
-            <br>JENIS DATA : BARANG TERJUAL
+            <br>NOTA : {{ $beli_cash->no_nota }}
+            <br>TANGGAL : {{ $beli_cash->created_at->format('d/m/y') }}
+            <br>JENIS TRANSAKSI : CASH
             </strong>
             <hr>
         </p>
@@ -76,7 +75,7 @@
                     <td class="description" style="text-align: right; font-size: 1.2em; ">Rp {{number_format($item->subtotal, 2, ',', '.') }}</td>
                 </tr>
                 <tr>
-                    <td class="description" style="font-size: 1.2em; ">{{ $item->qty }} {{ $item->keterangan }} x Rp {{number_format($item->harga, 2, ',', '.') }}</td>
+                    <td class="description" style="font-size: 1.2em; ">{{ $item->qty }} x Rp {{number_format($item->harga, 2, ',', '.') }}</td>
                     <td class="description"></td>
                 </tr>
                 @endforeach
@@ -87,7 +86,7 @@
             <tbody>
                 <tr>
                     <td class="description" style="font-weight: bold; font-size: 1.8em;">Total : </td>
-                    <td class="description" style="text-align: right; font-weight: bold; font-size: 1.8em;">Rp {{number_format($terjual->total, 2, ',', '.') }}</td>
+                    <td class="description" style="text-align: right; font-weight: bold; font-size: 1.8em;">Rp {{number_format($beli_cash->total, 2, ',', '.') }}</td>
                 </tr>
             </tbody>
         </table>

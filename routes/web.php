@@ -7,6 +7,7 @@ use App\Http\Controllers\NamaBarangController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BarangTerjualController;
 use App\Http\Controllers\PembelianTitipanController;
+use App\Http\Controllers\PembelianCashController;
 use App\Http\Controllers\PenjualanPiutangController;
 use App\Http\Controllers\PenjualanNonProduksiController;
 use App\Http\Controllers\PenjualanBarangTerjualController;
@@ -85,7 +86,13 @@ Route::get('pembelian-titipan/delete/{uuid}', [PembelianTitipanController::class
 Route::get('pembelian-titipan/detail/delete/{id}', [PembelianTitipanController::class, 'DeleteDetailPenjualan'])->name('delete-pembelian-titipan-detail');
 Route::get('pembelian-titipan/print/{uuid}', [PembelianTitipanController::class, 'print'])->name('pembelian-titipan.print');
 
-
+//--------------------------------------------------------Pembelian Cash-------------------------------------------------------- 
+Route::resource('pembelian-cash', PembelianCashController::class); 
+Route::post('pembelian-cash/create', [PembelianCashController::class, 'store'])->name('pembelian-cash.store'); 
+Route::get('pembelian-cash/detail/{uuid}', [PembelianCashController::class, 'show'])->name('pembelian-cash.detail'); 
+Route::get('pembelian-cash/delete/{uuid}', [PembelianCashController::class, 'DeletePembelian'])->name('delete-pembelian-cash'); 
+Route::get('pembelian-cash/detail/delete/{id}', [PembelianCashController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-cash-detail'); 
+Route::get('pembelian-cash/print/{uuid}', [PembelianCashController::class, 'print'])->name('pembelian-cash.print');
 
 Route::resource('barang', App\Http\Controllers\NamaBarangController::class);
 Route::get('/barang-sync', [App\Http\Controllers\NamaBarangController::class, 'sync'])->name('barang.sync');

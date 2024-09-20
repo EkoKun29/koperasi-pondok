@@ -61,4 +61,7 @@ class User extends Authenticatable
     public function PembelianTitipan(){
         return $this->hasMany(PembelianTitipan::class);
     }
+
+    public function PembelianCash(){ 
+    return $this->hasMany(PembelianCash::class); }
 }

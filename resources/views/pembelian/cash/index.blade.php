@@ -20,9 +20,9 @@
 </nav>
 
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">Penjualan Piutang</h1>
+    <h1 class="text-xl font-semibold mb-4">Pembelian Cash</h1>
     <div class="mx-4">
-        <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('penjualan-piutang.create') }}">Tambah Data</a>
+        <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('pembelian-cash.create') }}">Tambah Data</a>
       </div>
     <div class="table-responsive">
         <table id="datatable-basic" class="table-auto border-collapse w-full">
@@ -31,29 +31,25 @@
                     <th class="border px-4 py-2">Nota</th>
                     <th class="border px-4 py-2">Nama Koperasi</th>
                     <th class="border px-4 py-2">Tanggal</th>
-                    <th class="border px-4 py-2">Nama Personil</th>
-                    <th class="border px-4 py-2">Shift</th>
                     <th class="border px-4 py-2">Total</th>
                     <th class="border px-4 py-2">Aksi</th>
                     
                 </tr>
             </thead>
             <tbody>
-                @foreach($piutang as $piu)
+                @foreach($beli_cash as $bs)
                 <tr>
-                    <td class="border px-4 py-2">{{ $piu->no_nota }}</td>
-                    <td class="border px-4 py-2">{{ $piu->nama_koperasi }}</td>
-                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($piu->created_at)->format('d-m-Y') }}</td>
-                    <td class="border px-4 py-2">{{ $piu->nama_personil }}</td>
-                    <td class="border px-4 py-2">{{ $piu->shift }}</td>
-                    <td class="border px-4 py-2">{{ number_format($piu->total,2) }}</td>
+                    <td class="border px-4 py-2">{{ $bs->no_nota }}</td>
+                    <td class="border px-4 py-2">{{ $bs->nama_koperasi }}</td>
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($bs->created_at)->format('d-m-Y') }}</td>
+                    <td class="border px-4 py-2">{{ number_format($bs->total,2) }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
-                              <a href="{{ route('penjualan-piutang.detail', $piu['uuid']) }}"
+                              <a href="{{ route('pembelian-cash.detail', $bs['uuid']) }}"
                                 class="btn btn-info btn-sm">Detail</a>
-                             <a href="{{ route('delete-penjualan-piutang', $piu['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $piu->no_nota }} Ini ??')"
+                             <a href="{{ route('delete-pembelian-cash', $bs['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $bs->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
-                              <a href="{{ route('penjualan-piutang.print', $piu['uuid']) }}"
+                              <a href="{{ route('pembelian-cash.print', $bs['uuid']) }}"
                                 class="btn btn-secondary btn-sm">Print</a>
                         </div>
                     </td>
