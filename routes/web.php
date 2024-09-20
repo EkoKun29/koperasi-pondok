@@ -83,8 +83,8 @@ Route::get('barang-terjual/print/{uuid}', [BarangTerjualController::class, 'prin
 Route::resource('pembelian-titipan', PembelianTitipanController::class);
 Route::post('pembelian-titipan/create', [PembelianTitipanController::class, 'store'])->name('pembelian-titipan.store');
 Route::get('pembelian-titipan/detail/{uuid}', [PembelianTitipanController::class, 'show'])->name('pembelian-titipan.detail');
-Route::get('pembelian-titipan/delete/{uuid}', [PembelianTitipanController::class, 'DeletePenjualan'])->name('delete-pembelian-titipan');
-Route::get('pembelian-titipan/detail/delete/{id}', [PembelianTitipanController::class, 'DeleteDetailPenjualan'])->name('delete-pembelian-titipan-detail');
+Route::get('pembelian-titipan/delete/{uuid}', [PembelianTitipanController::class, 'DeletePembelian'])->name('delete-pembelian-titipan');
+Route::get('pembelian-titipan/detail/delete/{id}', [PembelianTitipanController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-titipan-detail');
 Route::get('pembelian-titipan/print/{uuid}', [PembelianTitipanController::class, 'print'])->name('pembelian-titipan.print');
 
 //--------------------------------------------------------Pembelian Cash-------------------------------------------------------- 
