@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('no_nota')->unique();
             $table->string('nama_koperasi')->nullable();
             $table->string('nama_supplier')->nullable();
+            $table->date('tanggal')->nullable();
             $table->date('tanggal_jatuh_tempo')->nullable();
             $table->integer('total');
             $table->uuid('uuid')->nullable()->index();

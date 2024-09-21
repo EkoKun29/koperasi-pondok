@@ -42,9 +42,9 @@
                 <tr>
                     <td class="border px-4 py-2">{{ $hnp->no_nota }}</td>
                     <td class="border px-4 py-2">{{ $hnp->nama_koperasi }}</td>
-                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($hnp->created_at)->format('d-m-Y') }}</td>
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($hnp->tanggal)->format('d-m-Y') }}</td>
                     <td class="border px-4 py-2">{{ $hnp->nama_supplier }}</td>
-                    <td class="border px-4 py-2">{{ $hnp->tanggal_jatuh_tempo }}</td>
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($hnp->tanggal_jatuh_tempo)->format('d-m-Y') }}</td>
                     <td class="border px-4 py-2">{{ number_format($hnp->total,2) }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
@@ -52,8 +52,8 @@
                                 class="btn btn-info btn-sm">Detail</a>
                              <a href="{{ route('delete-pembelian-hutangnonproduksi', $hnp['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $hnp->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
-                              <a href="{{ route('pembelian-hutangnonproduksi.print', $hnp['uuid']) }}"
-                                class="btn btn-secondary btn-sm">Print</a>
+                              {{-- <a href="{{ route('pembelian-hutangnonproduksi.print', $hnp['uuid']) }}"
+                                class="btn btn-secondary btn-sm">Print</a> --}}
                         </div>
                     </td>
                 </tr>

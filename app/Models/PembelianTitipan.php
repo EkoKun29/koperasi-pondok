@@ -15,6 +15,7 @@ class PembelianTitipan extends Model
         'nama_koperasi',
         'nama_personil',
         'nama_penitip',
+        'tanggal',
         'total',
         'uuid',
     ];

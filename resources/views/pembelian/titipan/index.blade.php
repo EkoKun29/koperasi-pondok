@@ -43,7 +43,7 @@
                 <tr>
                     <td class="border px-4 py-2">{{ $t->no_nota }}</td>
                     <td class="border px-4 py-2">{{ $t->nama_koperasi }}</td>
-                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($t->created_at)->format('d-m-Y') }}</td>
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($t->tanggal)->format('d-m-Y')}}</td>
                     <td class="border px-4 py-2">{{ $t->nama_personil }}</td>
                     <td class="border px-4 py-2">{{ $t->nama_penitip }}</td>
                     <td class="border px-4 py-2">{{ number_format($t->total,2) }}</td>
@@ -53,8 +53,8 @@
                                 class="btn btn-info btn-sm">Detail</a>
                              <a href="{{ route('delete-pembelian-titipan', $t['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $t->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
-                              <a href="{{ route('pembelian-titipan.print', $t['uuid']) }}"
-                                class="btn btn-secondary btn-sm">Print</a>
+                              {{-- <a href="{{ route('pembelian-titipan.print', $t['uuid']) }}"
+                                class="btn btn-secondary btn-sm">Print</a> --}}
                         </div>
                     </td>
                 </tr>

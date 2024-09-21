@@ -39,6 +39,10 @@
                             <label class="block text-sm font-medium text-gray-700"><b>Nama Penitip</b></label>
                             <input type="text" id="nama_penitip" name="nama_penitip" placeholder="Penitip" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                         </div>
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal</b></label>
+                            <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        </div>
                     </div>
                     <div class="w-full md:w-1/2 p-6 rounded">
                         <div class="mb-4">
@@ -240,6 +244,7 @@
     function submitAll() { 
         var nama_personil = $('#nama_personil').val();
         var nama_penitip = $('#nama_penitip').val();
+        var tanggal = $('#tanggal').val();
         var totalPembayaran = globalData.reduce((sum, item) => sum + item.subtotal, 0); // Hitung total pembayaran
 
         if (!nama_personil || totalPembayaran === 0) {
@@ -253,6 +258,7 @@
             data: {
                 nama_personil: nama_personil,
                 nama_penitip: nama_penitip,
+                tanggal: tanggal,
                 total: totalPembayaran,
                 data: globalData,  // Kirim data barang
                 _token: "{{ csrf_token() }}"  // Sertakan CSRF token untuk keamanan
@@ -262,7 +268,7 @@
                     var uuid = response.uuid;
                     
                     // Redirect ke halaman print dengan UUID
-                    window.location.href = "{{ url('pembelian-titipan/print') }}/" + uuid;
+                    window.location.href = "{{ url('pembelian-titipan') }}";
                 } else {
                     alert("Gagal menyimpan data.");
                 }

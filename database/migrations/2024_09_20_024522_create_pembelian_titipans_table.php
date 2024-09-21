@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_koperasi')->nullable();
             $table->string('nama_personil')->nullable();
             $table->string('nama_penitip')->nullable();
+            $table->date('tanggal')->nullable();
             $table->integer('total');
             $table->uuid('uuid')->nullable()->index();
             $table->timestamps();

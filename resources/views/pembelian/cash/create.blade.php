@@ -27,6 +27,10 @@
                 <div class="flex">
                     <div class="w-full md:w-1/2">
                         <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal</b></label>
+                            <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        </div>
+                        <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Total Pembayaran</b></label>
                             <h1 class="text-2xl font-bold mt-2" id="TotalPembayaran">Rp. 0</h1>
                         </div>
@@ -209,6 +213,7 @@
 
     // Submit semua data
     function submitAll() { 
+        var tanggal = $('#tanggal').val();
         var totalPembayaran = globalData.reduce((sum, item) => sum + item.subtotal, 0); // Hitung total pembayaran
 
         if (totalPembayaran === 0) {
@@ -220,6 +225,7 @@
             url: "{{ route('pembelian-cash.store') }}",  // Route Laravel untuk penyimpanan
             method: "POST",
             data: {
+                tanggal: tanggal,
                 total: totalPembayaran,
                 data: globalData,  // Kirim data barang
                 _token: "{{ csrf_token() }}"  // Sertakan CSRF token untuk keamanan
@@ -229,7 +235,7 @@
                     var uuid = response.uuid;
                     
                     // Redirect ke halaman print dengan UUID
-                    window.location.href = "{{ url('pembelian-cash/print') }}/" + uuid;
+                    window.location.href = "{{ url('pembelian-cash') }}";
                 } else {
                     alert("Gagal menyimpan data.");
                 }

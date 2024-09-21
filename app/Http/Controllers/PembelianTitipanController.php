@@ -85,6 +85,7 @@ class PembelianTitipanController extends Controller
         'nama_koperasi' => 'KAMPUS ' . Auth::user()->role,
         'nama_personil' => $request->nama_personil,
         'nama_penitip' => $request->nama_penitip,
+        'tanggal' => $request->tanggal,
         'total' => $request->total,
     ]);
 

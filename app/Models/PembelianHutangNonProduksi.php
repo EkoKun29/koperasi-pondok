@@ -14,6 +14,7 @@ class PembelianHutangNonProduksi extends Model
         'id_user',
         'nama_koperasi',
         'nama_supplier',
+        'tanggal',
         'tanggal_jatuh_tempo',
         'total',
         'uuid',

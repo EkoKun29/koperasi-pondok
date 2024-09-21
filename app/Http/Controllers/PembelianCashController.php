@@ -84,6 +84,7 @@ class PembelianCashController extends Controller
         'no_nota' => $this->generateNota(),
         'id_user' => Auth::user()->id,
         'nama_koperasi' => 'KAMPUS ' . Auth::user()->role,
+        'tanggal' => $request->tanggal,
         'total' => $request->total,
     ]);
 

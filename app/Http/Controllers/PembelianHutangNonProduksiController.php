@@ -73,6 +73,7 @@ class PembelianHutangNonProduksiController extends Controller
     // Validasi input
     $request->validate([
         'nama_supplier' => 'required|string',
+        'tanggal' => 'required|date',
         'tanggal_jatuh_tempo' => 'required|date',
         'total' => 'required|numeric',
         'data' => 'required|array',
@@ -84,6 +85,7 @@ class PembelianHutangNonProduksiController extends Controller
         'id_user' => Auth::user()->id,
         'nama_koperasi' => 'KAMPUS ' . Auth::user()->role,
         'nama_supplier' => $request->nama_supplier,
+        'tanggal' => $request->tanggal,
         'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
         'total' => $request->total,
     ]);

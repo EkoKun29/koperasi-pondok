@@ -31,6 +31,10 @@
                             <input type="text" id="nama_supplier" name="nama_supplier" placeholder="Supplier" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                         </div>
                         <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal</b></label>
+                            <input type="date" id="tanggal" name="tanggal" placeholder="tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        </div>
+                        <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Tanggal Jatuh Tempo</b></label>
                             <input type="date" id="tanggal_jatuh_tempo" name="tanggal_jatuh_tempo" placeholder="tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                         </div>
@@ -220,10 +224,11 @@
     // Submit semua data
     function submitAll() { 
         var nama_supplier = $('#nama_supplier').val();
+        var tanggal = $('#tanggal').val();
         var tanggal_jatuh_tempo = $('#tanggal_jatuh_tempo').val();
         var totalPembayaran = globalData.reduce((sum, item) => sum + item.subtotal, 0); // Hitung total pembayaran
 
-        if (!nama_supplier || !tanggal_jatuh_tempo || totalPembayaran === 0) {
+        if (!nama_supplier || !tanggal_jatuh_tempo || !tanggal || totalPembayaran === 0) {
             alert("Semua field harus diisi dan total pembayaran harus dihitung.");
             return;
         }
@@ -233,6 +238,7 @@
             method: "POST",
             data: {
                 nama_supplier: nama_supplier,
+                tanggal: tanggal,
                 tanggal_jatuh_tempo: tanggal_jatuh_tempo,
                 total: totalPembayaran,
                 data: globalData,  // Kirim data barang
@@ -243,7 +249,7 @@
                     var uuid = response.uuid;
                     
                     // Redirect ke halaman print dengan UUID
-                    window.location.href = "{{ url('pembelian-hutangnonproduksi/print') }}/" + uuid;
+                    window.location.href = "{{ url('pembelian-hutangnonproduksi') }}";
                 } else {
                     alert("Gagal menyimpan data.");
                 }

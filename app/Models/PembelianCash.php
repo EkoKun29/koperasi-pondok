@@ -13,6 +13,7 @@ class PembelianCash extends Model
         'no_nota',
         'id_user',
         'nama_koperasi',
+        'tanggal',
         'total',
         'uuid',
     ];
