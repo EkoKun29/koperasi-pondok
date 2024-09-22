@@ -69,7 +69,9 @@
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Sisa Siang</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Sisa Sore</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Sisa Malam</th>
+                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Sisa Akhir</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Total Harga</th>
+                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Total Harga Sisa</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Action</th>
                                 </tr>
                             </thead>
@@ -154,6 +156,8 @@
         var sisa_siang = parseInt($('#sisa_siang').val()) || 0;
         var sisa_sore = parseInt($('#sisa_sore').val()) || 0;
         var sisa_malam = parseInt($('#sisa_malam').val()) || 0;
+        var sisa_akhir = qty - sisa_siang - sisa_sore - sisa_malam;
+        var subtotal_sisa = sisa_akhir * harga;
         var subtotal = harga * qty;
 
         // Validasi jika semua input telah diisi
@@ -170,6 +174,8 @@
             sisa_siang: sisa_siang,
             sisa_sore: sisa_sore,
             sisa_malam: sisa_malam,
+            sisa_akhir: sisa_akhir,
+            subtotal_sisa: subtotal_sisa,
             subtotal: subtotal
         });
 
@@ -184,7 +190,9 @@
                 <td>${sisa_siang}</td>
                 <td>${sisa_sore}</td>
                 <td>${sisa_malam}</td>
+                <td>${sisa_akhir}</td>
                 <td>${subtotal}</td>
+                <td>${subtotal_sisa}</td>
                 <td><button class="btn btn-danger" onclick="removeItem(${rowCount})">Hapus</button></td>
             </tr>
         `);
@@ -220,7 +228,9 @@
                     <td>${item.sisa_siang}</td>
                     <td>${item.sisa_sore}</td>
                     <td>${item.sisa_malam}</td>
-                    <td>${item.subtotal}</td>
+                    <td>${sisa_akhir}</td>
+                    <td>${subtotal}</td>
+                    <td>${subtotal_sisa}</td>
                     <td><button class="btn btn-danger" onclick="removeItem(${index})">Hapus</button></td>
                 </tr>
             `);

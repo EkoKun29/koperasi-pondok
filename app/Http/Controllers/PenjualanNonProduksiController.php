@@ -8,6 +8,7 @@ use App\Models\NamaBarang;
 use Illuminate\Http\Request;
 use App\Models\PenjualanNonProduksi;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PenjualanNonProduksiController extends Controller
 {
@@ -111,6 +112,48 @@ class PenjualanNonProduksiController extends Controller
     return response()->json(['success' => true, 'uuid' => $penjualanNonProduksi->uuid]);
 }
 
+public function storeDetail(Request $request, $uuid)
+{
+    // Log untuk melihat data yang masuk
+    Log::info('Request Data:', $request->all());
+
+    $request->validate([
+        'barang' => 'required|string',
+        'harga' => 'required|numeric',
+        'qty' => 'required|numeric',
+        'keterangan' => 'required|string',
+        'subtotal' => 'required|numeric',
+    ]);
+
+    try {
+        // Buat detail baru
+        $detail = DetailNonProduksi::create([
+            'uuid_nonproduksi' => $uuid,
+            'nama_barang' => $request->barang,
+            'harga' => $request->harga,
+            'qty' => $request->qty,
+            'keterangan' => $request->keterangan,
+            'subtotal' => $request->subtotal,
+        ]);
+
+        Log::info('Detail Created:', $detail->toArray());
+
+        // Update total di PenjualanNonProduksi
+        $penjualan = PenjualanNonProduksi::where('uuid', $uuid)->first();
+        $penjualan->total += $request->subtotal; // Tambah subtotal ke total
+        $penjualan->save();
+
+        Log::info('Total Updated:', $penjualan->toArray());
+
+        return response()->json(['success' => true, 'detail' => $detail, 'total' => $penjualan->total]);
+    } catch (\Exception $e) {
+        Log::error('Error storing detail:', ['error' => $e->getMessage()]);
+        return response()->json(['success' => false, 'message' => 'Gagal menyimpan data'], 500);
+    }
+}
+
+
+
     /**
      * Display the specified resource.
      */
@@ -129,6 +172,8 @@ class PenjualanNonProduksiController extends Controller
 
         return view('penjualan.nonproduksi.detail', compact('nonproduksi', 'detail', 'data'));
     }
+
+    
 
     /**
      * Show the form for editing the specified resource.

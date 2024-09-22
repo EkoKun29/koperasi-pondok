@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\PenjualanProduksiTitipan;
 use App\Models\DetailPenjualanProduksiTitipan;
+use Illuminate\Support\Facades\Log;
 
 class PenjualanProduksiTitipanController extends Controller
 {
@@ -111,7 +112,43 @@ class PenjualanProduksiTitipanController extends Controller
     return response()->json(['success' => true, 'uuid' => $penjualanTitipan->uuid]);
 }
 
+public function storeDetail(Request $request, $uuid)
+{
+    // Log untuk melihat data yang masuk
+    Log::info('Request Data:', $request->all());
 
+    $request->validate([
+        'barang' => 'required|string',
+        'harga' => 'required|numeric',
+        'qty' => 'required|numeric',
+        'subtotal' => 'required|numeric',
+    ]);
+
+    try {
+        // Buat detail baru
+        $detail = DetailPenjualanProduksiTitipan::create([
+            'uuid_titipan' => $uuid,
+            'nama_barang' => $request->barang,
+            'harga' => $request->harga,
+            'qty' => $request->qty,
+            'subtotal' => $request->subtotal,
+        ]);
+
+        Log::info('Detail Created:', $detail->toArray());
+
+        // Update total di PenjualanNonProduksi
+        $penjualan = PenjualanProduksiTitipan::where('uuid', $uuid)->first();
+        $penjualan->total += $request->subtotal; // Tambah subtotal ke total
+        $penjualan->save();
+
+        Log::info('Total Updated:', $penjualan->toArray());
+
+        return response()->json(['success' => true, 'detail' => $detail, 'total' => $penjualan->total]);
+    } catch (\Exception $e) {
+        Log::error('Error storing detail:', ['error' => $e->getMessage()]);
+        return response()->json(['success' => false, 'message' => 'Gagal menyimpan data'], 500);
+    }
+}
     /**
      * Display the specified resource.
      */

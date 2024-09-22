@@ -8,6 +8,7 @@ use App\Models\NamaBarang;
 use Illuminate\Http\Request;
 use App\Models\PembelianTitipan;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PembelianTitipanController extends Controller
 {
@@ -99,6 +100,8 @@ class PembelianTitipanController extends Controller
             'sisa_siang' => $item['sisa_siang'] ?? 0,
             'sisa_sore' => $item['sisa_sore'] ?? 0,
             'sisa_malam' => $item['sisa_malam'] ?? 0,
+            'sisa_akhir' => $item['sisa_akhir'],
+            'subtotal_sisa' => $item['subtotal_sisa'] ?? 0,
             'subtotal' => $item['subtotal'],
         ]);
     }
@@ -107,7 +110,50 @@ class PembelianTitipanController extends Controller
     return response()->json(['success' => true, 'uuid' => $pembelianTitipan->uuid]);
 }
 
+public function storeDetail(Request $request, $uuid)
+{
+    // Log untuk melihat data yang masuk
+    Log::info('Request Data:', $request->all());
 
+    $request->validate([
+        'nama_barang' => 'required|string',
+        'harga' => 'required|numeric',
+        'qty' => 'required|numeric',
+        'sisa_akhir' => 'required|numeric',
+        'subtotal_sisa' => 'required|numeric',
+        'subtotal' => 'required|numeric',
+    ]);
+
+    try {
+        // Buat detail baru
+        $detail = DetailPembelianTitipan::create([
+            'uuid_pembeliantitipan' => $uuid,
+            'nama_barang' => $request->nama_barang,
+            'harga' => $request->harga,
+            'qty' => $request->qty,
+            'sisa_siang' => $request->sisa_siang,
+            'sisa_sore' => $request->sisa_sore,
+            'sisa_malam' => $request->sisa_malam,
+            'sisa_akhir' => $request->sisa_akhir,
+            'subtotal_sisa' => $request->subtotal_sisa,
+            'subtotal' => $request->subtotal,
+        ]);
+
+        Log::info('Detail Created:', $detail->toArray());
+
+        // Update total di PenjualanNonProduksi
+        $pembelian = PembelianTitipan::where('uuid', $uuid)->first();
+        $pembelian->total += $request->subtotal; // Tambah subtotal ke total
+        $pembelian->save();
+
+        Log::info('Total Updated:', $pembelian->toArray());
+
+        return response()->json(['success' => true, 'detail' => $detail, 'total' => $pembelian->total]);
+    } catch (\Exception $e) {
+        Log::error('Error storing detail:', ['error' => $e->getMessage()]);
+        return response()->json(['success' => false, 'message' => 'Gagal menyimpan data'], 500);
+    }
+}
     
     public function show($uuid)
     {

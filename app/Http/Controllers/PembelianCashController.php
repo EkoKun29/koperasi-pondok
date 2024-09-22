@@ -104,7 +104,44 @@ class PembelianCashController extends Controller
     return response()->json(['success' => true, 'uuid' => $beli_cash->uuid]);
 }
 
+public function storeDetail(Request $request, $uuid)
+{
+    // Log untuk melihat data yang masuk
+    Log::info('Request Data:', $request->all());
 
+    $request->validate([
+        'nama_barang' => 'required|string',
+        'harga' => 'required|numeric',
+        'qty' => 'required|numeric',
+        'subtotal' => 'required|numeric',
+    ]);
+
+    try {
+        // Buat detail baru
+        $detail = DetailPembelianCash::create([
+            'uuid_cash' => $uuid,
+            'nama_barang' => $request->nama_barang,
+            'harga' => $request->harga,
+            'qty' => $request->qty,
+            'cek_barang' => $request->cek_barang,
+            'subtotal' => $request->subtotal,
+        ]);
+
+        Log::info('Detail Created:', $detail->toArray());
+
+        // Update total di PenjualanNonProduksi
+        $pembelian = PembelianCash::where('uuid', $uuid)->first();
+        $pembelian->total += $request->subtotal; // Tambah subtotal ke total
+        $pembelian->save();
+
+        Log::info('Total Updated:', $pembelian->toArray());
+
+        return response()->json(['success' => true, 'detail' => $detail, 'total' => $pembelian->total]);
+    } catch (\Exception $e) {
+        Log::error('Error storing detail:', ['error' => $e->getMessage()]);
+        return response()->json(['success' => false, 'message' => 'Gagal menyimpan data'], 500);
+    }
+}
     
     public function show($uuid)
     {

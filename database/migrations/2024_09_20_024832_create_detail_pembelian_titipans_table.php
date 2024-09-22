@@ -19,7 +19,9 @@ return new class extends Migration
             $table->integer('sisa_siang')->nullable();
             $table->integer('sisa_sore')->nullable();
             $table->integer('sisa_malam')->nullable();
+            $table->integer('sisa_akhir')->nullable();
             $table->integer('subtotal')->unsigned()->nullable()->default(12);
+            $table->integer('subtotal_sisa')->nullable();
             $table->uuid('uuid_pembeliantitipan')->nullable()->index();
             $table->foreign('uuid_pembeliantitipan')
                   ->references('uuid')
