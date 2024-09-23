@@ -94,7 +94,7 @@
                     <!-- Input Barang -->
                     <div class="mb-4">
                         <label for="barang">Nama Barang</label>
-                        <select id="barang" name="barang" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        <select id="barang" name="barang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                             <option disabled selected>Pilih Barang</option>
                             @foreach($data as $barang)
                                 <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
@@ -131,7 +131,7 @@
 @push('js')
 <script src="{{ asset('assets/js/navbar-sticky.js') }}"></script>
 
-<script>
+  <script>
     var globalData = [];
 
     // Tambahkan barang ke tabel
@@ -171,7 +171,8 @@
                 <td><button class="btn btn-danger" onclick="removeItem(${rowCount})">Hapus</button></td>
             </tr>
         `);
-
+        
+        
         // Tutup modal setelah barang ditambahkan
         $('#modalTambahBarang').modal('hide');
         $('.modal-backdrop').remove();  // Menghapus backdrop jika masih ada
@@ -214,8 +215,13 @@
         $('#TotalPembayaran').text("Rp " + total.toLocaleString());
     }
 
+
     // Event handler untuk reset form setelah modal ditutup
     $(document).ready(function() {
+    $("#barang").select2({
+        dropdownParent: $("#modalTambahBarang")
+    });
+    
     $('#modalTambahBarang').on('hidden.bs.modal', function () {
         $('#createPembelianHutangNonProduksi')[0].reset();
     });

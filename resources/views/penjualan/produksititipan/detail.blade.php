@@ -52,7 +52,7 @@
                 <div class="modal-body">
                     <div class="mb-4">
                         <label for="barang">Nama Barang</label>
-                        <select id="barang" name="barang" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        <select id="barang" name="barang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                             <option disabled selected>Pilih Barang</option>
                             @foreach($data as $barang)
                                 <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
@@ -81,6 +81,9 @@
 @push('js')
 <script>
 $(document).ready(function() {
+    $("#barang").select2({
+        dropdownParent: $("#modalTambahBarangForm{{$titipan->uuid}}")
+    });
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }
