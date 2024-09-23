@@ -263,7 +263,7 @@
                     var uuid = response.uuid;
                     
                     // Redirect ke halaman print dengan UUID
-                    window.location.href = "{{ url('penjualan-piutang') }}/" + uuid;
+                    window.location.href = "{{ url('penjualan-piutang/print') }}/" + uuid;
                 } else {
                     alert("Gagal menyimpan data.");
                 }

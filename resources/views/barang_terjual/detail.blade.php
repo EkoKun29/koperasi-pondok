@@ -55,7 +55,7 @@
                 <div class="modal-body">
                     <div class="mb-4">
                         <label for="barang">Nama Barang</label>
-                        <select id="barang" name="barang" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        <select id="barang" name="barang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                             <option disabled selected>Pilih Barang</option>
                             @foreach($data as $barang)
                                 <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
@@ -92,12 +92,13 @@
 @push('js')
 <script>
 $(document).ready(function() {
-    // Cek dan hancurkan DataTable jika sudah ada
+    $("#barang").select2({
+        dropdownParent: $("#modalTambahBarangForm{{$terjual->uuid}}")
+    });
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }
-    
-    // Inisialisasi DataTable
+
     $('#datatable-basic').DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
