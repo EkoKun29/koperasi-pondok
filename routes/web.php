@@ -54,6 +54,8 @@ Route::get('penjualan-piutang/delete/{uuid}', [PenjualanPiutangController::class
 Route::get('penjualan-piutang/detail/delete/{id}', [PenjualanPiutangController::class, 'DeleteDetailPenjualan'])->name('delete-penjualan-piutang-detail');
 Route::get('penjualan-piutang/print/{uuid}', [PenjualanPiutangController::class, 'print'])->name('penjualan-piutang.print');
 Route::post('penjualan-piutang-detail/{uuid}', [PenjualanPiutangController::class, 'storeDetail'])->name('penjualan-piutang-detail-create');
+Route::get('penjualan-piutang/detail/edit/{id}', [PenjualanPiutangController::class, 'editDetail'])->name('penjualan-piutang-edit-detail-create');
+Route::put('penjualan-piutang/detail/update/{id}', [PenjualanPiutangController::class, 'updateDetail'])->name('penjualan-piutang-update-detail-create');
 
 
 //-------------------------------------------------------Penjualan Non Produksi---------------------------------------------------------------

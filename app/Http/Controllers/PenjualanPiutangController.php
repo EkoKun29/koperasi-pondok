@@ -165,38 +165,46 @@ public function storeDetail(Request $request, $uuid)
         return view('penjualan.piutang.detail', compact('piutang', 'detail', 'data'));
     }
 
-    public function edit(PenjualanPiutang $penjualanPiutang)
+    public function editDetail($id)
     {
-        $detail = DetailPenjualanPiutang::where('uuid_penjualan', $penjualanPiutang->uuid)->get();
-        return view('penjualan.piutang.edit', compact('penjualanPiutang', 'detail'));
+        $piutang = PenjualanPiutang::where('id', $id)->first();
+        $detail = DetailPenjualanPiutang::where('uuid_penjualan', $piutang->uuid)->get();
+        return view('penjualan.piutang.edit-detail', compact('piutang', 'detail'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PenjualanPiutang $penjualanPiutang)
-    {
-        $detailPenjualanPiutang = DetailPenjualanPiutang::where('uuid_penjualan', $penjualanPiutang->uuid)->get();
-        foreach($detailPenjualanPiutang as $dpp){
-            $dpp->nama_barang = $request->barang;
-            $dpp->qty = $request->qty;
-            $dpp->harga = $request->harga;
-            $dpp->keterangan = $request->keterangan;
-            $dpp->subtotal = $request->qty * $request->harga;
-            $dpp->save();
-        }
+    public function updateDetail(Request $request, $id)
+{
+    // Temukan Penjualan Piutang berdasarkan ID
+    $piutang = PenjualanPiutang::findOrFail($id);
 
-        //update total penjualan piutang
-        $detailPenjualanPiutang = DetailPenjualanPiutang::where('uuid_penjualan',$penjualanPiutang->uuid)->get();
-        $penjualanPiutang->total = $detailPenjualanPiutang->sum('subtotal');
-        $penjualanPiutang->save();
+    // Ambil detail penjualan piutang berdasarkan UUID penjualan
+    $details = DetailPenjualanPiutang::where('uuid_penjualan', $piutang->uuid)->get();
 
-        return redirect()->back()->with('success', 'Data berhasil diubah');
+    // Cek apakah detail ada
+    if ($details->isEmpty()) {
+        return redirect()->back()->with('error', 'Detail Penjualan Piutang tidak ditemukan');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    $detailId = $request->detail_id; // Ambil ID detail dari request
+    $detail = DetailPenjualanPiutang::findOrFail($detailId); // Temukan detail yang spesifik
+
+    // Update detail penjualan piutang
+    $detail->nama_barang = $request->barang; 
+    $detail->qty = $request->qty; 
+    $detail->harga = $request->harga; 
+    $detail->keterangan = $request->keterangan; 
+    $detail->subtotal = $request->qty * $request->harga;
+    $detail->save();
+
+    // Update total penjualan piutang
+    $piutang->total = $details->sum('subtotal'); // Menggunakan koleksi untuk menghitung total
+    $piutang->save();
+
+    return redirect()->back()->with('success', 'Data berhasil diubah');
+}
+
+
+
     public function DeletePenjualan($uuid)
     {
         $piutang = PenjualanPiutang::where('uuid', $uuid)->first();

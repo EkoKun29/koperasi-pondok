@@ -32,10 +32,12 @@
                     <td class="border px-4 py-2">{{ $dtl->keterangan }}</td>
                     <td class="border px-4 py-2">{{ number_format($dtl->subtotal, 2) }}</td>
                     <td class="border px-4 py-2">
-                        <div class="d-flex">
+                    <div class="d-flex">
+                            {{-- <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $dtl->uuid }}" class="btn btn-info btn-sm">Edit</button> --}}
                             <a href="{{ route('delete-penjualan-piutang-detail', $dtl['id']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')" class="btn btn-danger btn-sm">Hapus</a>
                         </div>
                     </td>
+                    {{-- @include('penjualan.piutang.edit-detail') --}}
                 </tr>
                 @endforeach
             </tbody>
