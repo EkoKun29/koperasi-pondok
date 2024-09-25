@@ -30,6 +30,7 @@
         <table id="datatable-basic" class="table-auto border-collapse w-full">
             <thead>
                 <tr class="text-left bg-gray-200">
+                    <th class="border px-4 py-2">#</th>
                     <th class="border px-4 py-2">Nama Koperasi</th>
                     <th class="border px-4 py-2">Tanggal</th>
                     <th class="border px-4 py-2">Penyetor</th>
@@ -41,6 +42,7 @@
             <tbody>
                 @foreach($setoran as $s)
                 <tr>
+                    <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                     <td class="border px-4 py-2">{{ $s->nama_koperasi }}</td>
                     <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($s->tanggal)->format('d-m-Y') }}</td>
                     <td class="border px-4 py-2">{{ $s->penyetor }}</td>
@@ -74,13 +76,18 @@
         <div class="modal-body">
           <form id="addSetoranForm" method="POST" action="{{ route('setoran.store') }}">
             @csrf
-            <div class="mb-3">
-              <label for="penyetor" class="form-label">Penyetor</label>
-              <input type="text" class="form-control" id="penyetor" name="penyetor" required>
-            </div>
+            <div class="mb-4">
+              <label class="block text-sm font-medium text-gray-700"><b>Nama Penyetor</b></label>
+                <select id="penyetor" name="penyetor" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                  <option disabled selected>Pilih Personil</option>
+                  @foreach($data as $barang)
+                    <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
+                  @endforeach
+                </select>
+              </div>
             <div class="mb-3">
               <label for="penerima" class="form-label">Penerima</label>
-              <input type="text" class="form-control" id="penerima" name="penerima" required>
+              <input type="text" class="form-control" id="penerima" name="penerima">
             </div>
             <div class="mb-3">
               <label for="tanggal" class="form-label">Tanggal</label>

@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Setoran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\NamaBarang;
 
 class SetoranController extends Controller
 {
@@ -35,7 +36,8 @@ class SetoranController extends Controller
         }else{
             abort(403, 'Unauthorized action.');
         }
-        return view('setoran.index',compact('setoran'))->with('i', (request()->input('page', 1) - 1) * 10);
+        $data = NamaBarang::all();
+        return view('setoran.index',compact('setoran','data'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
 
@@ -71,7 +73,6 @@ class SetoranController extends Controller
 {
     $request->validate([
         'penyetor' => 'required|string|max:255',
-        'penerima' => 'required|string|max:255',
         'tanggal' => 'required|date',
         'nominal' => 'required|numeric|min:0',
     ]);

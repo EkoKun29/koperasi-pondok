@@ -13,13 +13,20 @@
             font-family: 'Times New Roman';
         }
 
-        /* td,A
-        th,
-        tr,
-        table {
-            border-top: 1px solid black;
-            border-collapse: collapse;
-        } */
+        .signature-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        .signature-box {
+            text-align: center;
+            width: 200px;
+        }
+        .signature-line {
+            margin-top: 50px;
+            border-bottom: 1px solid black;
+            width: 100%;
+        }
 
         td.description,
         th.description {
@@ -57,41 +64,36 @@
     <div class="ticket">
         <p class="centered"><b><strong>KOPERASI KAMPUS {{ Auth::user()->role }}</strong></b>
             <br>
-            <b><strong>SETORAN</strong></b>
+            <b><strong>NOTA SETORAN</strong></b>
         </p>
         <p style="font-size: 1.2em; ">
             <strong>
             <br>PENYETOR : {{  $setoran->penyetor }}
-            <br>PENERIMA : {{ $setoran->penerima }}
-            <br>TANGGAL : {{ $setoran->created_at->format('d/m/y') }}
+            {{-- <br>PENERIMA : {{ $setoran->penerima }} --}}
+            <br>TANGGAL : {{ $setoran->tanggal}}
             <br>JENIS TRANSAKSI : SETORAN
             </strong>
             <hr>
         </p>
-        {{-- <table>
-            <tbody>
-                @foreach ($detail as $item)
-                <tr>
-                    <td class="description" style="font-size: 1.2em; ">{{ $item->nama_barang }}</td>
-                    <td class="description" style="text-align: right; font-size: 1.2em; ">Rp {{number_format($item->subtotal, 2, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td class="description" style="font-size: 1.2em; ">{{ $item->qty }} {{ $item->keterangan }} x Rp {{number_format($item->harga, 2, ',', '.') }}</td>
-                    <td class="description"></td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table> --}}
-        <hr>
+
         <table>
             <tbody>
                 <tr>
-                    <td class="description" style="font-weight: bold; font-size: 1.8em;">Nominal : </td>
-                    <td class="description" style="text-align: right; font-weight: bold; font-size: 1.8em;">Rp {{number_format($setoran->nominal, 2, ',', '.') }}</td>
+                    <td class="description" style="font-weight: bold; font-size: 1.8em;">Nominal Setoran: </td>
+                    <td class="description" style="text-align: right; font-weight: bold; font-size: 1.8em;">Rp. {{number_format($setoran->nominal, 2, ',', '.') }}</td>
                 </tr>
             </tbody>
         </table>
         <hr>
+        <body>
+    <div class="signature-container">
+        <div class="signature-box">
+            <p><strong>Penerima,</strong></p>
+            <div class="signature-line"></div>
+            <p></p>
+        </div>
+    </div>
+</body>
         <p class="centered"><b>** TERIMAKASIH **</b>
     </div>
     <script>
