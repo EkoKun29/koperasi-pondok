@@ -72,4 +72,8 @@ class User extends Authenticatable
     public function Setoran(){
         return $this->hasMany(Setoran::class);
     }
+
+    public function Pelunasan(){
+        return $this->hasMany(Pelunasan::class);
+    }
 }

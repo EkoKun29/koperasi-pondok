@@ -21,6 +21,7 @@
 
 <!-- Page content -->
 <div class="container mx-auto mt-6">
+    <h1 class="text-xl font-semibold mb-4">Tambah Pembelian Hutang Non Produksi</h1>
     <div class="w-full">
         <div class="bg-white shadow-md rounded-lg">
             <div class="p-6">

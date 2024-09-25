@@ -1,7 +1,11 @@
 <?php
 
+use App\Models\Setoran;
+use App\Models\Pelunasan;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SetoranController;
+use App\Http\Controllers\PelunasanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NamaBarangController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -13,8 +17,6 @@ use App\Http\Controllers\PenjualanNonProduksiController;
 use App\Http\Controllers\PenjualanBarangTerjualController;
 use App\Http\Controllers\PenjualanProduksiTitipanController;
 use App\Http\Controllers\PembelianHutangNonProduksiController;
-use App\Http\Controllers\SetoranController;
-use App\Models\Setoran;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,7 +125,8 @@ Route::resource('setoran', SetoranController::class);
 Route::get('setoran/delete/{uuid}', [SetoranController::class, 'DeleteSetoran'])->name('delete-setoran');
 Route::get('setoran/print/{uuid}', [SetoranController::class, 'print'])->name('setoran.print');
 
-
+//-----------------------------------------Pelunasan--------------------------------------------------------------------------------------------------------------------
+Route::resource('pelunasan', PelunasanController::class);
 
 //--------------------------------------barang----------------------------------------------------------------------------------------------------------------------------------------------
 Route::resource('barang', App\Http\Controllers\NamaBarangController::class);

@@ -21,6 +21,7 @@
 
 <!-- Page content -->
 <div class="container mx-auto mt-6">
+    <h1 class="text-xl font-semibold mb-4">Tambah Pembelian Titipan</h1>
     <div class="w-full">
         <div class="bg-white shadow-md rounded-lg">
             <div class="p-6">
@@ -245,6 +246,7 @@
 
     // Event handler untuk reset form setelah modal ditutup
     $(document).ready(function() {
+    $("#nama_personil").select2();
     $("#barang").select2({
     dropdownParent: $("#modalTambahBarang")
     });
