@@ -227,6 +227,29 @@
       </script>
       
       <li class="mt-0.5 w-full">
+        <a href="{{ route('setoran.index') }}" style="text-decoration: none;" class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" id="setoran">
+            <div class="bg-gradient-to-tl from-green-600 to-lime-400 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
+                <svg width="12px" height="12px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <title>Setoran</title>
+                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                        <g transform="translate(-2020.000000, -442.000000)" fill="#FFFFFF" fill-rule="nonzero">
+                            <g transform="translate(1716.000000, 291.000000)">
+                                <g transform="translate(304.000000, 151.000000)">
+                                    <polygon class="color-background" opacity="0.596981957" points="20 10 15 5 25 5 20 10"></polygon>
+                                    <path class="color-background" d="M20,0 C8.96,0 0,8.96 0,20 C0,31.04 8.96,40 20,40 C31.04,40 40,31.04 40,20 C40,8.96 31.04,0 20,0 Z M20,36 C10.75,36 4,29.25 4,20 C4,10.75 10.75,4 20,4 C29.25,4 36,10.75 36,20 C36,29.25 29.25,36 20,36 Z"></path>
+                                    <circle cx="20" cy="20" r="10" class="color-background"></circle>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            </div>
+            <span class="ml-1 duration-300 opacity-100 pointer-events-none ease-soft">Setoran</span>
+        </a>
+    </li>
+    
+
+      <li class="mt-0.5 w-full">
         <a style="text-decoration: none;" class="py-2.7 shadow-soft-xl text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap rounded-lg bg-white px-4 font-semibold text-slate-700 transition-colors" id="database">
           <div class="bg-gradient-to-tl from-red-600 to-rose-400 shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center stroke-0 text-center xl:p-2.5">
             <svg width="12px" height="12px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -282,6 +305,7 @@
       </script>
     </ul>
   </div>
+
 
   <div class="mx-4">
     <a style="text-decoration: none;" class="inline-block w-full px-6 py-3 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('_logout') }}">Keluar</a>

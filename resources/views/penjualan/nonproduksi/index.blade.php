@@ -34,7 +34,7 @@
                     <th class="border px-4 py-2">Nama Personil</th>
                     <th class="border px-4 py-2">Shift</th>
                     <th class="border px-4 py-2">Total</th>
-                    <th class="border px-4 py-2">Total</th>
+                    <th class="border px-4 py-2">Aksi</th>
                     
                 </tr>
             </thead>

@@ -13,6 +13,8 @@ use App\Http\Controllers\PenjualanNonProduksiController;
 use App\Http\Controllers\PenjualanBarangTerjualController;
 use App\Http\Controllers\PenjualanProduksiTitipanController;
 use App\Http\Controllers\PembelianHutangNonProduksiController;
+use App\Http\Controllers\SetoranController;
+use App\Models\Setoran;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,6 +117,12 @@ Route::get('pembelian-hutangnonproduksi/delete/{uuid}', [PembelianHutangNonProdu
 Route::get('pembelian-hutangnonproduksi/detail/delete/{id}', [PembelianHutangNonProduksiController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-hutangnonproduksi-detail');
 Route::get('pembelian-hutangnonproduksi/print/{uuid}', [PembelianHutangNonProduksiController::class, 'print'])->name('pembelian-hutangnonproduksi.print');
 Route::post('pembelian-hutangnonproduksi-detail/{uuid}', [PembelianHutangNonProduksiController::class, 'storeDetail'])->name('pembelian-hutangnonproduksi-detail-create');
+
+//-----------------------------------------Setoran--------------------------------------------------------------------------------------------------------------------
+Route::resource('setoran', SetoranController::class);
+Route::get('setoran/delete/{uuid}', [SetoranController::class, 'DeleteSetoran'])->name('delete-setoran');
+Route::get('setoran/print/{uuid}', [SetoranController::class, 'print'])->name('setoran.print');
+
 
 
 //--------------------------------------barang----------------------------------------------------------------------------------------------------------------------------------------------

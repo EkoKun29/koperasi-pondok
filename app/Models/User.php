@@ -68,4 +68,8 @@ class User extends Authenticatable
     public function PembelianHutangNonProduksi(){
         return $this->hasMany(PembelianHutangNonProduksi::class);
     }
+
+    public function Setoran(){
+        return $this->hasMany(Setoran::class);
+    }
 }
