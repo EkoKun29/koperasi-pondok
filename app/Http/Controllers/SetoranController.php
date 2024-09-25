@@ -87,7 +87,7 @@ class SetoranController extends Controller
     ]);
 
     // Kembalikan UUID untuk redirect
-    return redirect()->route('setoran.index')->with('success', 'Setoran berhasil ditambahkan');;
+    return redirect()->route('setoran.print', ['uuid' => $setoran->uuid])->with('success', 'Setoran berhasil ditambahkan');
 }
 
 // public function storeDetail(Request $request, $uuid)

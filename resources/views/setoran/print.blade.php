@@ -23,8 +23,8 @@
             width: 200px;
         }
         .signature-line {
-            margin-top: 50px;
-            border-bottom: 1px solid black;
+            margin-top: 40px;
+            border-bottom: 2px solid black;
             width: 100%;
         }
 
