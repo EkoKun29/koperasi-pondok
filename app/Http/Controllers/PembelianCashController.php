@@ -96,6 +96,7 @@ class PembelianCashController extends Controller
             'harga' => $item['harga'],
             'qty' => $item['qty'],
             'cek_barang' => $item['cek_barang'],
+            'keterangan' => $item['keterangan'],
             'subtotal' => $item['subtotal'],
         ]);
     }
@@ -124,6 +125,7 @@ public function storeDetail(Request $request, $uuid)
             'harga' => $request->harga,
             'qty' => $request->qty,
             'cek_barang' => $request->cek_barang,
+            'keterangan' => $request->keterangan,
             'subtotal' => $request->subtotal,
         ]);
 

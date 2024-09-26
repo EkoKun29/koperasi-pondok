@@ -108,6 +108,14 @@
                             <option value="Kurang">Kurang</option>
                         </select>
                     </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700"><b>Keterangan Barang</b></label>
+                        <select name="keterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="keterangan">
+                            <option disabled selected>Pilih Keterangan</option>
+                            <option value="Produksi">Produksi</option>
+                            <option value="Non Produksi">Non Produksi</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="addItem()">Simpan</button>
@@ -132,10 +140,11 @@
         var harga = parseFloat($('#harga').val());
         var qty = parseInt($('#qty').val());
         var cek_barang = $('#cek_barang').val();
+        var keterangan = $('#keterangan').val();
         var subtotal = harga * qty;
 
         // Validasi jika semua input telah diisi
-        if (!nama_barang || !harga || !qty || !cek_barang) {
+        if (!nama_barang || !harga || !qty || !cek_barang|| !keterangan) {
             alert('Semua field harus diisi.');
             return;
         }
@@ -146,6 +155,7 @@
             harga: harga,
             qty: qty,
             cek_barang: cek_barang,
+            keterangan: keterangan,
             subtotal: subtotal
         });
 
@@ -158,6 +168,7 @@
                 <td>${harga}</td>
                 <td>${qty}</td>
                 <td>${cek_barang}</td>
+                <td>${keterangan}</td>
                 <td>${subtotal}</td>
                 <td><button class="btn btn-danger" onclick="removeItem(${rowCount})">Hapus</button></td>
             </tr>
@@ -192,6 +203,7 @@
                     <td>${item.harga}</td>
                     <td>${item.qty}</td>
                     <td>${item.cek_barang}</td>
+                    <td>${item.keterangan}</td>
                     <td>${item.subtotal}</td>
                     <td><button class="btn btn-danger" onclick="removeItem(${index})">Hapus</button></td>
                 </tr>

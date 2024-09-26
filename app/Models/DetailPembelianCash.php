@@ -9,7 +9,7 @@ class DetailPembelianCash extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['uuid_cash', 'nama_barang', 'harga', 'qty', 'cek_barang', 'subtotal'];
+    protected $fillable = ['uuid_cash', 'nama_barang', 'harga', 'qty', 'cek_barang', 'subtotal','keterangan'];
 
 
     public function pembelianCash()

@@ -18,6 +18,7 @@
                     <th class="border px-4 py-2">Qty</th>
                     <th class="border px-4 py-2">Harga</th>
                     <th class="border px-4 py-2">Cek Barang</th>
+                    <th class="border px-4 py-2">Keterangan Barang</th>
                     <th class="border px-4 py-2">Total Harga</th>
                     <th class="border px-4 py-2">Aksi</th>
                 </tr>
@@ -30,6 +31,7 @@
                     <td class="border px-4 py-2">{{ $dtl->qty }}</td>
                     <td class="border px-4 py-2">{{ number_format($dtl->harga, 2) }}</td>
                     <td class="border px-4 py-2">{{ $dtl->cek_barang }}</td>
+                    <td class="border px-4 py-2">{{ $dtl->keterangan }}</td>
                     <td class="border px-4 py-2">{{ number_format($dtl->subtotal, 2) }}</td>
                     <td class="border px-4 py-2">
                         <a href="{{ route('delete-pembelian-cash-detail', $dtl['id']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')" class="btn btn-danger btn-sm">Hapus</a>
@@ -75,6 +77,14 @@
                             <option value="Kurang">Kurang</option>
                         </select>
                     </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium text-gray-700"><b>Keterangan Barang</b></label>
+                        <select name="keterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="keterangan">
+                            <option disabled selected>Pilih Keterangan</option>
+                            <option value="Produksi">Produksi</option>
+                            <option value="Non Produksi">Non Produksi</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="addItem()">Simpan</button>
@@ -109,10 +119,11 @@ function addItem() {
     var harga = $('#harga').val();
     var qty = $('#qty').val();
     var cek_barang = $('#cek_barang').val();
+    var keterangan = $('#keterangan').val();
     var subtotal = harga * qty;
 
     // Validasi input
-    if (barang == '' || harga == '' || qty == '' || cek_barang == '') {
+    if (barang == '' || harga == '' || qty == '' || cek_barang == ''|| keterangan == '') {
         alert('Data harus diisi semua!');
         return false;
     }
@@ -126,6 +137,7 @@ function addItem() {
             harga: harga,
             qty: qty,
             cek_barang: cek_barang,
+            keterangan: keterangan,
             subtotal: subtotal
         },
         success: function(response) {
@@ -140,6 +152,7 @@ function addItem() {
                         <td class="border px-4 py-2">${response.detail.qty}</td>
                         <td class="border px-4 py-2">${response.detail.harga}</td>
                         <td class="border px-4 py-2">${response.detail.cek_barang}</td>
+                        <td class="border px-4 py-2">${response.detail.keterangan}</td>
                         <td class="border px-4 py-2">${parseFloat(response.detail.subtotal).toFixed(2)}</td>
                         <td class="border px-4 py-2">
                             <div class="d-flex">
@@ -173,6 +186,7 @@ function resetModalForm() {
     $('#harga').val('');          // Kosongkan input harga
     $('#qty').val('');            // Kosongkan input qty
     $('#cek_barang').val('');     // Kosongkan input keterangan
+    $('#keterangan').val('');   
 }
 </script>
 @endpush
