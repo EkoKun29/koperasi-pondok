@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DetailPembelianTitipan;
 use App\Models\User;
 use App\Models\NamaBarang;
 use Illuminate\Http\Request;
 use App\Models\PembelianTitipan;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Models\DetailPembelianTitipan;
+use Illuminate\Support\Facades\Validator;
 
 class PembelianTitipanController extends Controller
 {
@@ -201,6 +202,85 @@ public function storeDetail(Request $request, $uuid)
 
         return redirect()->back()->with('success', 'Data berhasil diubah');
     }
+
+    public function editDetail($id)
+{
+    // Retrieve all available items for selection
+    $data = NamaBarang::all();
+
+    // Retrieve the detail record by ID
+    $detail = DetailPembelianTitipan::findOrFail($id);
+    
+    // Retrieve the parent PembelianTitipan using the detail's uuid
+    $titipan = PembelianTitipan::where('uuid', $detail->uuid_pembeliantitipan)->first();
+
+    // Ensure titipan is found
+    if (!$titipan) {
+        return redirect()->back()->with('error', 'Pembelian Titipan tidak ditemukan');
+    }
+
+    // Retrieve all details for the given PembelianTitipan
+    $allDetails = DetailPembelianTitipan::where('uuid_pembeliantitipan', $titipan->uuid)->get();
+
+    return view('pembelian.titipan.edit-detail', compact('titipan', 'allDetails', 'data', 'detail'));
+}
+
+
+        public function updateDetail(Request $request, $uuid)
+        {
+            // Validate the incoming request data
+            $request->validate([
+                'id' => 'required|exists:detail_pembelian_titipans,id',
+                'nama_barang' => 'required|string|max:255',
+                'harga' => 'required|numeric',
+                'qty' => 'required|integer|min:1',
+                'sisa_siang' => 'nullable|integer',
+                'sisa_sore' => 'nullable|integer',
+                'sisa_malam' => 'nullable|integer',
+                'sisa_akhir' => 'required|integer',
+                'subtotal_sisa' => 'required|numeric',
+                'subtotal' => 'required|numeric',
+            ]);
+
+            try {
+
+                $pembelian = PembelianTitipan::where('uuid', $uuid)->firstOrFail();
+                // Find the item by ID
+                $detail = DetailPembelianTitipan::findOrFail($request->id);
+
+                $pembelian->total -= $detail->subtotal; // Subtract the old subtotal
+                $pembelian->total += $request->subtotal; // Add the new subtotal
+
+
+                // Update the detail with new data
+                $detail->nama_barang = $request->nama_barang;
+                $detail->harga = $request->harga;
+                $detail->qty = $request->qty;
+                $detail->sisa_siang = $request->sisa_siang;
+                $detail->sisa_sore = $request->sisa_sore;
+                $detail->sisa_malam = $request->sisa_malam;
+                $detail->sisa_akhir = $request->sisa_akhir;
+                $detail->subtotal_sisa = $request->subtotal_sisa;
+                $detail->subtotal = $request->subtotal;
+
+                // Save the updated data
+                $detail->save();
+                $pembelian->save();
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Data barang berhasil diperbarui',
+                    'detail' => $detail // Returning the updated detail
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Gagal memperbarui data barang',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        }
+
 
     /**
      * Remove the specified resource from storage.

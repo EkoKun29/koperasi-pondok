@@ -209,6 +209,64 @@ public function storeDetail(Request $request, $uuid)
     }
 
 
+    public function editDetail($id)
+    {
+        $data = NamaBarang::all();
+        $nonproduksi = PenjualanNonProduksi::where('id', $id)->first();
+        $detail = DetailNonProduksi::where('uuid_nonproduksi', $nonproduksi->uuid)->get();
+        $dtl = DetailNonProduksi::findOrFail($id); // Change this as per your actual logic
+    
+        return view('penjualan.nonproduksi.edit-detail', compact('piutang', 'detail', 'data', 'dtl'));
+    }
+
+    public function updateDetail(Request $request, $uuid)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'id' => 'required|exists:detail_non_produksis,id', // Adjust table name if necessary
+            'barang' => 'required|string',
+            'harga' => 'required|numeric|min:0',
+            'qty' => 'required|integer|min:1',
+            'keterangan' => 'required|string',
+            'subtotal' => 'required|numeric|min:0',
+        ]);
+
+        try {
+
+            $penjualan = PenjualanNonProduksi::where('uuid', $uuid)->firstOrFail();
+            // Find the item by ID
+            $detail = DetailNonProduksi::findOrFail($request->id);
+
+            $penjualan->total -= $detail->subtotal; // Subtract the old subtotal
+            $penjualan->total += $request->subtotal; // Add the new subtotal
+
+
+            // Update the detail with new data
+            $detail->nama_barang = $request->barang;
+            $detail->harga = $request->harga;
+            $detail->qty = $request->qty;
+            $detail->keterangan = $request->keterangan;
+            $detail->subtotal = $request->subtotal;
+
+            // Save the updated data
+            $detail->save();
+            $penjualan->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data barang berhasil diperbarui',
+                'detail' => $detail // Returning the updated detail
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui data barang',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
     /**
      * Remove the specified resource from storage.
      */

@@ -167,41 +167,60 @@ public function storeDetail(Request $request, $uuid)
 
     public function editDetail($id)
     {
+        $data = NamaBarang::all();
         $piutang = PenjualanPiutang::where('id', $id)->first();
         $detail = DetailPenjualanPiutang::where('uuid_penjualan', $piutang->uuid)->get();
-        return view('penjualan.piutang.edit-detail', compact('piutang', 'detail'));
+        $dtl = DetailPenjualanPiutang::findOrFail($id); // Change this as per your actual logic
+    
+        return view('penjualan.piutang.edit-detail', compact('piutang', 'detail', 'data', 'dtl'));
     }
 
-    public function updateDetail(Request $request, $id)
-{
-    // Temukan Penjualan Piutang berdasarkan ID
-    $piutang = PenjualanPiutang::findOrFail($id);
+    public function updateDetail(Request $request, $uuid)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'id' => 'required|exists:detail_penjualan_piutangs,id', // Adjust table name if necessary
+            'barang' => 'required|string',
+            'harga' => 'required|numeric|min:0',
+            'qty' => 'required|integer|min:1',
+            'keterangan' => 'required|string',
+            'subtotal' => 'required|numeric|min:0',
+        ]);
 
-    // Ambil detail penjualan piutang berdasarkan UUID penjualan
-    $details = DetailPenjualanPiutang::where('uuid_penjualan', $piutang->uuid)->get();
+        try {
 
-    // Cek apakah detail ada
-    if ($details->isEmpty()) {
-        return redirect()->back()->with('error', 'Detail Penjualan Piutang tidak ditemukan');
+            $penjualan = PenjualanPiutang::where('uuid', $uuid)->firstOrFail();
+            // Find the item by ID
+            $detail = DetailPenjualanPiutang::findOrFail($request->id);
+
+            $penjualan->total -= $detail->subtotal; // Subtract the old subtotal
+            $penjualan->total += $request->subtotal; // Add the new subtotal
+
+
+            // Update the detail with new data
+            $detail->nama_barang = $request->barang;
+            $detail->harga = $request->harga;
+            $detail->qty = $request->qty;
+            $detail->keterangan = $request->keterangan;
+            $detail->subtotal = $request->subtotal;
+
+            // Save the updated data
+            $detail->save();
+            $penjualan->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Data barang berhasil diperbarui',
+                'detail' => $detail // Returning the updated detail
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal memperbarui data barang',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-
-    $detailId = $request->detail_id; // Ambil ID detail dari request
-    $detail = DetailPenjualanPiutang::findOrFail($detailId); // Temukan detail yang spesifik
-
-    // Update detail penjualan piutang
-    $detail->nama_barang = $request->barang; 
-    $detail->qty = $request->qty; 
-    $detail->harga = $request->harga; 
-    $detail->keterangan = $request->keterangan; 
-    $detail->subtotal = $request->qty * $request->harga;
-    $detail->save();
-
-    // Update total penjualan piutang
-    $piutang->total = $details->sum('subtotal'); // Menggunakan koleksi untuk menghitung total
-    $piutang->save();
-
-    return redirect()->back()->with('success', 'Data berhasil diubah');
-}
 
 
 

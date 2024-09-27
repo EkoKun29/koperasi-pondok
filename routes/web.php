@@ -17,6 +17,7 @@ use App\Http\Controllers\PenjualanNonProduksiController;
 use App\Http\Controllers\PenjualanBarangTerjualController;
 use App\Http\Controllers\PenjualanProduksiTitipanController;
 use App\Http\Controllers\PembelianHutangNonProduksiController;
+use App\Models\PenjualanProduksiTitipan;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,8 @@ Route::get('penjualan-piutang/detail/delete/{id}', [PenjualanPiutangController::
 Route::get('penjualan-piutang/print/{uuid}', [PenjualanPiutangController::class, 'print'])->name('penjualan-piutang.print');
 Route::post('penjualan-piutang-detail/{uuid}', [PenjualanPiutangController::class, 'storeDetail'])->name('penjualan-piutang-detail-create');
 Route::get('penjualan-piutang/detail/edit/{id}', [PenjualanPiutangController::class, 'editDetail'])->name('penjualan-piutang-edit-detail-create');
-Route::put('penjualan-piutang/detail/update/{id}', [PenjualanPiutangController::class, 'updateDetail'])->name('penjualan-piutang-update-detail-create');
+Route::put('/penjualan-piutang/{uuid}/detail/update', [PenjualanPiutangController::class, 'updateDetail'])->name('penjualan-piutang-detail-update');
+
 
 
 //-------------------------------------------------------Penjualan Non Produksi---------------------------------------------------------------
@@ -70,6 +72,7 @@ Route::get('penjualan-nonproduksi/delete/{uuid}', [PenjualanNonProduksiControlle
 Route::get('penjualan-nonproduksi/detail/delete/{id}', [PenjualanNonProduksiController::class, 'DeleteDetailPenjualan'])->name('delete-penjualan-nonproduksi-detail');
 Route::get('penjualan-nonproduksi/print/{uuid}', [PenjualanNonProduksiController::class, 'print'])->name('penjualan-nonproduksi.print');
 Route::post('penjualan-nonproduksi-detail/{uuid}', [PenjualanNonProduksiController::class, 'storeDetail'])->name('penjualan-nonproduksi-detail-create');
+Route::put('/penjualan-nonproduksi/{uuid}/detail/update', [PenjualanNonProduksiController::class, 'updateDetail'])->name('penjualan-nonproduksi-update-detail');
     
 //-------------------------------------------------------Penjualan Produksi Titipan----------------------------------------------------------
 Route::resource('penjualan-produksititipan', PenjualanProduksiTitipanController::class);
@@ -79,6 +82,7 @@ Route::get('penjualan-produksititipan/delete/{uuid}', [PenjualanProduksiTitipanC
 Route::get('penjualan-produksititipan/detail/delete/{id}', [PenjualanProduksiTitipanController::class, 'DeleteDetailPenjualan'])->name('delete-penjualan-titipan-detail');
 Route::get('penjualan-produksititipan/print/{uuid}', [PenjualanProduksiTitipanController::class, 'print'])->name('penjualan-titipan.print');
 Route::post('penjualan-produksititipan-detail/{uuid}', [PenjualanProduksiTitipanController::class, 'storeDetail'])->name('penjualan-titipan-detail-create');
+Route::put('/penjualan-titipan/{uuid}/detail/update', [PenjualanProduksiTitipanController::class, 'updateDetail'])->name('penjualan-titipan-detail-update');
 
 
 //-------------------------------------------------------Barang Terjual--------------------------------------------------------------------
@@ -99,7 +103,7 @@ Route::get('pembelian-titipan/delete/{uuid}', [PembelianTitipanController::class
 Route::get('pembelian-titipan/detail/delete/{id}', [PembelianTitipanController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-titipan-detail');
 Route::get('pembelian-titipan/print/{uuid}', [PembelianTitipanController::class, 'print'])->name('pembelian-titipan.print');
 Route::post('pembelian-titipan-detail/{uuid}', [PembelianTitipanController::class, 'storeDetail'])->name('pembelian-titipan-detail-create');
-
+Route::post('/pembelian-titipan/{uuid}/update-detail', [PembelianTitipanController::class, 'updateDetail'])->name('pembelian-titipan.update-detail');
 
 //--------------------------------------------------------Pembelian Cash-------------------------------------------------------- 
 Route::resource('pembelian-cash', PembelianCashController::class); 
@@ -109,7 +113,7 @@ Route::get('pembelian-cash/delete/{uuid}', [PembelianCashController::class, 'Del
 Route::get('pembelian-cash/detail/delete/{id}', [PembelianCashController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-cash-detail'); 
 Route::get('pembelian-cash/print/{uuid}', [PembelianCashController::class, 'print'])->name('pembelian-cash.print');
 Route::post('pembelian-cash-detail/{uuid}', [PembelianCashController::class, 'storeDetail'])->name('pembelian-cash-detail-create');
-
+Route::post('/pembelian-cash/{uuid}/update-detail', [PembelianCashController::class, 'updateDetail'])->name('pembelian-cash-update-detail');
 
 //-----------------------------------------Pembelian Hutang Non Produksi--------------------------------------------------------------------------------------------------------------------
 Route::resource('pembelian-hutangnonproduksi', PembelianHutangNonProduksiController::class);
@@ -119,6 +123,7 @@ Route::get('pembelian-hutangnonproduksi/delete/{uuid}', [PembelianHutangNonProdu
 Route::get('pembelian-hutangnonproduksi/detail/delete/{id}', [PembelianHutangNonProduksiController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-hutangnonproduksi-detail');
 Route::get('pembelian-hutangnonproduksi/print/{uuid}', [PembelianHutangNonProduksiController::class, 'print'])->name('pembelian-hutangnonproduksi.print');
 Route::post('pembelian-hutangnonproduksi-detail/{uuid}', [PembelianHutangNonProduksiController::class, 'storeDetail'])->name('pembelian-hutangnonproduksi-detail-create');
+Route::post('/pembelian-hutangnonproduksi/{uuid}/update-detail', [PembelianHutangNonProduksiController::class, 'updateDetail'])->name('pembelian-hutangnonproduksi-update-detail');
 
 //-----------------------------------------Setoran--------------------------------------------------------------------------------------------------------------------
 Route::resource('setoran', SetoranController::class);

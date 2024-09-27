@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">Detail Barang</h1>
+    <h1 class="text-xl font-semibold mb-4">Pembelian Titipan Detail Barang</h1>
     
     <div class="mx-4" id="modalTambahBarang">
         <a id="createPenjualanNonProduksi" style="text-decoration:none;" class="inline-block w-3 px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" 
@@ -40,10 +40,60 @@
                     <td class="border px-4 py-2">{{ number_format($dtl->subtotal, 2) }}</td>
                     <td class="border px-4 py-2">{{ number_format($dtl->subtotal_sisa, 2) }}</td>
                     <td class="border px-4 py-2">
+                        <a href="javascript:void(0)" onclick="openEditModal({{ $dtl->id }}, '{{ $dtl->nama_barang }}', {{ $dtl->qty }}, {{ $dtl->harga }}, {{ $dtl->sisa_siang }}, {{ $dtl->sisa_sore }}, {{ $dtl->sisa_malam }})" class="btn btn-warning btn-sm ml-2">Edit</a>
                         <a href="{{ route('delete-pembelian-titipan-detail', $dtl['id']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')"
                            class="btn btn-danger btn-sm">Hapus</a>
                     </td>
                 </tr>
+
+                <!-- Edit Modal -->
+                <div id="modalEditBarang" class="modal fade" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <form id="editPenjualanNonProduksiForm">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Edit Barang</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>    
+                                <div class="modal-body">
+                                    <input type="hidden" id="editItemId">
+                                    <div class="mb-4">
+                                        <label for="editBarang">Nama Barang</label>
+                                        <select id="editBarang" name="editBarang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                            <option disabled>Pilih Barang</option>
+                                            @foreach($data as $barang)
+                                                <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="editHarga">Harga</label>
+                                        <input type="number" id="editHarga" name="editHarga" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="editQty">Qty</label>
+                                        <input type="number" id="editQty" name="editQty" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="editSisaSiang">Sisa Siang</label>
+                                        <input type="number" id="editSisaSiang" name="editSisaSiang" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" value="0">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="editSisaSore">Sisa Sore</label>
+                                        <input type="number" id="editSisaSore" name="editSisaSore" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" value="0">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="editSisaMalam">Sisa Malam</label>
+                                        <input type="number" id="editSisaMalam" name="editSisaMalam" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" value="0">
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="updateItem()">Simpan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 @endforeach
             </tbody>
         </table>
@@ -108,7 +158,9 @@ $(document).ready(function() {
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }
-
+    $("#editBarang").select2({
+        dropdownParent: $("#modalEditBarang")
+    });
     $('#datatable-basic').DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
@@ -164,7 +216,9 @@ function addItem() {
                         <td class="border px-4 py-2">${parseFloat(response.detail.subtotal).toFixed(2)}</td>
                         <td class="border px-4 py-2">${parseFloat(response.detail.subtotal_sisa).toFixed(2)}</td>
                         <td class="border px-4 py-2">
+                            <a href="javascript:void(0);" onclick="openEditModal(${response.detail.id}, '${response.detail.nama_barang}', ${response.detail.qty}, ${response.detail.harga}, ${response.detail.sisa_siang},${response.detail.sisa_sore},${response.detail.sisa_malam},)" class="btn btn-warning btn-sm ml-2">Edit</a>
                             <a href="/your-delete-route/${response.detail.id}" class="btn btn-danger btn-sm">Hapus</a>
+                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditBarangForm${response.detail.id}" onclick="editItem(${JSON.stringify(response.detail)})">Edit</button>
                         </td>
                     </tr>
                 `);
@@ -185,6 +239,7 @@ function addItem() {
     });
 }
 
+
 function resetModalForm() {
     $('#barang').val('');         
     $('#harga').val('');          
@@ -193,5 +248,73 @@ function resetModalForm() {
     $('#sisa_sore').val(0);       
     $('#sisa_malam').val(0);      
 }
+
+function openEditModal(id, nama_barang, qty, harga, sisa_siang, sisa_sore, sisa_malam) {
+    $('#editItemId').val(id);
+    $('#editBarang').val(nama_barang).trigger('change');
+    $('#editQty').val(qty);
+    $('#editHarga').val(harga);
+    $('#editSisaSiang').val(sisa_siang);
+    $('#editSisaSore').val(sisa_sore);
+    $('#editSisaMalam').val(sisa_malam);
+
+    var modalElement = document.getElementById('modalEditBarang');
+    var modalInstance = new bootstrap.Modal(modalElement);
+    modalInstance.show();
+}
+
+
+
+function updateItem() {
+    var id = $('#editItemId').val();
+    var barang = $('#editBarang').val();
+    var harga = $('#editHarga').val();
+    var qty = $('#editQty').val();
+    var sisa_siang = parseInt($('#edit_SisaSiang').val()) || 0;
+    var sisa_sore = parseInt($('#edit_SisaSore').val()) || 0;
+    var sisa_malam = parseInt($('#edit_SisaMalam').val()) || 0;
+
+
+    if (barang == '' || harga == '' || qty == '' ) {
+        alert('Data harus diisi semua!');
+        return false;
+    }
+
+
+    var sisa_akhir = qty - sisa_siang - sisa_sore - sisa_malam;
+    var subtotal_sisa = sisa_akhir * harga;
+    var subtotal = harga * qty;
+
+    $.ajax({
+        url: "{{ route('pembelian-titipan.update-detail', ['uuid' => $titipan->uuid]) }}", // Update this route as necessary
+        method: 'POST',
+        data: {
+            _token: '{{ csrf_token() }}',
+            id: id,
+            nama_barang: barang,
+            harga: harga,
+            qty: qty,
+            sisa_siang: sisa_siang,
+            sisa_sore: sisa_sore,
+            sisa_malam: sisa_malam,
+            sisa_akhir: sisa_akhir,
+            subtotal_sisa: subtotal_sisa,
+            subtotal: subtotal
+        },
+        success: function(response) {
+            if (response.success) {
+                // Update the corresponding row in the DataTable
+                location.reload();
+            } else {
+                alert('Gagal memperbarui barang! ' + response.message);
+            }
+        },
+        error: function(xhr) {
+            console.error(xhr.responseText);
+            alert('Gagal memperbarui barang!');
+        }
+    });
+}
+
 </script>
 @endpush
