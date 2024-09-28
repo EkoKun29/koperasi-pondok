@@ -2,12 +2,15 @@
 
 use App\Models\Setoran;
 use App\Models\Pelunasan;
+use App\Models\PengajuanPo;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\PenjualanProduksiTitipan;
 use App\Http\Controllers\SetoranController;
 use App\Http\Controllers\PelunasanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NamaBarangController;
+use App\Http\Controllers\PengajuanPoController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\BarangTerjualController;
 use App\Http\Controllers\PembelianCashController;
@@ -17,7 +20,6 @@ use App\Http\Controllers\PenjualanNonProduksiController;
 use App\Http\Controllers\PenjualanBarangTerjualController;
 use App\Http\Controllers\PenjualanProduksiTitipanController;
 use App\Http\Controllers\PembelianHutangNonProduksiController;
-use App\Models\PenjualanProduksiTitipan;
 
 /*
 |--------------------------------------------------------------------------
@@ -136,6 +138,9 @@ Route::get('pembelian-hutangnonproduksi/detail/delete/{id}', [PembelianHutangNon
 Route::get('pembelian-hutangnonproduksi/print/{uuid}', [PembelianHutangNonProduksiController::class, 'print'])->name('pembelian-hutangnonproduksi.print');
 Route::post('pembelian-hutangnonproduksi-detail/{uuid}', [PembelianHutangNonProduksiController::class, 'storeDetail'])->name('pembelian-hutangnonproduksi-detail-create');
 Route::post('/pembelian-hutangnonproduksi/{uuid}/update-detail', [PembelianHutangNonProduksiController::class, 'updateDetail'])->name('pembelian-hutangnonproduksi-update-detail');
+
+//-----------------------------------------Pengajuan PO-----------------------------------------------------------------------------------------------------------------
+Route::resource('pengajuanpo', PengajuanPoController::class);
 
 //-----------------------------------------Setoran--------------------------------------------------------------------------------------------------------------------
 Route::resource('setoran', SetoranController::class);
