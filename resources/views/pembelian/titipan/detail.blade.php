@@ -203,8 +203,8 @@ function addItem() {
         success: function(response) {
             if (response.success) {
                 var rowCount = $('#datatable-basic tbody tr').length + 1;
-                $('#datatable-basic tbody').append(`
-                    <tr>
+                var newRow = `
+                    <tr id="row-${response.detail.id}">
                         <td class="border px-4 py-2">${rowCount}</td>
                         <td class="border px-4 py-2">${response.detail.nama_barang}</td>
                         <td class="border px-4 py-2">${response.detail.qty}</td>
@@ -216,15 +216,22 @@ function addItem() {
                         <td class="border px-4 py-2">${parseFloat(response.detail.subtotal).toFixed(2)}</td>
                         <td class="border px-4 py-2">${parseFloat(response.detail.subtotal_sisa).toFixed(2)}</td>
                         <td class="border px-4 py-2">
-                            <a href="javascript:void(0);" onclick="openEditModal(${response.detail.id}, '${response.detail.nama_barang}', ${response.detail.qty}, ${response.detail.harga}, ${response.detail.sisa_siang},${response.detail.sisa_sore},${response.detail.sisa_malam},)" class="btn btn-warning btn-sm ml-2">Edit</a>
+                            <button class="btn btn-warning btn-sm" onclick="openEditModal(${response.detail.id}, '${response.detail.nama_barang}', ${response.detail.qty}, ${response.detail.harga}, ${response.detail.sisa_siang}, ${response.detail.sisa_sore}, ${response.detail.sisa_malam})">Edit</button>
                             <a href="/your-delete-route/${response.detail.id}" class="btn btn-danger btn-sm">Hapus</a>
-                            <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#modalEditBarangForm${response.detail.id}" onclick="editItem(${JSON.stringify(response.detail)})">Edit</button>
                         </td>
                     </tr>
-                `);
+                `;
 
+                // Check if row already exists, if it does, replace it
+                var existingRow = $('#row-' + response.detail.id);
+                if (existingRow.length > 0) {
+                    existingRow.replaceWith(newRow); // Replace existing row
+                } else {
+                    $('#datatable-basic tbody').append(newRow); // Append new row
+                }
+
+                // Reset form fields and hide the modal
                 resetModalForm();
-
                 var modalElement = document.getElementById('modalTambahBarangForm{{$titipan->uuid}}');
                 var modalInstance = bootstrap.Modal.getInstance(modalElement);
                 modalInstance.hide();
@@ -241,7 +248,7 @@ function addItem() {
 
 
 function resetModalForm() {
-    $('#barang').val('');         
+    $('#barang').val('').trigger('change');  // Reset select2 dropdown
     $('#harga').val('');          
     $('#qty').val('');            
     $('#sisa_siang').val(0);     
@@ -263,23 +270,19 @@ function openEditModal(id, nama_barang, qty, harga, sisa_siang, sisa_sore, sisa_
     modalInstance.show();
 }
 
-
-
 function updateItem() {
     var id = $('#editItemId').val();
     var barang = $('#editBarang').val();
     var harga = $('#editHarga').val();
     var qty = $('#editQty').val();
-    var sisa_siang = parseInt($('#edit_SisaSiang').val()) || 0;
-    var sisa_sore = parseInt($('#edit_SisaSore').val()) || 0;
-    var sisa_malam = parseInt($('#edit_SisaMalam').val()) || 0;
-
+    var sisa_siang = parseInt($('#editSisaSiang').val()) || 0;
+    var sisa_sore = parseInt($('#editSisaSore').val()) || 0;
+    var sisa_malam = parseInt($('#editSisaMalam').val()) || 0;
 
     if (barang == '' || harga == '' || qty == '' ) {
         alert('Data harus diisi semua!');
         return false;
     }
-
 
     var sisa_akhir = qty - sisa_siang - sisa_sore - sisa_malam;
     var subtotal_sisa = sisa_akhir * harga;
@@ -304,7 +307,7 @@ function updateItem() {
         success: function(response) {
             if (response.success) {
                 // Update the corresponding row in the DataTable
-                location.reload();
+                location.reload(); // Reload to reflect changes
             } else {
                 alert('Gagal memperbarui barang! ' + response.message);
             }

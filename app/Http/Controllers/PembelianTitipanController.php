@@ -248,9 +248,12 @@ public function storeDetail(Request $request, $uuid)
                 // Find the item by ID
                 $detail = DetailPembelianTitipan::findOrFail($request->id);
 
-                $pembelian->total -= $detail->subtotal; // Subtract the old subtotal
-                $pembelian->total += $request->subtotal; // Add the new subtotal
-
+                if ($detail->harga != $request->harga) {
+                    // If harga has changed, adjust the total
+                    $pembelian->total -= $detail->subtotal; // Subtract the old subtotal
+                    $pembelian->total += $request->subtotal; // Add the new subtotal
+                    $pembelian->save();
+                }
 
                 // Update the detail with new data
                 $detail->nama_barang = $request->nama_barang;
