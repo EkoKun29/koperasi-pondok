@@ -54,6 +54,8 @@ Route::group(['middleware' => 'auth'], function() {
 //------------------------------------------------------Penjualan Piutang----------------------------------------------------------------------
 Route::resource('penjualan-piutang', PenjualanPiutangController::class);
 Route::post('penjualan-piutang/create', [PenjualanPiutangController::class, 'store'])->name('penjualan-piutang.store');
+Route::get('/penjualan-piutang/{uuid}/edit', [PenjualanPiutangController::class, 'edit'])->name('penjualan-piutang.edit');
+Route::put('/penjualan-piutang/{uuid}', [PenjualanPiutangController::class, 'update'])->name('penjualan-piutang.update');
 Route::get('penjualan-piutang/detail/{uuid}', [PenjualanPiutangController::class, 'show'])->name('penjualan-piutang.detail');
 Route::get('penjualan-piutang/delete/{uuid}', [PenjualanPiutangController::class, 'DeletePenjualan'])->name('delete-penjualan-piutang');Route::get('penjualan-piutang/detail/delete/{uuid}', [PenjualanPiutangController::class, 'DeleteDetailPenjualan'])->name('delete-penjualan-piutang-detail');
 Route::get('penjualan-piutang/detail/delete/{id}', [PenjualanPiutangController::class, 'DeleteDetailPenjualan'])->name('delete-penjualan-piutang-detail');
@@ -67,6 +69,8 @@ Route::put('/penjualan-piutang/{uuid}/detail/update', [PenjualanPiutangControlle
 //-------------------------------------------------------Penjualan Non Produksi---------------------------------------------------------------
 Route::resource('penjualan-nonproduksi', PenjualanNonProduksiController::class);
 Route::post('penjualan-nonproduksi/create', [PenjualanNonProduksiController::class, 'store'])->name('penjualan-nonproduksi.store');
+Route::get('/penjualan-nonproduksi/{uuid}/edit', [PenjualanNonProduksiController::class, 'edit'])->name('penjualan-nonproduksi.edit');
+Route::put('/penjualan-nonproduksi/{uuid}', [PenjualanNonProduksiController::class, 'update'])->name('penjualan-nonproduksi.update');
 Route::get('penjualan-nonproduksi/detail/{uuid}', [PenjualanNonProduksiController::class, 'show'])->name('penjualan-nonproduksi.detail');
 Route::get('penjualan-nonproduksi/delete/{uuid}', [PenjualanNonProduksiController::class, 'DeletePenjualan'])->name('delete-penjualan-nonproduksi');
 Route::get('penjualan-nonproduksi/detail/delete/{id}', [PenjualanNonProduksiController::class, 'DeleteDetailPenjualan'])->name('delete-penjualan-nonproduksi-detail');
@@ -77,6 +81,8 @@ Route::put('/penjualan-nonproduksi/{uuid}/detail/update', [PenjualanNonProduksiC
 //-------------------------------------------------------Penjualan Produksi Titipan----------------------------------------------------------
 Route::resource('penjualan-produksititipan', PenjualanProduksiTitipanController::class);
 Route::post('penjualan-produksititipan/create', [PenjualanProduksiTitipanController::class, 'store'])->name('penjualan-titipan.store');
+Route::get('/penjualan-produksititipan/{uuid}/edit', [PenjualanProduksiTitipanController::class, 'edit'])->name('penjualan-produksititipan.edit');
+Route::put('/penjualan-produksititipan/{uuid}', [PenjualanProduksiTitipanController::class, 'update'])->name('penjualan-produksititipan.update');
 Route::get('penjualan-produksititipan/detail/{uuid}', [PenjualanProduksiTitipanController::class, 'show'])->name('penjualan-titipan.detail');
 Route::get('penjualan-produksititipan/delete/{uuid}', [PenjualanProduksiTitipanController::class, 'DeletePenjualan'])->name('delete-penjualan-titipan');
 Route::get('penjualan-produksititipan/detail/delete/{id}', [PenjualanProduksiTitipanController::class, 'DeleteDetailPenjualan'])->name('delete-penjualan-titipan-detail');
@@ -98,6 +104,8 @@ Route::post('barang-terjual-detail/{uuid}', [BarangTerjualController::class, 'st
 //--------------------------------------------------------Pembelian Titipan---------------------------------------------------------------
 Route::resource('pembelian-titipan', PembelianTitipanController::class);
 Route::post('pembelian-titipan/create', [PembelianTitipanController::class, 'store'])->name('pembelian-titipan.store');
+Route::get('/pembelian-titipan/{uuid}/edit', [PembelianTitipanController::class, 'edit'])->name('pembelian-titipan.edit');
+Route::put('/pembelian-titipan/{uuid}', [PembelianTitipanController::class, 'update'])->name('pembelian-titipan.update');
 Route::get('pembelian-titipan/detail/{uuid}', [PembelianTitipanController::class, 'show'])->name('pembelian-titipan.detail');
 Route::get('pembelian-titipan/delete/{uuid}', [PembelianTitipanController::class, 'DeletePembelian'])->name('delete-pembelian-titipan');
 Route::get('pembelian-titipan/detail/delete/{id}', [PembelianTitipanController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-titipan-detail');
@@ -108,7 +116,9 @@ Route::post('/pembelian-titipan/{uuid}/update-detail', [PembelianTitipanControll
 //--------------------------------------------------------Pembelian Cash-------------------------------------------------------- 
 Route::resource('pembelian-cash', PembelianCashController::class); 
 Route::post('pembelian-cash/create', [PembelianCashController::class, 'store'])->name('pembelian-cash.store'); 
-Route::get('pembelian-cash/detail/{uuid}', [PembelianCashController::class, 'show'])->name('pembelian-cash.detail'); 
+Route::get('pembelian-cash/detail/{uuid}', [PembelianCashController::class, 'show'])->name('pembelian-cash.detail');
+Route::get('/pembelian-cash/{uuid}/edit', [PembelianCashController::class, 'edit'])->name('pembelian-cash.edit');
+Route::put('/pembelian-cash/{uuid}', [PembeliancashController::class, 'update'])->name('pembelian-cash.update');
 Route::get('pembelian-cash/delete/{uuid}', [PembelianCashController::class, 'DeletePembelian'])->name('delete-pembelian-cash'); 
 Route::get('pembelian-cash/detail/delete/{id}', [PembelianCashController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-cash-detail'); 
 Route::get('pembelian-cash/print/{uuid}', [PembelianCashController::class, 'print'])->name('pembelian-cash.print');
@@ -119,6 +129,8 @@ Route::post('/pembelian-cash/{uuid}/update-detail', [PembelianCashController::cl
 Route::resource('pembelian-hutangnonproduksi', PembelianHutangNonProduksiController::class);
 Route::post('pembelian-hutangnonproduksi/create', [PembelianHutangNonProduksiController::class, 'store'])->name('pembelian-hutangnonproduksi.store');
 Route::get('pembelian-hutangnonproduksi/detail/{uuid}', [PembelianHutangNonProduksiController::class, 'show'])->name('pembelian-hutangnonproduksi.detail');
+Route::get('/pembelian-hutangnonproduksi/{uuid}/edit', [PembelianHutangNonProduksiController::class, 'edit'])->name('pembelian-hutangnonproduksi.edit');
+Route::put('/pembelian-hutangnonproduksi/{uuid}', [PembelianHutangNonProduksiController::class, 'update'])->name('pembelian-hutangnonproduksi.update');
 Route::get('pembelian-hutangnonproduksi/delete/{uuid}', [PembelianHutangNonProduksiController::class, 'DeletePembelian'])->name('delete-pembelian-hutangnonproduksi');
 Route::get('pembelian-hutangnonproduksi/detail/delete/{id}', [PembelianHutangNonProduksiController::class, 'DeleteDetailPembelian'])->name('delete-pembelian-hutangnonproduksi-detail');
 Route::get('pembelian-hutangnonproduksi/print/{uuid}', [PembelianHutangNonProduksiController::class, 'print'])->name('pembelian-hutangnonproduksi.print');
@@ -129,6 +141,8 @@ Route::post('/pembelian-hutangnonproduksi/{uuid}/update-detail', [PembelianHutan
 Route::resource('setoran', SetoranController::class);
 Route::get('setoran/delete/{uuid}', [SetoranController::class, 'DeleteSetoran'])->name('delete-setoran');
 Route::get('setoran/print/{uuid}', [SetoranController::class, 'print'])->name('setoran.print');
+Route::get('/setoran/{uuid}/edit', [SetoranController::class, 'edit'])->name('setoran.edit');
+Route::put('/setoran/{uuid}', [SetoranController::class, 'update'])->name('setoran.update');
 
 //-----------------------------------------Pelunasan--------------------------------------------------------------------------------------------------------------------
 Route::resource('pelunasan', PelunasanController::class);

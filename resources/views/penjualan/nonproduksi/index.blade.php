@@ -51,6 +51,7 @@
                         <div class="d-flex">
                               <a href="{{ route('penjualan-nonproduksi.detail', $np['uuid']) }}"
                                 class="btn btn-info btn-sm">Detail</a>
+                                <a href="javascript:void(0);" data-id="{{ $np['uuid'] }}" class="btn btn-primary btn-sm editButton">Edit</a>
                              <a href="{{ route('delete-penjualan-nonproduksi', $np['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $np->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
                               <a href="{{ route('penjualan-nonproduksi.print', $np['uuid']) }}"
@@ -64,6 +65,63 @@
     </div>
 </div>
 @endsection
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Penjualan Non Produksi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="POST" action="">
+                    @csrf
+                    @method('PUT')
+                    
+                    <!-- Nama Personil Dropdown -->
+                    <div class="mb-4">
+                        <label for="nama_personil" class="block text-sm font-medium text-gray-700">
+                            <b>Nama Personil</b>
+                        </label>
+                        <select id="nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <option disabled selected>Pilih Personil</option>
+                            @foreach($data as $barang)
+                                <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <!-- Shift Dropdown -->
+                    <div class="mb-4">
+                        <label for="shift" class="block text-sm font-medium text-gray-700">
+                            <b>Shift</b>
+                        </label>
+                        <select name="shift" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="shift" required>
+                            <option disabled selected>Pilih Shift</option>
+                            <option value="Pagi">Pagi</option>
+                            <option value="Sore">Sore</option>
+                            <option value="Malam">Malam</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Total -->
+                    <div class="mb-4">
+                        <label for="editTotal" class="block text-sm font-medium text-gray-700">
+                            <b>Total</b>
+                        </label>
+                        <input type="number" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="editTotal" name="total" step="0.01" required>
+                    </div>
+                    
+                    <br>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @push('js')
 <script>
@@ -79,6 +137,33 @@
             "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
         }
     });
+
+    $('.editButton').on('click', function() {
+    var uuid = $(this).data('id');
+
+    // Send AJAX request to get data for the selected item
+    $.ajax({
+        url: '/penjualan-nonproduksi/' + uuid + '/edit',
+        type: 'GET',
+        success: function(response) {
+            // Populate modal fields with the fetched data
+            $('#nama_personil').val(response.nama_personil);
+            $('#shift').val(response.shift);
+            $('#editTotal').val(response.total);
+
+            // Set form action to update the data
+            $('#editForm').attr('action', '/penjualan-nonproduksi/' + uuid);
+
+            // Show modal
+            $('#editModal').modal('show');
+
+            $("#nama_personil").select2({
+                dropdownParent: $('#editModal')
+            });
+        }
+    });
+});
+
 });
 
 </script>

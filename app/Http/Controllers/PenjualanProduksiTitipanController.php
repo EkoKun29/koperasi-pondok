@@ -40,7 +40,9 @@ class PenjualanProduksiTitipanController extends Controller
         }else{
             abort(403, 'Unauthorized action.');
         }
-        return view('penjualan.produksititipan.index',compact('titipan'))->with('i', (request()->input('page', 1) - 1) * 10);
+
+        $data = NamaBarang::all();
+        return view('penjualan.produksititipan.index',compact('titipan','data'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     private function generateNota()
@@ -171,34 +173,40 @@ public function storeDetail(Request $request, $uuid)
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(PenjualanProduksiTitipan $penjualanTitipan)
-    {
-        $detail = DetailPenjualanProduksiTitipan::where('uuid_titipan', $penjualanTitipan->uuid)->get();
-        return view('penjualan.produksititipan.edit', compact('penjualanTitipan', 'detail'));
-    }
+    public function edit($uuid)
+{
+    // Retrieve the entry using the UUID
+    $titipan = PenjualanProduksiTitipan::where('uuid', $uuid)->firstOrFail(); // Replace with your actual model name and logic if needed
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PenjualanProduksiTitipan $penjualanTitipan)
-    {
-        $detailPenjualanTitipan = DetailPenjualanProduksiTitipan::where('uuid_titipan', $penjualanTitipan->uuid)->get();
-        foreach($detailPenjualanTitipan as $dpp){
-            $dpp->nama_barang = $request->barang;
-            $dpp->qty = $request->qty;
-            $dpp->harga = $request->harga;
-            // $dpp->keterangan = $request->keterangan;
-            $dpp->subtotal = $request->qty * $request->harga;
-            $dpp->save();
-        }
+    return response()->json([
+        'nama_personil' => $titipan->nama_personil,
+        'shift' => $titipan->shift,
+        'total' => $titipan->total, // If you want to send the personil list back for dropdown (if used elsewhere)
+    ]);
+}
+public function update(Request $request, $uuid)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'nama_personil' => 'required|string|max:255',
+        'shift' => 'required|string|max:10',
+        'total' => 'required|numeric',
+    ]);
 
-        //update total penjualan piutang
-        $detailPenjualanTitipan = DetailPenjualanProduksiTitipan::where('uuid_titipan',$penjualanTitipan->uuid)->get();
-        $penjualanTitipan->total = $detailPenjualanTitipan->sum('subtotal');
-        $penjualanTitipan->save();
+    // Find the entry to update
+    $titipan = PenjualanProduksiTitipan::where('uuid', $uuid)->firstOrFail();
 
-        return redirect()->back()->with('success', 'Data berhasil diubah');
-    }
+    // Update the entry with validated data
+    $titipan->update([
+        'nama_personil' => $request->nama_personil,
+        'shift' => $request->shift,
+        'total' => $request->total,
+    ]);
+
+    // Redirect back with a success message
+    return redirect()->route('penjualan-produksititipan.index')->with('success', 'Data updated successfully!');
+}
+
 
  
     public function updateDetail(Request $request, $uuid)

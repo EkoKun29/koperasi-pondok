@@ -52,6 +52,7 @@
                         <div class="d-flex">
                              <a href="{{ route('delete-setoran', $s['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
+                                <a href="javascript:void(0);" data-id="{{ $s['uuid'] }}" class="btn btn-primary btn-sm editButton">Edit</a>
                               <a href="{{ route('setoran.print', $s['uuid']) }}"
                                 class="btn btn-secondary btn-sm">Print</a>
                         </div>
@@ -78,7 +79,7 @@
             @csrf
             <div class="mb-4">
               <label class="block text-sm font-medium text-gray-700"><b>Nama Penyetor</b></label>
-                <select id="penyetor" name="penyetor" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                <select id="penyetor" name="penyetor" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                   <option disabled selected>Pilih Personil</option>
                   @foreach($data as $barang)
                     <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
@@ -105,6 +106,64 @@
   </div>
   @endsection
 
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Setoran</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="POST" action="">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="mb-4">
+                        <label for="editTanggal" class="block text-sm font-medium text-gray-700">
+                            <b>Tanggal</b>
+                        </label>
+                        <input type="date" id="editTanggal" name="tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                    </div>
+                    
+                    <!-- Nama Personil Dropdown -->
+                    <div class="mb-4">
+                        <label for="editPenyetor" class="block text-sm font-medium text-gray-700">
+                            <b>Nama Personil</b>
+                        </label>
+                        <select id="editPenyetor" name="penyetor" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <option disabled selected>Pilih Personil</option>
+                            @foreach($data as $barang)
+                                <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="editPenerima" class="block text-sm font-medium text-gray-700">
+                            <b>Nama Penerima</b>
+                        </label>
+                        <input type="text" id="editPenerima" name="penerima" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" placeholder="Masukkan Nama Penerima" required>
+                    </div>
+                    
+                    <!-- Total -->
+                    <div class="mb-4">
+                        <label for="editNominal" class="block text-sm font-medium text-gray-700">
+                            <b>Nominal</b>
+                        </label>
+                        <input type="number" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="editNominal" name="nominal" step="0.01" required>
+                    </div>
+                    
+                    <br>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @push('js')
 <script>
 
@@ -122,6 +181,10 @@ $(document).ready(function() {
             }
         });
     }
+
+    $("#penyetor").select2({
+    dropdownParent: $("#addSetoranModal")
+    });
 
     // Initialize the DataTable when the page is loaded
     initializeDataTable();
@@ -146,6 +209,33 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('.editButton').on('click', function() {
+    var uuid = $(this).data('id');
+
+    // Send AJAX request to get data for the selected item
+    $.ajax({
+        url: '/setoran/' + uuid + '/edit',
+        type: 'GET',
+        success: function(response) {
+            // Populate modal fields with the fetched data
+            $('#editTanggal').val(response.tanggal); // Update input field for Nama Pembeli
+            $('#editPenyetor').val(response.penyetor);
+            $('#editPenerima').val(response.penerima);
+            $('#editNominal').val(response.nominal);
+
+            // Set form action to update the data
+            $('#editForm').attr('action', '/setoran/' + uuid);
+
+            // Show modal
+            $('#editModal').modal('show');
+
+            $("#editPenyetor").select2({
+                dropdownParent: $('#editModal')
+            });
+        }
+    });
+});
 });
 
 </script>

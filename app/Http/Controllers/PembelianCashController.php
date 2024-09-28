@@ -39,6 +39,8 @@ class PembelianCashController extends Controller
         }else{
             abort(403, 'Unauthorized action.');
         }
+
+        $data=NamaBarang::all();
         return view('pembelian.cash.index',compact('beli_cash'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
@@ -161,34 +163,39 @@ public function storeDetail(Request $request, $uuid)
         return view('pembelian.cash.detail', compact('beli_cash', 'detail', 'data'));
     }
 
-    public function edit(PembelianCash $pembelianCash)
-    {
-        $detail = DetailPembelianCash::where('uuid_cash', $pembelianCash->uuid)->get();
-        return view('pembelian.cash.edit', compact('detail'));
-    }
+    public function edit($uuid)
+{
+    // Retrieve the entry using the UUID
+    $cash = PembelianCash::where('uuid', $uuid)->firstOrFail();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PembelianCash $pembelianCash)
-    {
-        $detailPembelianCash = DetailPembelianCash::where('uuid_cash', $pembelianCash->uuid)->get();
-        foreach($detailPembelianCash as $dpp){
-            $dpp->nama_barang = $request->barang;
-            $dpp->qty = $request->qty;
-            $dpp->harga = $request->harga;
-            $dpp->cek_barang = $request->cek_barang;
-            $dpp->subtotal = $request->qty * $request->harga;
-            $dpp->save();
-        }
+    // Ensure tanggal is a Carbon instance
+    $cash->tanggal = \Carbon\Carbon::parse($cash->tanggal); 
 
-        //update total penjualan piutang
-        $detailPembelianCash = DetailPembelianCash::where('uuid_cash',$pembelianCash->uuid)->get();
-        $pembelianCash->total = $detailPembelianCash->sum('subtotal');
-        $pembelianCash->save();
+    return response()->json([
+        'tanggal' => $cash->tanggal->format('Y-m-d'), // Format the date correctly
+        'total' => $cash->total,
+    ]);
+}
 
-        return redirect()->back()->with('success', 'Data berhasil diubah');
-    }
+public function update(Request $request, $uuid)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'tanggal' => 'required|date',
+        'total' => 'required|numeric',
+    ]);
+
+    // Find the entry to update
+    $cash = PembelianCash::where('uuid', $uuid)->firstOrFail();
+
+    // Update the entry with validated data
+    $cash->update([
+        'tanggal' => $request->tanggal,
+        'total' => $request->total,
+    ]);
+
+    return redirect()->route('pembelian-cash.index')->with('success', 'Data updated successfully!');
+}
 
     public function editDetail($id)
     {

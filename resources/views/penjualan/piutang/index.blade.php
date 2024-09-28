@@ -30,6 +30,7 @@
                 <tr class="text-left bg-gray-200">
                     <th class="border px-4 py-2">Nota</th>
                     <th class="border px-4 py-2">Nama Koperasi</th>
+                    <th class="border px-4 py-2">Nama Pembeli</th>
                     <th class="border px-4 py-2">Tanggal</th>
                     <th class="border px-4 py-2">Nama Personil</th>
                     <th class="border px-4 py-2">Shift</th>
@@ -43,6 +44,7 @@
                 <tr>
                     <td class="border px-4 py-2">{{ $piu->no_nota }}</td>
                     <td class="border px-4 py-2">{{ $piu->nama_koperasi }}</td>
+                    <td class="border px-4 py-2">{{ $piu->nama_pembeli }}</td>
                     <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($piu->created_at)->format('d-m-Y') }}</td>
                     <td class="border px-4 py-2">{{ $piu->nama_personil }}</td>
                     <td class="border px-4 py-2">{{ $piu->shift }}</td>
@@ -51,7 +53,8 @@
                         <div class="d-flex">
                               <a href="{{ route('penjualan-piutang.detail', $piu['uuid']) }}"
                                 class="btn btn-info btn-sm">Detail</a>
-                             <a href="{{ route('delete-penjualan-piutang', $piu['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $piu->no_nota }} Ini ??')"
+                              <a href="javascript:void(0);" data-id="{{ $piu['uuid'] }}" class="btn btn-primary btn-sm editButton">Edit</a>
+                              <a href="{{ route('delete-penjualan-piutang', $piu['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $piu->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
                               <a href="{{ route('penjualan-piutang.print', $piu['uuid']) }}"
                                 class="btn btn-secondary btn-sm">Print</a>
@@ -65,21 +68,116 @@
 </div>
 @endsection
 
+<!-- Modal for Edit -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Penjualan Piutang</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="POST" action="">
+                    @csrf
+                    @method('PUT')
+                    
+                    <!-- Nama Pembeli Input -->
+                    <div class="mb-4">
+                        <label for="nama_pembeli" class="block text-sm font-medium text-gray-700">
+                            <b>Nama Pembeli</b>
+                        </label>
+                        <input type="text" id="nama_pembeli" name="nama_pembeli" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" placeholder="Masukkan Nama Pembeli" required>
+                    </div>
+                    
+                    <!-- Nama Personil Dropdown -->
+                    <div class="mb-4">
+                        <label for="nama_personil" class="block text-sm font-medium text-gray-700">
+                            <b>Nama Personil</b>
+                        </label>
+                        <select id="nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <option disabled selected>Pilih Personil</option>
+                            @foreach($data as $barang)
+                                <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    
+                    <!-- Shift Dropdown -->
+                    <div class="mb-4">
+                        <label for="shift" class="block text-sm font-medium text-gray-700">
+                            <b>Shift</b>
+                        </label>
+                        <select name="shift" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="shift" required>
+                            <option disabled selected>Pilih Shift</option>
+                            <option value="Pagi">Pagi</option>
+                            <option value="Sore">Sore</option>
+                            <option value="Malam">Malam</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Total -->
+                    <div class="mb-4">
+                        <label for="editTotal" class="block text-sm font-medium text-gray-700">
+                            <b>Total</b>
+                        </label>
+                        <input type="number" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="editTotal" name="total" step="0.01" required>
+                    </div>
+                    
+                    <br>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 @push('js')
 <script>
  $(document).ready(function() {
-    // Cek dan hancurkan DataTable jika sudah ada
+    // Initialize DataTable if not already
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }
     
-    // Inisialisasi DataTable
+    // DataTable Initialization
     $('#datatable-basic').DataTable({
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
         }
     });
+
+    // Handle Edit Button Click
+$('.editButton').on('click', function() {
+    var uuid = $(this).data('id');
+
+    // Send AJAX request to get data for the selected item
+    $.ajax({
+        url: '/penjualan-piutang/' + uuid + '/edit',
+        type: 'GET',
+        success: function(response) {
+            // Populate modal fields with the fetched data
+            $('#nama_pembeli').val(response.nama_pembeli); // Update input field for Nama Pembeli
+            $('#nama_personil').val(response.nama_personil);
+            $('#shift').val(response.shift);
+            $('#editTotal').val(response.total);
+
+            // Set form action to update the data
+            $('#editForm').attr('action', '/penjualan-piutang/' + uuid);
+
+            // Show modal
+            $('#editModal').modal('show');
+
+            $("#nama_personil").select2({
+                dropdownParent: $('#editModal')
+            });
+        }
+    });
 });
 
+});
 </script>
 @endpush

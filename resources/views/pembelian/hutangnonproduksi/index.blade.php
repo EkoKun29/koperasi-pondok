@@ -50,6 +50,7 @@
                         <div class="d-flex">
                               <a href="{{ route('pembelian-hutangnonproduksi.detail', $hnp['uuid']) }}"
                                 class="btn btn-info btn-sm">Detail</a>
+                                <a href="javascript:void(0);" data-id="{{ $hnp['uuid'] }}" class="btn btn-primary btn-sm editButton">Edit</a>
                              <a href="{{ route('delete-pembelian-hutangnonproduksi', $hnp['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $hnp->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
                               {{-- <a href="{{ route('pembelian-hutangnonproduksi.print', $hnp['uuid']) }}"
@@ -63,6 +64,58 @@
     </div>
 </div>
 @endsection
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Pembelian Hutang Non Produksi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="POST" action="">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="mb-4">
+                        <label for="editTanggal" class="block text-sm font-medium text-gray-700">
+                            <b>Tanggal</b>
+                        </label>
+                        <input type="date" id="editTanggal" name="tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="editNamaSupplier" class="block text-sm font-medium text-gray-700">
+                            <b>Nama Supplier</b>
+                        </label>
+                        <input type="text" id="editNamaSupplier" name="nama_supplier" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" placeholder="Masukkan Nama Supplier" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="editTanggalJatuhTempo" class="block text-sm font-medium text-gray-700">
+                            <b>Tanggal Jatuh Tempo</b>
+                        </label>
+                        <input type="date" id="editTanggalJatuhTempo" name="tanggal_jatuh_tempo" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                    </div>
+
+                    <!-- Total -->
+                    <div class="mb-4">
+                        <label for="editTotal" class="block text-sm font-medium text-gray-700">
+                            <b>Total</b>
+                        </label>
+                        <input type="number" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="editTotal" name="total" step="0.01" required>
+                    </div>
+                    
+                    <br>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @push('js')
 <script>
@@ -78,6 +131,33 @@
             "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
         }
     });
+
+    $('.editButton').on('click', function() {
+    var uuid = $(this).data('id');
+
+    // Send AJAX request to get data for the selected item
+    $.ajax({
+        url: '/pembelian-hutangnonproduksi/' + uuid + '/edit',
+        type: 'GET',
+        success: function(response) {
+            // Populate modal fields with the fetched data
+            $('#editTanggal').val(response.tanggal);
+            $('#editNamaSupplier').val(response.nama_supplier);
+            $('#editTanggalJatuhTempo').val(response.tanggal_jatuh_tempo);
+            $('#editTotal').val(response.total);
+
+            // Set form action to update the data
+            $('#editForm').attr('action', '/pembelian-hutangnonproduksi/' + uuid);
+
+            // Show modal
+            $('#editModal').modal('show');
+
+            $("#nama_personil").select2({
+                dropdownParent: $('#editModal')
+            });
+        }
+    });
+});
 });
 
 </script>

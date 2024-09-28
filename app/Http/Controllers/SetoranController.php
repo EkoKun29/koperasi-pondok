@@ -90,6 +90,40 @@ class SetoranController extends Controller
     return redirect()->route('setoran.print', ['uuid' => $setoran->uuid])->with('success', 'Setoran berhasil ditambahkan');
 }
 
+public function edit($uuid)
+{
+    // Retrieve the entry using the UUID
+    $setoran = Setoran::where('uuid', $uuid)->firstOrFail(); // Replace with your actual model name and logic if needed
+
+    return response()->json([
+        'tanggal' => $setoran->tanggal,
+        'penyetor' => $setoran->penyetor,
+        'penerima' => $setoran->penerima,
+        'nominal' => $setoran->nominal, // If you want to send the personil list back for dropdown (if used elsewhere)
+    ]);
+}
+public function update(Request $request, $uuid)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'tanggal' => 'required|date',
+        'penyetor' => 'required|string|max:255',
+        'penerima' => 'required|string|max:255',
+        'nominal' => 'required|numeric',
+    ]);
+
+    // Find the entry to update
+    $setoran = Setoran::where('uuid', $uuid)->firstOrFail();
+
+    // Update the entry with validated data
+    $setoran->update([
+        'tanggal' => $request->tanggal, 
+        'penyetor' => $request->penyetor,
+        'penerima' => $request->penerima,
+        'nominal' => $request->nominal,
+    ]);
+    return redirect()->route('setoran.index')->with('success', 'Data updated successfully!');
+}
 // public function storeDetail(Request $request, $uuid)
 // {
 //     // Log untuk melihat data yang masuk

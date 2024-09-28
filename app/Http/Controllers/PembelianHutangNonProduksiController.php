@@ -162,35 +162,46 @@ public function storeDetail(Request $request, $uuid)
         return view('pembelian.hutangnonproduksi.detail', compact('hutangnonproduksi', 'detail', 'data'));
     }
 
-    public function edit(PembelianHutangNonProduksi $pembelianHutangNonProduksi)
-    {
-        $detail = DetailHutangNonProduksi::where('uuid_hutangnonproduksi', $pembelianHutangNonProduksi->uuid)->get();
-        return view('pembelian.hutangnonproduksi.edit', compact('pembelianHutangNonProduksi', 'detail'));
-    }
+    public function edit($uuid)
+{
+    // Retrieve the entry using the UUID
+    $hutangnonproduksi = PembelianHutangNonProduksi::where('uuid', $uuid)->firstOrFail();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PembelianHutangNonProduksi $pembelianHutangNonProduksi)
-    {
-        $DetailHutangNonProduksi = DetailHutangNonProduksi::where('uuid_hutangnonproduksi', $pembelianHutangNonProduksi->uuid)->get();
-        foreach($DetailHutangNonProduksi as $dpp){
-            $dpp->nama_barang = $request->barang;
-            $dpp->qty = $request->qty;
-            $dpp->harga = $request->harga;
-            $dpp->check_barang = $request->check_barang;
-            $dpp->subtotal = $request->qty * $request->harga;
-            $dpp->save();
-        }
+    // Ensure tanggal is a Carbon instance
+    $hutangnonproduksi->tanggal = \Carbon\Carbon::parse($hutangnonproduksi->tanggal); 
+    $hutangnonproduksi->tanggal_jatuh_tempo = \Carbon\Carbon::parse($hutangnonproduksi->tanggal_jatuh_tempo); 
 
-        //update total penjualan piutang
-        $DetailHutangNonProduksi = DetailHutangNonProduksi::where('uuid_hutangnonproduksi',$pembelianHutangNonProduksi->uuid)->get();
-        $pembelianHutangNonProduksi->total = $DetailHutangNonProduksi->sum('subtotal');
-        $pembelianHutangNonProduksi->save();
+    return response()->json([
+        'tanggal' => $hutangnonproduksi->tanggal->format('Y-m-d'), // Format the date correctly
+        'nama_supplier' => $hutangnonproduksi->nama_supplier,
+        'tanggal_jatuh_tempo' => $hutangnonproduksi->tanggal_jatuh_tempo->format('Y-m-d'),
+        'total' => $hutangnonproduksi->total,
+    ]);
+}
 
-        return redirect()->back()->with('success', 'Data berhasil diubah');
-    }
+public function update(Request $request, $uuid)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'tanggal' => 'required|date',
+        'nama_supplier' => 'required|string|max:255',
+        'tanggal_jatuh_tempo' => 'required|date',
+        'total' => 'required|numeric',
+    ]);
 
+    // Find the entry to update
+    $hutangnonproduksi = PembelianHutangNonProduksi::where('uuid', $uuid)->firstOrFail();
+
+    // Update the entry with validated data
+    $hutangnonproduksi->update([
+        'tanggal' => $request->tanggal,
+        'nama_supplier' => $request->nama_supplier,
+        'tanggal_jatuh_tempo' => $request->tanggal_jatuh_tempo,
+        'total' => $request->total,
+    ]);
+
+    return redirect()->route('pembelian-hutangnonproduksi.index')->with('success', 'Data updated successfully!');
+}
     public function editDetail($id)
     {
         $data = NamaBarang::all();

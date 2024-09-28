@@ -39,7 +39,9 @@ class PenjualanPiutangController extends Controller
         }else{
             abort(403, 'Unauthorized action.');
         }
-        return view('penjualan.piutang.index',compact('piutang'))->with('i', (request()->input('page', 1) - 1) * 10);
+
+        $data=NamaBarang::all();
+        return view('penjualan.piutang.index',compact('piutang', 'data'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
 
@@ -148,6 +150,44 @@ public function storeDetail(Request $request, $uuid)
         return response()->json(['success' => false, 'message' => 'Gagal menyimpan data'], 500);
     }
 }
+
+public function edit($uuid)
+{
+    // Retrieve the entry using the UUID
+    $piutang = PenjualanPiutang::where('uuid', $uuid)->firstOrFail(); // Replace with your actual model name and logic if needed
+
+    return response()->json([
+        'nama_pembeli' => $piutang->nama_pembeli,
+        'nama_personil' => $piutang->nama_personil,
+        'shift' => $piutang->shift,
+        'total' => $piutang->total, // If you want to send the personil list back for dropdown (if used elsewhere)
+    ]);
+}
+public function update(Request $request, $uuid)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'nama_pembeli' => 'required|string|max:255',
+        'nama_personil' => 'required|string|max:255',
+        'shift' => 'required|string|max:10',
+        'total' => 'required|numeric',
+    ]);
+
+    // Find the entry to update
+    $piutang = PenjualanPiutang::where('uuid', $uuid)->firstOrFail();
+
+    // Update the entry with validated data
+    $piutang->update([
+        'nama_pembeli' => $request->nama_pembeli,
+        'nama_personil' => $request->nama_personil,
+        'shift' => $request->shift,
+        'total' => $request->total,
+    ]);
+
+    // Redirect back with a success message
+    return redirect()->route('penjualan-piutang.index')->with('success', 'Data updated successfully!');
+}
+
     
     public function show($uuid)
     {

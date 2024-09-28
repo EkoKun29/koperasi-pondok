@@ -38,7 +38,9 @@ class PembelianTitipanController extends Controller
         }else{
             abort(403, 'Unauthorized action.');
         }
-        return view('pembelian.titipan.index',compact('titipan'))->with('i', (request()->input('page', 1) - 1) * 10);
+
+        $data=NamaBarang::all();
+        return view('pembelian.titipan.index',compact('titipan','data'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
 
@@ -111,6 +113,42 @@ class PembelianTitipanController extends Controller
     return response()->json(['success' => true, 'uuid' => $pembelianTitipan->uuid]);
 }
 
+public function edit($uuid)
+{
+    // Retrieve the entry using the UUID
+    $titipan = PembelianTitipan::where('uuid', $uuid)->firstOrFail(); // Replace with your actual model name and logic if needed
+
+    return response()->json([
+        'tanggal' => $titipan->tanggal,
+        'nama_personil' => $titipan->nama_personil,
+        'nama_penitip' => $titipan->nama_penitip,
+        'total' => $titipan->total, // If you want to send the personil list back for dropdown (if used elsewhere)
+    ]);
+}
+public function update(Request $request, $uuid)
+{
+    // Validate the incoming request data
+    $request->validate([
+        'tanggal' => 'required|date',
+        'nama_personil' => 'required|string|max:255',
+        'nama_penitip' => 'required|string|max:255',
+        'total' => 'required|numeric',
+    ]);
+
+    // Find the entry to update
+    $titipan = PembelianTitipan::where('uuid', $uuid)->firstOrFail();
+
+    // Update the entry with validated data
+    $titipan->update([
+        'tanggal' => $request->tanggal, 
+        'nama_personil' => $request->nama_personil,
+        'nama_penitip' => $request->nama_penitip,
+        'total' => $request->total,
+    ]);
+    return redirect()->route('pembelian-titipan.index')->with('success', 'Data updated successfully!');
+}
+
+
 public function storeDetail(Request $request, $uuid)
 {
     // Log untuk melihat data yang masuk
@@ -170,37 +208,6 @@ public function storeDetail(Request $request, $uuid)
         }
 
         return view('pembelian.titipan.detail', compact('titipan', 'detail', 'data'));
-    }
-
-    public function edit(PembelianTitipan $pembelianTitipan)
-    {
-        $detail = DetailPembelianTitipan::where('uuid_pembeliantitipan', $pembelianTitipan->uuid)->get();
-        return view('pembelian.titipan.edit', compact('pembelianTitipan', 'detail'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PembelianTitipan $pembelianTitipan)
-    {
-        $detailPembelianTitipan = DetailPembelianTitipan::where('uuid_pembeliantitipan', $pembelianTitipan->uuid)->get();
-        foreach($detailPembelianTitipan as $dpp){
-            $dpp->nama_barang = $request->barang;
-            $dpp->qty = $request->qty;
-            $dpp->harga = $request->harga;
-            $dpp->sisa_siang = $request->sisa_siang;
-            $dpp->sisa_sore = $request->sisa_sore;
-            $dpp->sisa_malam = $request->sisa_malam;
-            $dpp->subtotal = $request->qty * $request->harga;
-            $dpp->save();
-        }
-
-        //update total penjualan piutang
-        $detailPembelianTitipan = DetailPembelianTitipan::where('uuid_pembeliantitipan',$pembelianTitipan->uuid)->get();
-        $pembelianTitipan->total = $detailPembelianTitipan->sum('subtotal');
-        $pembelianTitipan->save();
-
-        return redirect()->back()->with('success', 'Data berhasil diubah');
     }
 
     public function editDetail($id)
