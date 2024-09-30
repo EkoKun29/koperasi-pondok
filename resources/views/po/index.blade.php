@@ -20,7 +20,7 @@
 </nav>
 
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">Penjualan PO</h1>
+    <h1 class="text-xl font-semibold mb-4">Pengajuan PO</h1>
     <div class="mx-4">
         <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('pengajuan-po.create') }}">Tambah Data</a>
       </div>
