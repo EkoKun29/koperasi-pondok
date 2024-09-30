@@ -17,11 +17,10 @@ use App\Models\PengajuanPo;
 class ExportDataController extends Controller
 {
     public function exportPiutang($startDate, $endDate, $id){
-        $detailPenjualanPiutang = DetailPenjualanPiutang::where('PengajuanPo')->whereHas('PengajuanPo', function ($q) use ($id, $startDate, $endDate) {
+        $detailPenjualanPiutang = DetailPenjualanPiutang::where('penjualanPiutang')->whereHas('penjualanPiutang', function ($q) use ($id, $startDate, $endDate) {
             $q->where('id_user', $id)->whereDate('created_at', '>=', $startDate)
             ->whereDate('created_at', '<=', $endDate);
         })->get();
-
             return response()->json($detailPenjualanPiutang);
     }
 }
