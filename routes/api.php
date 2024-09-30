@@ -20,3 +20,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('penjualan-piutang/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportPiutang']);
+Route::get('penjualan-nonproduksi/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportNonProduksi']);
+Route::get('penjualan-produksititipan/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportProduksiTitipan']);
+Route::get('barang-terjual/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportDataTerjual']);
+Route::get('pembelian-titipan/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportPembelianTitipan']);
+Route::get('pembelian-cash/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportCash']);
+Route::get('pembelian-hutangnonproduksi/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportHutangNonProduksi']);
+Route::get('hutang-nonproduksi/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportHutangNonProduksi']);
+Route::get('pengajuan-po/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportPO']);
+Route::get('setoran/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportSetoran']);
+
+
