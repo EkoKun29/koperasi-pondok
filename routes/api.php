@@ -17,3 +17,5 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('penjualan-piutang/{startDate}/{endDate}/{id}', [App\Http\Controllers\API\ExportDataController::class, 'exportPiutang']);

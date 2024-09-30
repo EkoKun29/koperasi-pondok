@@ -140,7 +140,17 @@ Route::post('pembelian-hutangnonproduksi-detail/{uuid}', [PembelianHutangNonProd
 Route::post('/pembelian-hutangnonproduksi/{uuid}/update-detail', [PembelianHutangNonProduksiController::class, 'updateDetail'])->name('pembelian-hutangnonproduksi-update-detail');
 
 //-----------------------------------------Pengajuan PO-----------------------------------------------------------------------------------------------------------------
-Route::resource('pengajuanpo', PengajuanPoController::class);
+Route::resource('pengajuan-po', PengajuanPoController::class);
+Route::post('pengajuan-po/create', [PengajuanPoController::class, 'store'])->name('pengajuan-po.store');
+Route::get('pengajuan-po/{uuid}/edit', [PengajuanPoController::class, 'edit'])->name('pengajuan-po.edit');
+Route::put('pengajuan-po/{uuid}', [PengajuanPoController::class, 'update'])->name('pengajuan-po.update');
+Route::get('pengajuan-po/detail/{uuid}', [PengajuanPoController::class, 'show'])->name('pengajuan-po.detail');
+Route::get('pengajuan-po/delete/{uuid}', [PengajuanPoController::class, 'DeletePengajuan'])->name('delete-pengajuan-po');Route::get('pengajuan-po/detail/delete/{uuid}', [PengajuanPoController::class, 'DeleteDetailPengajuan'])->name('delete-pengajuan-po-detail');
+Route::get('pengajuan-po/detail/delete/{id}', [PengajuanPoController::class, 'DeleteDetailPengajuan'])->name('delete-pengajuan-po-detail');
+Route::get('pengajuan-po/print/{uuid}', [PengajuanPoController::class, 'print'])->name('pengajuan-po.print');
+Route::post('pengajuan-po-detail/{uuid}', [PengajuanPoController::class, 'storeDetail'])->name('pengajuan-po-detail-create');
+Route::get('pengajuan-po/detail/edit/{id}', [PengajuanPoController::class, 'editDetail'])->name('pengajuan-po-edit-detail-create');
+Route::put('pengajuan-po/{uuid}/detail/update', [PengajuanPoController::class, 'updateDetail'])->name('pengajuan-po-detail-update');
 
 //-----------------------------------------Setoran--------------------------------------------------------------------------------------------------------------------
 Route::resource('setoran', SetoranController::class);
