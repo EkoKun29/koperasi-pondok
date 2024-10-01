@@ -27,10 +27,10 @@ class ExportDataController extends Controller
     return response()->json($detailPenjualanPiutang);
 }
 
-    public function exportProduksiTitipan($startDate, $endDate, $id)
+    public function exportProduksiTitipan($startDate, $endDate, $nama_koperasi)
 {
-    $detailProduksiTitipan = DetailPenjualanProduksiTitipan::with('titipan')->whereHas('titipan', function ($q) use ($id, $startDate, $endDate) {
-        $q->where('id_user', $id)
+    $detailProduksiTitipan = DetailPenjualanProduksiTitipan::with('titipan')->whereHas('titipan', function ($q) use ($nama_koperasi, $startDate, $endDate) {
+        $q->where('nama_koperasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
@@ -38,10 +38,10 @@ class ExportDataController extends Controller
     return response()->json($detailProduksiTitipan);
 }
 
-public function exportNonProduksi($startDate, $endDate, $id)
+public function exportNonProduksi($startDate, $endDate, $nama_koperasi)
 {
-    $detailNonProduksi = DetailNonProduksi::with('penjualanNonProduksi')->whereHas('penjualanNonProduksi', function ($q) use ($id, $startDate, $endDate) {
-        $q->where('id_user', $id)
+    $detailNonProduksi = DetailNonProduksi::with('penjualanNonProduksi')->whereHas('penjualanNonProduksi', function ($q) use ($nama_koperasi, $startDate, $endDate) {
+        $q->where('nama_koperasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
@@ -49,10 +49,10 @@ public function exportNonProduksi($startDate, $endDate, $id)
     return response()->json($detailNonProduksi);
 }
 
-public function exportHutangNonProduksi($startDate, $endDate, $id)
+public function exportHutangNonProduksi($startDate, $endDate, $nama_koperasi)
 {
-    $detailHutangNonProduksi = DetailHutangNonProduksi::with('pembelianHutangNonProduksi')->whereHas('pembelianHutangNonProduksi', function ($q) use ($id, $startDate, $endDate) {
-        $q->where('id_user', $id)
+    $detailHutangNonProduksi = DetailHutangNonProduksi::with('pembelianHutangNonProduksi')->whereHas('pembelianHutangNonProduksi', function ($q) use ($nama_koperasi, $startDate, $endDate) {
+        $q->where('nama_koperasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
@@ -60,10 +60,10 @@ public function exportHutangNonProduksi($startDate, $endDate, $id)
     return response()->json($detailHutangNonProduksi);
 }
 
-public function exportCash($startDate, $endDate, $id)
+public function exportCash($startDate, $endDate, $nama_koperasi)
 {
-    $detailCash = DetailPembelianCash::with('pembelianCash')->whereHas('pembelianCash', function ($q) use ($id, $startDate, $endDate) {
-        $q->where('id_user', $id)
+    $detailCash = DetailPembelianCash::with('pembelianCash')->whereHas('pembelianCash', function ($q) use ($nama_koperasi, $startDate, $endDate) {
+        $q->where('nama_koperasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
@@ -71,10 +71,10 @@ public function exportCash($startDate, $endDate, $id)
     return response()->json($detailCash);
 }
 
-public function exportPembelianTitipan($startDate, $endDate, $id)
+public function exportPembelianTitipan($startDate, $endDate, $nama_koperasi)
 {
-    $detailTitipan = DetailPembelianTitipan::with('pembelianTitipan')->whereHas('pembelianTitipan', function ($q) use ($id, $startDate, $endDate) {
-        $q->where('id_user', $id)
+    $detailTitipan = DetailPembelianTitipan::with('pembelianTitipan')->whereHas('pembelianTitipan', function ($q) use ($nama_koperasi, $startDate, $endDate) {
+        $q->where('nama_koperasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
@@ -82,10 +82,10 @@ public function exportPembelianTitipan($startDate, $endDate, $id)
     return response()->json($detailTitipan);
 }
 
-public function exportDataTerjual($startDate, $endDate, $id)
+public function exportDataTerjual($startDate, $endDate, $nama_koperasi)
 {
-    $detailTerjual = DetailBarangTerjual::with('barangTerjual')->whereHas('barangTerjual', function ($q) use ($id, $startDate, $endDate) {
-        $q->where('id_user', $id)
+    $detailTerjual = DetailBarangTerjual::with('barangTerjual')->whereHas('barangTerjual', function ($q) use ($nama_koperasi, $startDate, $endDate) {
+        $q->where('nama_koperasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
@@ -93,10 +93,10 @@ public function exportDataTerjual($startDate, $endDate, $id)
     return response()->json($detailTerjual);
 }
 
-public function exportPO($startDate, $endDate, $id)
+public function exportPO($startDate, $endDate, $nama_koperasi)
 {
-    $detailPO = DetailPengajuanPo::with('pengajuanPO')->whereHas('pengajuanPO', function ($q) use ($id, $startDate, $endDate) {
-        $q->where('id_user', $id)
+    $detailPO = DetailPengajuanPo::with('pengajuanPO')->whereHas('pengajuanPO', function ($q) use ($nama_koperasi, $startDate, $endDate) {
+        $q->where('nama_koperasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
@@ -105,9 +105,9 @@ public function exportPO($startDate, $endDate, $id)
 }
 
 
-public function exportSetoran($startDate, $endDate, $id)
+public function exportSetoran($startDate, $endDate, $nama_koperasi)
 {
-    $setoran = Setoran::where('id_user', $id)
+    $setoran = Setoran::where('nama_koperasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate)->get();
 
