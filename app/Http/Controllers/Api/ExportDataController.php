@@ -19,7 +19,7 @@ class ExportDataController extends Controller
     public function exportPiutang($startDate, $endDate, $nama_koperasi)
 {
     $detailPenjualanPiutang = DetailPenjualanPiutang::with('penjualanPiutang')->whereHas('penjualanPiutang', function ($q) use ($nama_koperasi, $startDate, $endDate) {
-        $q->where('nama_operasi', $nama_koperasi)
+        $q->where('nama_koperasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
