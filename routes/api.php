@@ -19,7 +19,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('penjualan-piutang/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportPiutang']);
+Route::get('penjualan-piutang/{startDate}/{endDate}/{nama_kampus}', [ExportDataController::class, 'exportPiutang']);
 Route::get('penjualan-nonproduksi/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportNonProduksi']);
 Route::get('penjualan-produksititipan/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportProduksiTitipan']);
 Route::get('barang-terjual/{startDate}/{endDate}/{id}', [ExportDataController::class, 'exportDataTerjual']);
