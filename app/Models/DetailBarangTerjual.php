@@ -12,6 +12,6 @@ class DetailBarangTerjual extends Model
 
     public function barangTerjual()
     {
-        return $this->belongsTo(barangTerjual::class, 'uuid_terjual', 'uuid');
+        return $this->belongsTo(BarangTerjual::class, 'uuid_terjual', 'uuid');
     }
 }
