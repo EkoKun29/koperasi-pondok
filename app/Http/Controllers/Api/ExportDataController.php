@@ -16,10 +16,10 @@ use App\Models\Setoran;
 
 class ExportDataController extends Controller
 {
-    public function exportPiutang($startDate, $endDate, $nama_kampus)
+    public function exportPiutang($startDate, $endDate, $nama_koperasi)
 {
-    $detailPenjualanPiutang = DetailPenjualanPiutang::with('penjualanPiutang')->whereHas('penjualanPiutang', function ($q) use ($nama_kampus, $startDate, $endDate) {
-        $q->where('nama_kampus', $nama_kampus)
+    $detailPenjualanPiutang = DetailPenjualanPiutang::with('penjualanPiutang')->whereHas('penjualanPiutang', function ($q) use ($nama_koperasi, $startDate, $endDate) {
+        $q->where('nama_operasi', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
