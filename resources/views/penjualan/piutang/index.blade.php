@@ -65,6 +65,10 @@
             </tbody>
         </table>
     </div>
+    {{-- <div class="card-footer clearfix">
+    {!! $piutang->links('pagination::bootstrap-4') !!}
+
+    </div> --}}
 </div>
 @endsection
 
