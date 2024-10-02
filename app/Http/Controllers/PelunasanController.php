@@ -16,24 +16,24 @@ class PelunasanController extends Controller
     {
         $data = NamaBarang::all();
         if (Auth::user()->role == 'admin') {
-            $pelunasan = Pelunasan::orderBy('uuid', 'desc')->paginate(10);
+            $pelunasan = Pelunasan::orderBy('uuid', 'desc')->get();
         } elseif (Auth::user()->role == '1'){
             $usersWithRole1 = User::where('role', '1')->pluck('id');
             $pelunasan = Pelunasan::whereIn('id_user', $usersWithRole1)
                                     ->orderBy('uuid', 'desc')
-                                    ->paginate(10);
+                                    ->get();
 
         }elseif(Auth::user()->role == '2'){
             $usersWithRole2 = User::where('role', '2')->pluck('id');
-            $pelunasan = Pelunasan::whereIn('id_user', $usersWithRole2)->orderBy('uuid', 'desc')->paginate(10);
+            $pelunasan = Pelunasan::whereIn('id_user', $usersWithRole2)->orderBy('uuid', 'desc')->get();
 
         }elseif(Auth::user()->role == '3'){
             $usersWithRole3 = User::where('role', '3')->pluck('id');
-            $pelunasan = Pelunasan::whereIn('id_user', $usersWithRole3)->orderBy('uuid', 'desc')->paginate(10);
+            $pelunasan = Pelunasan::whereIn('id_user', $usersWithRole3)->orderBy('uuid', 'desc')->get();
 
         }elseif(Auth::user()->role == '4'){
             $usersWithRole4 = User::where('role', '4')->pluck('id');
-            $pelunasan = Pelunasan::whereIn('id_user', $usersWithRole4)->orderBy('uuid', 'desc')->paginate(10);
+            $pelunasan = Pelunasan::whereIn('id_user', $usersWithRole4)->orderBy('uuid', 'desc')->get();
 
         }else{
             abort(403, 'Unauthorized action.');
