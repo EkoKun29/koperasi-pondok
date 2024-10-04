@@ -21,31 +21,57 @@
 
 <div class="container mx-auto px-4">
     <h1 class="text-xl font-semibold mb-4">Pelunasan</h1>
+
     <div class="mx-4">
         <a href="javascript:;" style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#addPelunasanModal" class="inline-block w-3 px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102">
             Tambah Data
         </a>
-      </div>
+    </div>
+
     <div class="table-responsive">
         <table id="datatable-basic" class="table-auto border-collapse w-full">
             <thead>
                 <tr class="text-left bg-gray-200">
                     <th class="border px-4 py-2">#</th>
                     <th class="border px-4 py-2">No Nota</th>
+                    <th class="border px-4 py-2">Tanggal Pelunasan</th>
                     <th class="border px-4 py-2">Nama Konsumen</th>
                     <th class="border px-4 py-2">Penyetor</th>
                     <th class="border px-4 py-2">Nota Penjualan Piutang</th>
                     <th class="border px-4 py-2">Tanggal Penjualan Piutang</th>
                     <th class="border px-4 py-2">Sisa Piutang Sebelumnya</th>
-                    <th class="border px-4 py-2">Cicilan</th>
                     <th class="border px-4 py-2">Tunai</th>
+                    <th class="border px-4 py-2">Transfer</th>
                     <th class="border px-4 py-2">Bank</th>
                     <th class="border px-4 py-2">Sisa Piutang Akhir</th>
                     <th class="border px-4 py-2">Aksi</th>
                 </tr>
             </thead>
             <tbody>
-                
+                @foreach ($pelunasan as $p)
+                    <tr>
+                        <td class="border px-4 py-2">{{ $loop->iteration }}</td>
+                        <td class="border px-4 py-2">{{ $p->no_nota }}</td>
+                        <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($p->created_at)->format('d-m-Y') }}</td>
+                        <td class="border px-4 py-2">{{ $p->nama_konsumen }}</td>
+                        <td class="border px-4 py-2">{{ $p->penyetor }}</td>
+                        <td class="border px-4 py-2">{{ $p->nota_penjualan_piutang }}</td>
+                        <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($p->tanggal_penjualan_piutang)->format('d-m-Y') }}</td>
+                        <td class="border px-4 py-2">{{ $p->sisa_piutang_sebelumnya }}</td>
+                        <td class="border px-4 py-2">{{ $p->tunai }}</td>
+                        <td class="border px-4 py-2">{{ $p->transfer }}</td>
+                        <td class="border px-4 py-2">{{ $p->bank }}</td>
+                        <td class="border px-4 py-2">{{ $p->sisa_piutang_akhir }}</td>
+                        <td class="border px-4 py-2">
+                        <div class="d-flex">
+                             <a href="{{ route('delete-pelunasan', $p['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini ??')"
+                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
+                                {{-- <a href="javascript:void(0);" data-id="{{ $p['uuid'] }}" class="btn btn-primary btn-sm editButton">Edit</a> --}}
+                              {{-- <a href="{{ route('pelunasan.print', $p['uuid']) }}" class="btn btn-secondary btn-sm">Print</a> --}}
+                        </div>
+                        </td>
+                    </tr>
+                @endforeach
             </tbody>
         </table>
     </div>
@@ -53,7 +79,7 @@
 
 <!-- Modal Structure -->
 <div class="modal fade" id="addPelunasanModal" tabindex="-1" role="dialog" aria-labelledby="addPelunasanModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document"> <!-- Make the modal larger -->
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addPelunasanModalLabel">Tambah Pelunasan</h5>
@@ -68,101 +94,131 @@
                         <!-- Left Column -->
                         <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="nama_konsumen" class="form-label">Nama Konsumen</label>
-                                <input type="text" class="form-control" id="nama_konsumen" name="nama_konsumen" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="penyetor" class="form-label">Penyetor</label>
-                                <select id="penyetor" name="penyetor" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                                <label for="nama_personil" class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
+                                <select id="nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Personil</option>
                                     @foreach($data as $barang)
                                         <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
                                     @endforeach
                                 </select>
                             </div>
+
                             <div class="mb-3">
-                                <label for="nota_penjualan_piutang" class="form-label">Nota Penjualan Piutang</label>
-                                <input type="text" class="form-control" id="nota_penjualan_piutang" name="nota_penjualan_piutang" required>
+                                <label for="nama_konsumen" class="block text-sm font-medium text-gray-700"><b>Nama Konsumen</b></label>
+                                <select id="nama_konsumen" name="nama_konsumen" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled selected>Pilih Konsumen</option>
+                                    @foreach($dataKonsumen as $konsumen)
+                                        <option value="{{ $konsumen['konsumen'] }}">{{ $konsumen['konsumen'] }}</option>
+                                    @endforeach
+                                </select>
                             </div>
+
                             <div class="mb-3">
-                                <label for="tanggal_penjualan_piutang" class="form-label">Tanggal Penjualan Piutang</label>
-                                <input type="date" class="form-control" id="tanggal_penjualan_piutang" name="tanggal_penjualan_piutang" required>
+                                <label for="nota_penjualan_piutang" class="block text-sm font-medium text-gray-700"><b>Nota Penjualan Piutang</b></label>
+                                <select id="nota_penjualan_piutang" name="nota_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled selected>Pilih Nota Penjualan</option>
+                                    @foreach($dataKonsumen as $konsumen)
+                                        <option value="{{ $konsumen['no_nota'] }}">{{ $konsumen['no_nota'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="tanggal_penjualan_piutang" class="block text-sm font-medium text-gray-700"><b>Tanggal Penjualan Piutang</b></label>
+                                <select id="tanggal_penjualan_piutang" name="tanggal_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled selected>Pilih Tanggal Penjualan Piutang</option>
+                                    @foreach($dataKonsumen as $konsumen)
+                                        <option value="{{ $konsumen['tanggal'] }}">{{ $konsumen['tanggal'] }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 
                         <!-- Right Column -->
-                        <div class="col-md-6">      
+                        <div class="col-md-6">
                             <div class="mb-3">
-                                <label for="sisa_piutang_sebelumnya" class="form-label">Sisa Piutang Sebelumnya</label>
-                                <input type="number" class="form-control" id="sisa_piutang_sebelumnya" name="sisa_piutang_sebelumnya" required>
+                                <label for="sisa_piutang_sebelumnya" class="block text-sm font-medium text-gray-700"><b>Sisa Piutang Sebelumnya</b></label>
+                                <input type="number" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="sisa_piutang_sebelumnya" name="sisa_piutang_sebelumnya" required readonly>
                             </div>
+
                             <div class="mb-3">
-                                <label for="cicilan" class="form-label">Cicilan</label>
-                                <input type="number" class="form-control" id="cicilan" name="cicilan">
+                                <label for="tunai" class="block text-sm font-medium text-gray-700"><b>Tunai</b></label>
+                                <input type="number" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="tunai" name="tunai">
                             </div>
+
                             <div class="mb-3">
-                                <label for="tunai" class="form-label">Tunai</label>
-                                <input type="number" class="form-control" id="tunai" name="tunai">
+                                <label for="transfer" class="block text-sm font-medium text-gray-700"><b>Transfer</b></label>
+                                <input type="number" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="transfer" name="transfer">
                             </div>
+
                             <div class="mb-3">
-                                <label for="bank" class="form-label">Bank</label>
-                                <input type="text" class="form-control" id="bank" name="bank" required>
+                                <label for="bank" class="block text-sm font-medium text-gray-700"><b>Bank</b></label>
+                                <select name="bank" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="bank">
+                                    <option disabled selected>Pilih Bank</option>
+                                    <option value="BRI">BRI</option>
+                                    <option value="BNI">BNI</option>
+                                    <option value="MANDIRI">MANDIRI</option>
+                                    <option value="BANK JATENG">BANK JATENG</option>
+                                </select>
                             </div>
                         </div>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                     </div>
+                   <button type="submit" class="btn btn-primary">Simpan</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
-  @endsection
+@endsection
 
 @push('js')
 <script>
-
     $(document).ready(function() {
-        function initializeDataTable() {
-            // Destroy any existing DataTable instance
-            if ($.fn.DataTable.isDataTable('#datatable-basic')) {
-                $('#datatable-basic').DataTable().destroy();
-            }
-            $("#penyetor").select2({
-            dropdownParent: $("#addPelunasanForm")
-            });
-            // Reinitialize DataTable
-            $('#datatable-basic').DataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
-                }
-            });
+        // Inisialisasi DataTable jika diperlukan
+        if ($.fn.DataTable.isDataTable('#datatable-basic')) {
+            $('#datatable-basic').DataTable().destroy();
         }
-    
-        // Initialize the DataTable when the page is loaded
-        initializeDataTable();
-    
-        // After adding new data, reinitialize the DataTable
-        $('#form-add-data').on('submit', function(e) {
-            e.preventDefault();
-    
-            // Assuming you are adding data via AJAX
-            $.ajax({
-                url: $(this).attr('action'),
-                method: 'POST',
-                data: $(this).serialize(),
-                success: function(response) {
-                    // Assuming you add new row dynamically here
-    
-                    // Reinitialize the DataTable to reflect the new data
-                    initializeDataTable();
-                },
-                error: function(xhr) {
-                    console.log('Error:', xhr.responseText);
-                }
-            });
+
+        $('#datatable-basic').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
+            }
+        });
+
+        // Ambil data sisa piutang ketika konsumen, tanggal, dan nota dipilih
+        $('#nama_konsumen, #tanggal_penjualan_piutang, #nota_penjualan_piutang').on('change', function() {
+            let konsumen = $('#nama_konsumen').val();
+            let tanggal = $('#tanggal_penjualan_piutang').val();
+            let no_nota = $('#nota_penjualan_piutang').val();
+
+            // Pastikan semua field sudah terisi
+            if (konsumen && tanggal && no_nota) {
+                $.ajax({
+                    url: '/pelunasan-sisa', // Ganti dengan route yang sesuai
+                    method: 'GET',
+                    data: {
+                        konsumen: konsumen,
+                        tanggal: tanggal,
+                        no_nota: no_nota
+                    },
+                    success: function(data) {
+                        if (data.sisa_piutang) {
+                            $('#sisa_piutang_sebelumnya').val(data.sisa_piutang);
+                        } else {
+                            $('#sisa_piutang_sebelumnya').val(0); // Jika tidak ada, set 0
+                        }
+                    },
+                    error: function() {
+                        alert('Gagal mengambil data sisa piutang.');
+                    }
+                });
+            }
+        });
+
+        // Inisialisasi Select2
+        $("#nama_personil, #nama_konsumen, #tanggal_penjualan_piutang, #nota_penjualan_piutang").select2({
+            dropdownParent: $("#addPelunasanModal")
         });
     });
-    
-    </script>
-    
+</script>
 @endpush

@@ -161,9 +161,21 @@ Route::put('/setoran/{uuid}', [SetoranController::class, 'update'])->name('setor
 
 //-----------------------------------------Pelunasan--------------------------------------------------------------------------------------------------------------------
 Route::resource('pelunasan', PelunasanController::class);
+Route::post('/pelunasan', [PelunasanController::class, 'store'])->name('pelunasan.store');
+Route::get('/pelunasan-sisa', [PelunasanController::class, 'getSisaPiutang']);
+Route::get('pelunasan/{pelunasan}', [PelunasanController::class, 'show']);
+Route::get('/pelunasan/delete/{uuid}', [PelunasanController::class, 'Delete'])->name('delete-pelunasan');
+
+
+
+
 
 //--------------------------------------barang----------------------------------------------------------------------------------------------------------------------------------------------
 Route::resource('barang', App\Http\Controllers\NamaBarangController::class);
 Route::get('/barang-sync', [App\Http\Controllers\NamaBarangController::class, 'sync'])->name('barang.sync');
 
+
+//--------------------------------------barang----------------------------------------------------------------------------------------------------------------------------------------------
+Route::resource('buku-piutang', App\Http\Controllers\BukuPiutangController::class);
+Route::get('/buku-piutang-sync', [App\Http\Controllers\BukuPiutangController::class, 'sync'])->name('buku-piutang.sync');
 });

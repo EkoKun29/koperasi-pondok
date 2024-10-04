@@ -17,11 +17,12 @@ class Pelunasan extends Model
         'nota_penjualan_piutang',
         'tanggal_penjualan_piutang',
         'sisa_piutang_sebelumnya',
-        'cicilan',
+        'transfer',
         'tunai',
         'bank',
         'sisa_piutang_akhir',
         'uuid',
+        'nama_koperasi',
     ];
     
     protected $primaryKey = 'uuid';
