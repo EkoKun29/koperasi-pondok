@@ -29,5 +29,6 @@ Route::get('pembelian-hutangnonproduksi/{startDate}/{endDate}/{nama_kampus}', [E
 Route::get('hutang-nonproduksi/{startDate}/{endDate}/{nama_kampus}', [ExportDataController::class, 'exportHutangNonProduksi']);
 Route::get('pengajuan-po/{startDate}/{endDate}/{nama_kampus}', [ExportDataController::class, 'exportPO']);
 Route::get('setoran/{startDate}/{endDate}/{nama_kampus}', [ExportDataController::class, 'exportSetoran']);
+Route::get('pelunasan/{startDate}/{endDate}/{nama_kampus}', [ExportDataController::class, 'exportPelunasan']);
 
 

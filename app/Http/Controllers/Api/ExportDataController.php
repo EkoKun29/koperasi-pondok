@@ -12,6 +12,7 @@ use App\Models\DetailPembelianTitipan;
 use App\Models\DetailPengajuanPo;
 use App\Models\DetailPenjualanProduksiTitipan;
 use App\Models\DetailPenjualanPiutang;
+use App\Models\Pelunasan;
 use App\Models\Setoran;
 
 class ExportDataController extends Controller
@@ -112,6 +113,15 @@ public function exportSetoran($startDate, $endDate, $nama_koperasi)
           ->whereDate('created_at', '<=', $endDate)->get();
 
     return response()->json($setoran);
+}
+
+public function exportPelunasan($startDate, $endDate, $nama_koperasi)
+{
+    $pelunasan = Pelunasan::where('nama_koperasi', $nama_koperasi)
+          ->whereDate('created_at', '>=', $startDate)
+          ->whereDate('created_at', '<=', $endDate)->get();
+
+    return response()->json($pelunasan);
 }
 
 
