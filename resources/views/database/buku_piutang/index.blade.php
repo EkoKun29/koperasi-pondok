@@ -56,7 +56,7 @@
                                         <tr>
                                             <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                                             <td class="border px-4 py-2">{{ $barang->konsumen }}</td>
-                                            <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($barang->tanggal)->format('d/m/Y') }}</td>
+                                            <td class="border px-4 py-2"> {{ \Carbon\Carbon::createFromFormat('d-m-Y', $barang->tanggal)->format('d/m/Y') }}</td>
                                             <td class="border px-4 py-2">{{ $barang->no_nota }}</td>
                                             <td class="border px-4 py-2">{{ $barang->sisa_piutang }}</td>
                                         </tr>
