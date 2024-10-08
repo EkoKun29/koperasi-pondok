@@ -142,6 +142,50 @@ public function store(Request $request)
     }
 }
 
+public function edit($uuid)
+{
+    $pelunasan = Pelunasan::where('uuid', $uuid)->firstOrFail();
+    return response()->json($pelunasan); // Send pelunasan data as JSON
+}
+
+public function update(Request $request, $uuid)
+{
+    $request->validate([
+        'nama_personil' => 'required',
+        'nama_konsumen' => 'required',
+        'nota_penjualan_piutang' => 'required',
+        'tanggal_penjualan_piutang' => 'required|date_format:d-m-Y',
+        'tunai' => 'nullable|numeric',
+        'transfer' => 'nullable|numeric',
+        'bank' => 'nullable|string'
+    ]);
+
+    $pelunasan = Pelunasan::where('uuid', $uuid)->firstOrFail();
+    $sisa_piutang_akhir = $request->sisa_piutang_sebelumnya - ($request->transfer ?? 0) - ($request->tunai ?? 0);
+
+    // Update pelunasan data
+    $pelunasan->id_user = Auth::user()->id;
+    $pelunasan->no_nota = $pelunasan->no_nota; // Retain the original no_nota, no need to generate again
+    $pelunasan->tanggal_penjualan_piutang = Carbon::createFromFormat('d-m-Y', $request->tanggal_penjualan_piutang)->format('Y-m-d');
+    $pelunasan->nama_koperasi = 'KAMPUS ' . Auth::user()->role;
+    $pelunasan->penyetor = $request->nama_personil;
+    $pelunasan->nama_konsumen = $request->nama_konsumen;
+    $pelunasan->nota_penjualan_piutang = $request->nota_penjualan_piutang;
+    $pelunasan->sisa_piutang_sebelumnya = $request->sisa_piutang_sebelumnya;
+    $pelunasan->transfer = $request->transfer;
+    $pelunasan->tunai = $request->tunai;
+    $pelunasan->bank = $request->bank;
+    $pelunasan->sisa_piutang_akhir = $sisa_piutang_akhir;
+
+    // Simpan data
+    try {
+        $pelunasan->save();
+        return redirect()->route('pelunasan.index')->with('success', 'Pelunasan berhasil diperbarui');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Gagal memperbarui data: ' . $e->getMessage());
+    }
+}
+
 private function generateNota()
     {
         $inisial = Auth::user()->role;

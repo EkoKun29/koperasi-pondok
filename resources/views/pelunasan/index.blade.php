@@ -64,9 +64,9 @@
                         <td class="border px-4 py-2">{{ $p->sisa_piutang_akhir }}</td>
                         <td class="border px-4 py-2">
                         <div class="d-flex">
+                            <a href="javascript:void(0);" data-id="{{ $p['uuid'] }}" class="btn btn-primary btn-sm editButton">Edit</a>
                              <a href="{{ route('delete-pelunasan', $p['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
-                                {{-- <a href="javascript:void(0);" data-id="{{ $p['uuid'] }}" class="btn btn-primary btn-sm editButton">Edit</a> --}}
                               {{-- <a href="{{ route('pelunasan.print', $p['uuid']) }}" class="btn btn-secondary btn-sm">Print</a> --}}
                         </div>
                         </td>
@@ -169,6 +169,101 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Modal Structure -->
+<div class="modal fade" id="editPelunasanModal" tabindex="-1" role="dialog" aria-labelledby="editPelunasanModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPelunasanModalLabel">Edit Pelunasan</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editPelunasanForm" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_nama_personil" class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
+                                <select id="edit_nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled selected>Pilih Personil</option>
+                                    @foreach($data as $barang)
+                                        <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit_nama_konsumen" class="block text-sm font-medium text-gray-700"><b>Nama Konsumen</b></label>
+                                <select id="edit_nama_konsumen" name="nama_konsumen" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled selected>Pilih Konsumen</option>
+                                    @foreach($dataKonsumen as $konsumen)
+                                        <option value="{{ $konsumen['konsumen'] }}">{{ $konsumen['konsumen'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit_nota_penjualan_piutang" class="block text-sm font-medium text-gray-700"><b>Nota Penjualan Piutang</b></label>
+                                <select id="edit_nota_penjualan_piutang" name="nota_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled selected>Pilih Nota Penjualan</option>
+                                    @foreach($dataKonsumen as $konsumen)
+                                        <option value="{{ $konsumen['no_nota'] }}">{{ $konsumen['no_nota'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit_tanggal_penjualan_piutang" class="block text-sm font-medium text-gray-700"><b>Tanggal Penjualan Piutang</b></label>
+                                <select id="edit_tanggal_penjualan_piutang" name="tanggal_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled selected>Pilih Tanggal Penjualan Piutang</option>
+                                    @foreach($dataKonsumen as $konsumen)
+                                        <option value="{{ $konsumen['tanggal'] }}">{{ $konsumen['tanggal'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="edit_sisa_piutang_sebelumnya" class="block text-sm font-medium text-gray-700"><b>Sisa Piutang Sebelumnya</b></label>
+                                <input type="number" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="edit_sisa_piutang_sebelumnya" name="sisa_piutang_sebelumnya" required readonly>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit_tunai" class="block text-sm font-medium text-gray-700"><b>Tunai</b></label>
+                                <input type="number" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="edit_tunai" name="tunai">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit_transfer" class="block text-sm font-medium text-gray-700"><b>Transfer</b></label>
+                                <input type="number" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="edit_transfer" name="transfer">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="edit_bank" class="block text-sm font-medium text-gray-700"><b>Bank</b></label>
+                                <select name="bank" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="edit_bank">
+                                    <option selected value="">Pilih Bank</option>
+                                    <option value="BRI">BRI</option>
+                                    <option value="BNI">BNI</option>
+                                    <option value="MANDIRI">MANDIRI</option>
+                                    <option value="BANK JATENG">BANK JATENG</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                   <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('js')
@@ -185,6 +280,57 @@
             }
         });
 
+        // Trigger Edit Modal with pre-filled data
+        $('.editButton').on('click', function() {
+    var uuid = $(this).data('id');
+    var url = "{{ route('pelunasan.update', ':uuid') }}"; // Prepare the route
+    url = url.replace(':uuid', uuid); // Replace placeholder with actual UUID
+
+    $('#editPelunasanForm').attr('action', url); // Set the action attribute of the form
+
+    // AJAX call to get the pelunasan details by UUID
+    $.ajax({
+        url: '/pelunasan/' + uuid + '/edit', // Your route for fetching pelunasan details
+        method: 'GET',
+        success: function(data) {
+            // Helper function to format date
+            function formatDate(dateString) {
+                var parts = dateString.split('-'); // Split the date string by hyphen
+                return parts[2] + '-' + parts[1] + '-' + parts[0]; // Rearrange to DD-MM-YYYY
+            }
+
+            // Populate modal fields with fetched data
+            $('#edit_nama_personil').val(data.penyetor).trigger('change');
+            $('#edit_nama_konsumen').val(data.nama_konsumen).trigger('change');
+            $('#edit_nota_penjualan_piutang').val(data.nota_penjualan_piutang).trigger('change');
+            
+            // Format tanggal_penjualan_piutang from 'YYYY-MM-DD' to 'DD-MM-YYYY'
+            var formattedDate = formatDate(data.tanggal_penjualan_piutang);
+            $('#edit_tanggal_penjualan_piutang').val(formattedDate).trigger('change');
+
+            $('#edit_sisa_piutang_sebelumnya').val(data.sisa_piutang_sebelumnya);
+            $('#edit_tunai').val(data.tunai);
+            $('#edit_transfer').val(data.transfer);
+            $('#edit_bank').val(data.bank).trigger('change');
+
+            // Update form action to include the pelunasan UUID for update
+            $('#editPelunasanForm').attr('action', '/pelunasan/' + uuid);
+            
+            // Show the modal
+            $('#editPelunasanModal').modal('show');
+        },
+        error: function() {
+            alert('Gagal mengambil data pelunasan.');
+        }
+    });
+});
+
+
+        // Initialize Select2 for modal
+        $('#edit_nama_personil, #edit_nama_konsumen, #edit_nota_penjualan_piutang, #edit_tanggal_penjualan_piutang, #edit_bank').select2({
+            dropdownParent: $('#editPelunasanModal')
+        });
+    });
         // Ambil data sisa piutang ketika konsumen, tanggal, dan nota dipilih
         $('#nama_konsumen, #tanggal_penjualan_piutang, #nota_penjualan_piutang').on('change', function() {
             let konsumen = $('#nama_konsumen').val();
@@ -213,7 +359,6 @@
                     }
                 });
             }
-        });
 
         // Inisialisasi Select2
         $("#nama_personil, #nama_konsumen, #tanggal_penjualan_piutang, #nota_penjualan_piutang").select2({

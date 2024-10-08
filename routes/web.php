@@ -164,6 +164,8 @@ Route::resource('pelunasan', PelunasanController::class);
 Route::post('/pelunasan', [PelunasanController::class, 'store'])->name('pelunasan.store');
 Route::get('/pelunasan-sisa', [PelunasanController::class, 'getSisaPiutang']);
 Route::get('pelunasan/{pelunasan}', [PelunasanController::class, 'show']);
+Route::get('/pelunasan/{uuid}/edit', [PelunasanController::class, 'edit'])->name('pelunasan.edit');
+Route::put('/pelunasan/{uuid}', [PelunasanController::class, 'update'])->name('pelunasan.update');
 Route::get('/pelunasan/delete/{uuid}', [PelunasanController::class, 'Delete'])->name('delete-pelunasan');
 
 
