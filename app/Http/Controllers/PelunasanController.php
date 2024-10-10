@@ -145,6 +145,7 @@ public function store(Request $request)
 public function edit($uuid)
 {
     $pelunasan = Pelunasan::where('uuid', $uuid)->firstOrFail();
+    $pelunasan->tanggal_penjualan_piutang = Carbon::parse($pelunasan->tanggal_penjualan_piutang)->format('d-m-Y');
     return response()->json($pelunasan); // Send pelunasan data as JSON
 }
 
@@ -154,7 +155,7 @@ public function update(Request $request, $uuid)
         'nama_personil' => 'required',
         'nama_konsumen' => 'required',
         'nota_penjualan_piutang' => 'required',
-        'tanggal_penjualan_piutang' => 'required|date_format:d-m-Y',
+        'tanggal_penjualan_piutang' => 'required|date_format:Y-m-d',
         'tunai' => 'nullable|numeric',
         'transfer' => 'nullable|numeric',
         'bank' => 'nullable|string'
@@ -166,7 +167,7 @@ public function update(Request $request, $uuid)
     // Update pelunasan data
     $pelunasan->id_user = Auth::user()->id;
     $pelunasan->no_nota = $pelunasan->no_nota; // Retain the original no_nota, no need to generate again
-    $pelunasan->tanggal_penjualan_piutang = Carbon::createFromFormat('d-m-Y', $request->tanggal_penjualan_piutang)->format('Y-m-d');
+    $pelunasan->tanggal_penjualan_piutang = Carbon::createFromFormat('Y-m-d', $request->tanggal_penjualan_piutang)->format('Y-m-d');
     $pelunasan->nama_koperasi = 'KAMPUS ' . Auth::user()->role;
     $pelunasan->penyetor = $request->nama_personil;
     $pelunasan->nama_konsumen = $request->nama_konsumen;
