@@ -62,9 +62,6 @@ class PelunasanController extends Controller
             abort(403, 'Unauthorized action.');
         }
     
-        // Ambil data pelunasan
-        $pelunasan = Pelunasan::orderBy('uuid', 'desc')->get();
-    
         // Ambil data barang
         $data = NamaBarang::all();
     
