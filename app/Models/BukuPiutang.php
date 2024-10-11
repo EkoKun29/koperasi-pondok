@@ -13,5 +13,10 @@ class BukuPiutang extends Model
         'tanggal',
         'no_nota',
         'sisa_piutang',
+        'role',
     ];
+
+    public function User(){
+        return $this->belongsTo(User::class);
+    }
 }

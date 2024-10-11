@@ -80,4 +80,8 @@ class User extends Authenticatable
     public function PengajuanPo(){
         return $this->hasMany(PengajuanPo::class);
     }
+
+    public function bukuPiutang(){
+        return $this->hasMany(BukuPiutang::class);
+    }
 }
