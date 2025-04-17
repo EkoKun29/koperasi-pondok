@@ -95,7 +95,11 @@
         <p class="centered"><b>** TERIMAKASIH **</b>
     </div>
     <script>
-        window.print();
+        if (window.Android) {
+            window.Android.printPage();
+        } else {
+            window.print();
+        }
     </script>
 </body>
 
