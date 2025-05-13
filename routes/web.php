@@ -52,6 +52,16 @@ Route::get('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout
 //Home
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//PembelianNew
+Route::resource('pembelian-new', App\Http\Controllers\PembelianPerKampusController::class);
+Route::post('pembelian-new/create', [App\Http\Controllers\PembelianPerKampusController::class, 'store'])->name('pembelian-new.store');
+Route::get('/pembelian-new/detail/{uuid}', [App\Http\Controllers\PembelianPerKampusController::class, 'show'])->name('pembelian-new.detail');
+Route::get('/pembelian-new/delete/{uuid}', [App\Http\Controllers\PembelianPerKampusController::class, 'destroy'])->name('delete-pembelian-new');
+Route::post('/pembelian-new/store-detail/{uuid}', [App\Http\Controllers\PembelianPerKampusController::class, 'storeDetail'])->name('pembelian-new.store-detail');
+Route::get('/pembelian-new/{uuid}/edit', [App\Http\Controllers\PembelianPerKampusController::class, 'edit'])->name('pembelian-new.edit');
+Route::put('/pembelian-new/{uuid}', [App\Http\Controllers\PembelianPerKampusController::class, 'update'])->name('pembelian-new.update');
+Route::get('/pembelian-new/detail/delete/{id}', [App\Http\Controllers\PembelianPerKampusController::class, 'deleteDetail'])->name('delete-pembelian-new-detail');
+
 Route::group(['middleware' => 'auth'], function() {
 //------------------------------------------------------Penjualan Piutang----------------------------------------------------------------------
 Route::resource('penjualan-piutang', PenjualanPiutangController::class);
