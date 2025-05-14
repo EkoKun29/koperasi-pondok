@@ -21,7 +21,7 @@ class PembelianPerKampus extends Model
 
     public function detailPembelianPerKampus()
     {
-        return $this->hasMany(DetailPembelianPerKampus::class);
+        return $this->hasMany(DetailPembelianPerKampus::class,'uuid_pembelian', 'uuid');
     }
 
     public static function boot() {

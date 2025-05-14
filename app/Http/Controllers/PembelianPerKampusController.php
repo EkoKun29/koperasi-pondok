@@ -263,15 +263,21 @@ class PembelianPerKampusController extends Controller
 
 
     public function destroy($uuid)
-    {
-        $pembelian = PembelianPerKampus::where('uuid', $uuid)->first();
-        if ($pembelian) {
-            $pembelian->delete();
-            return redirect()->route('pembelian-new.index')->with('success', 'Data Pembelian berhasil dihapus');
-        } else {
-            return redirect()->back()->with('error', 'Pembelian tidak ditemukan');
-        }
+{
+    $pembelian = PembelianPerKampus::where('uuid', $uuid)->first();
+    if ($pembelian) {
+        // Hapus detail terlebih dahulu
+        $pembelian->detailPembelianPerKampus()->delete();
+
+        // Baru hapus pembelian induk
+        $pembelian->delete();
+
+        return redirect()->route('pembelian-new.index')->with('success', 'Data Pembelian berhasil dihapus');
+    } else {
+        return redirect()->back()->with('error', 'Pembelian tidak ditemukan');
     }
+}
+
 
     public function deleteDetail($uuid) 
 {
