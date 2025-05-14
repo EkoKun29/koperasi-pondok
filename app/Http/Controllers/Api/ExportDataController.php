@@ -8,6 +8,7 @@ use App\Models\DetailBarangTerjual;
 use App\Models\DetailHutangNonProduksi;
 use App\Models\DetailNonProduksi;
 use App\Models\DetailPembelianCash;
+use App\Models\DetailPembelianPerKampus;
 use App\Models\DetailPembelianTitipan;
 use App\Models\DetailPengajuanPo;
 use App\Models\DetailPenjualanProduksiTitipan;
@@ -124,5 +125,12 @@ public function exportPelunasan($startDate, $endDate, $nama_koperasi)
     return response()->json($pelunasan);
 }
 
+public function exportPembelianNew($startDate, $endDate)
+{
+    $detailPembelianNew = DetailPembelianPerKampus::with('pembelianPerKampus')->whereHas('pembelianPerKampus', function ($q) use ($startDate, $endDate) {
+        $q->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate);})->get();
+
+    return response()->json($detailPembelianNew );
+}
 
 }

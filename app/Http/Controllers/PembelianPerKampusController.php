@@ -197,6 +197,71 @@ class PembelianPerKampusController extends Controller
 
         return redirect()->route('pembelian-new.index')->with('success', 'Data Pembelian berhasil diubah');
     }
+
+    public function showDetail($uuid)
+    {
+        try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
+
+        $detail = DetailPembelianPerKampus::where('uuid', $uuid)->first();
+        if (!$detail) {
+            return redirect()->back()->with('error', 'Detail pembelian tidak ditemukan');
+        }
+        return view('pembelian_new.edit_detail', compact('detail', 'db'));
+    }
+
+    public function updateDetail(Request $request, $uuid)
+{
+    $request->validate([
+        'nama_barang' => 'required|string',
+        'harga' => 'required|numeric',
+        'qty' => 'required|numeric',
+        'satuan' => 'required|string',
+    ]);
+
+    $detail = DetailPembelianPerKampus::where('uuid', $uuid)->first();
+    if (!$detail) {
+        return redirect()->back()->with('error', 'Detail pembelian tidak ditemukan');
+    }
+
+    // Simpan subtotal lama sebelum di-update
+    $oldSubtotal = $detail->subtotal;
+
+    // Update detail
+    $detail->update([
+        'nama_barang' => $request->nama_barang, // ini juga perlu dicek, sebelumnya pakai $request->nama_barang
+        'harga' => $request->harga,
+        'qty' => $request->qty,
+        'satuan' => $request->satuan,
+        'subtotal' => $request->harga * $request->qty,
+    ]);
+
+    // Update total pembelian
+    $pembelian = PembelianPerKampus::where('uuid', $detail->uuid_pembelian)->first();
+    if ($pembelian) {
+        $newSubtotal = $request->harga * $request->qty;
+        $pembelian->total += ($newSubtotal - $oldSubtotal);
+        $pembelian->save();
+    }
+
+    return redirect()->back()->with('success', 'Detail berhasil diubah');
+}
+
+
     public function destroy($uuid)
     {
         $pembelian = PembelianPerKampus::where('uuid', $uuid)->first();

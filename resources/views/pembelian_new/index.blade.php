@@ -82,7 +82,7 @@
 @push('js')
 <script>
  $(document).ready(function() {
-    // Cek dan hancurkan DataTable jika sudah ada
+    // Cek DataTable jika sudah ada
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }

@@ -33,10 +33,14 @@
                     <td class="border px-4 py-2">{{ number_format($dtl->subtotal,2) }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
+                            <button data-bs-toggle="modal" data-bs-target="#modal-edit-detail{{ $dtl->uuid }}"
+                                class="btn btn-warning btn-sm">Edit</button>
+
                              <a href="{{ route('delete-pembelian-new-detail', $dtl['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')"
                                 class="btn btn-danger btn-sm">Hapus</a>
                         </div>
                     </td>
+                    @include('pembelian_new.edit-detail')
                 </tr>
                 @endforeach
             </tbody>
@@ -103,6 +107,28 @@ $(document).ready(function() {
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
         }
+    });
+
+    $('.editButton').on('click', function() {
+    var uuid = $(this).data('id');
+    $.ajax({
+        url: '/pembelian-new/' + uuid + '/edit/detail',
+        type: 'GET',
+        success: function(response) {
+            $('#barang').val(response.barang);
+            $('#satuan').val(response.satuan); 
+
+            // Set form action to update the data
+            $('#editForm').attr('action', '/pembelian-new/' + uuid + '/detail/update');
+
+            // Show modal
+            // $('#editDetailModal').modal('showDetail');
+
+            $("#barang").select2({
+                dropdownParent: $('#editDetailModal')
+            });
+        }
+    });
     });
 });
 

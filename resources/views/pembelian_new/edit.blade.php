@@ -11,6 +11,10 @@
                     <div class="form-row">
                         <div class="col">
                             <div class="mb-4">
+                                <label class="form-label">Nota</label>
+                                <input type="text" name="nota" class="form-control" placeholder="Nota" value="{{ $trj->nota }}" readonly disabled>
+                            </div>
+                            <div class="mb-4">
                                 <label class="form-label">Tanggal</label>
                                 <input type="date" name="tanggal" class="form-control" placeholder="Tanggal" value="{{ $trj->tanggal }}" required>
                             </div>
