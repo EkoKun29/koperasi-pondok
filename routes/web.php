@@ -20,6 +20,7 @@ use App\Http\Controllers\PenjualanNonProduksiController;
 use App\Http\Controllers\PenjualanBarangTerjualController;
 use App\Http\Controllers\PenjualanProduksiTitipanController;
 use App\Http\Controllers\PembelianHutangNonProduksiController;
+use App\Http\Controllers\StokController;
 
 /*
 |--------------------------------------------------------------------------
@@ -180,6 +181,9 @@ Route::get('pelunasan/{pelunasan}', [PelunasanController::class, 'show']);
 Route::get('/pelunasan/{uuid}/edit', [PelunasanController::class, 'edit'])->name('pelunasan.edit');
 Route::put('/pelunasan/{uuid}', [PelunasanController::class, 'update'])->name('pelunasan.update');
 Route::get('/pelunasan/delete/{uuid}', [PelunasanController::class, 'Delete'])->name('delete-pelunasan');
+
+//--------------------------------------STOK----------------------------------------------------------------------------------------------------------------------------------------------
+
 
 
 
