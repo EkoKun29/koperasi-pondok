@@ -88,4 +88,10 @@ class User extends Authenticatable
     public function pembelianPerKampus(){
         return $this->hasMany(PembelianPerKampus::class);
     }
+
+    public function barangMasuk(){
+        return $this->hasMany(BarangMasuk::class);
+    }
+    
 }
+

@@ -27,16 +27,11 @@
                 <div class="flex">
                     <div class="w-full md:w-1/2">
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Nama Supplier</b></label>
-                            <select id="nama_supplier" name="nama_supplier" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                                <option disabled selected>Pilih Supplier</option>
-                                @foreach($db as $dbm)
-                                    <option value="{{ $dbm->nama_supplier }}">{{ $dbm->nama_supplier }}</option>
-                                @endforeach
-                            </select>
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal</b></label>
+                            <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                         </div>
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Pilih Personil</b></label>
+                            <label class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
                             <select id="nama_personil" name="nama_personil" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                                 <option disabled selected>Pilih Personil</option>
                                 @foreach($data as $dbm)
@@ -44,24 +39,9 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Keterangan Pembayaran</b></label>
-                            <select id="ket_pembayaran" name="ket_pembayaran" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                                <option disabled selected>Pilih Keterangan Pembayaran</option>
-                                <option value="Tunai">Tunai</option>
-                                <option value="Transfer">Transfer</option>
-                            </select>
-                        </div>
-                        </div>
-                    <div class="w-full md:w-1/2 p-6 rounded">
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Total Pembayaran</b></label>
-                            <h1 class="text-2xl font-bold mt-2" id="TotalPembayaran">Rp. 0</h1>
-                        </div>
                     </div>
                 </div>
 
-                <!-- Add Product Button -->
                 <button class="btn inline-block w-3 px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase bg-gradient-to-tl from-purple-700 to-pink-500 hover:scale-102" data-bs-toggle="modal" data-bs-target="#modalTambahBarang">
                     Tambah Barang
                 </button>
@@ -73,10 +53,8 @@
                                 <tr>
                                     <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">#</th>
                                     <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Nama Barang</th>
-                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Harga Satuan</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">QTY</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Satuan</th>
-                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Total Harga</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Action</th>
                                 </tr>
                             </thead>
@@ -95,7 +73,7 @@
     </div>
 </div>
 
-<!-- Modal Section for Add Product -->
+
 <div id="modalTambahBarang" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -105,19 +83,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <!-- Input Barang -->
                     <div class="mb-4">
                         <label for="barang">Nama Barang</label>
                         <select id="barang" name="barang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                             <option disabled selected>Pilih Barang</option>
-                            @foreach($db as $barang)
-                                <option value="{{ $barang->nama_produk }}">{{ $barang->nama_produk }}</option>
+                            @foreach($detailPembelianPerKampus as $barang)
+                                <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="harga">Harga</label>
-                        <input type="number" id="harga" name="harga" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
                     <div class="mb-4">
                         <label for="qty">Qty</label>
@@ -153,13 +126,11 @@
     function addItem() {
         // Ambil nilai dari inputan
         var nama_barang = $('#barang').val();
-        var harga = parseFloat($('#harga').val());
         var qty = parseInt($('#qty').val());
         var satuan = $('#satuan').val();
-        var subtotal = harga * qty;
 
         // Validasi jika semua input telah diisi
-        if (!nama_barang || !harga || !qty || !satuan) {
+        if (!nama_barang || !qty || !satuan) {
             alert('Semua field harus diisi.');
             return;
         }
@@ -167,10 +138,8 @@
         // Simpan data ke globalData untuk disubmit nanti
         globalData.push({
             nama_barang: nama_barang,
-            harga: harga,
             qty: qty,
             satuan: satuan,
-            subtotal: subtotal
         });
 
         // Tambahkan data langsung ke tabel HTML
@@ -179,10 +148,8 @@
             <tr>
                 <td>${rowCount + 1}</td>
                 <td>${nama_barang}</td>
-                <td>${harga}</td>
                 <td>${qty}</td>
                 <td>${satuan}</td>
-                <td>${subtotal}</td>
                 <td><button class="btn btn-danger" onclick="removeItem(${rowCount})">Hapus</button></td>
             </tr>
         `);
@@ -190,20 +157,17 @@
         // Tutup modal setelah barang ditambahkan
         $('#modalTambahBarang').modal('hide');
         $('#modalInduk').modal('hide');
-        $('.modal-backdrop').remove();  // Menghapus backdrop jika masih ada
+        $('.modal-backdrop').remove(); 
 
         // Reset form setelah barang ditambahkan
         $('#createBarangTerjual')[0].reset();
 
-        // Update total pembayaran di halaman
-        updateTotal();
     }
 
     // Menghapus item dari tabel
     function removeItem(index) {
         globalData.splice(index, 1);
         updateTable();
-        updateTotal();
     }
 
     // Update tabel setelah item dihapus
@@ -214,10 +178,8 @@
                 <tr>
                     <td>${index + 1}</td>
                     <td>${item.nama_barang}</td>
-                    <td>${item.harga}</td>
                     <td>${item.qty}</td>
                     <td>${item.satuan}</td>
-                    <td>${item.subtotal}</td>
                     <td><button class="btn btn-danger" onclick="removeItem(${index})">Hapus</button></td>
                 </tr>
             `);
@@ -225,10 +187,7 @@
     }
 
     // Update total pembayaran
-    function updateTotal() {
-        var total = globalData.reduce((sum, item) => sum + item.subtotal, 0);
-        $('#TotalPembayaran').text("Rp " + total.toLocaleString());
-    }
+    
 
     $(document).ready(function() {
     $("#barang").select2({
@@ -237,13 +196,7 @@
     $("#satuan").select2({
     dropdownParent: $("#modalTambahBarang")
     });
-    $("#nama_supplier").select2({
-    dropdownParent: $("#modalInduk")
-    });
     $("#nama_personil").select2({
-    dropdownParent: $("#modalInduk")
-    });
-    $("#ket_pembayaran").select2({
     dropdownParent: $("#modalInduk")
     });
     $('#modalTambahBarang').on('hidden.bs.modal', function () {
@@ -256,31 +209,29 @@
 
     // Submit semua data
     function submitAll() { 
-        var nama_supplier = $('#nama_supplier').val();
         var nama_personil = $('#nama_personil').val();
-        var ket_pembayaran = $('#ket_pembayaran').val();
-        var totalPembayaran = globalData.reduce((sum, item) => sum + item.subtotal, 0); // Hitung total pembayaran
+        var tanggal = $('#tanggal').val();
 
-        if (!nama_supplier || !nama_personil || !ket_pembayaran || totalPembayaran === 0) {
-            alert("Semua field harus diisi dan total pembayaran harus dihitung.");
+        if (!nama_personil || !tanggal) {
+            alert("Semua field harus diisi ");
             return;
         }
 
         $.ajax({
-            url: "{{ route('pembelian-new.store') }}",
+            url: "{{ route('barang-masuk.store') }}",
             method: "POST",
-            contentType: "application/json", 
+            contentType: "application/json",
+            headers: {
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            },      
             data: JSON.stringify({
-                nama_supplier: nama_supplier,
                 nama_personil: nama_personil,
-                ket_pembayaran: ket_pembayaran,
-                total: totalPembayaran,
+                tanggal: tanggal,
                 data: globalData,
-                _token: "{{ csrf_token() }}"
             }),
             success: function(response) {
                 if (response.success) {
-                    window.location.href = "{{ url('pembelian-new') }}";
+                    window.location.href = "{{ url('barang-masuk') }}";
                 } else {
                     alert("Gagal menyimpan data.");
                 }

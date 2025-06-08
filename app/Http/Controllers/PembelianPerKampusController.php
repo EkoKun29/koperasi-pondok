@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PembelianPerKampus;
 use App\Models\DetailPembelianPerKampus;
+use App\Models\NamaBarang;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
@@ -33,14 +34,15 @@ class PembelianPerKampusController extends Controller
         }
 
         $pembelian = PembelianPerKampus::orderBy('uuid', 'desc')->get();
-        return view('pembelian_new.index', compact('pembelian', 'db'))->with('i', (request()->input('page', 1) - 1) * 10);
+        $data = NamaBarang::all();
+        return view('pembelian_new.index', compact('pembelian', 'db', 'data'))->with('i', (request()->input('page', 1) - 1) * 10); 
     }
 
     private function generateNota()
 {
     // Temukan nota terbaru dengan prefix PPK, urutkan berdasarkan id secara menurun
     $lastNote = PembelianPerKampus::where('nota', 'like', 'PPK-%')
-                                  ->orderBy('id', 'desc')->first();
+                ->orderBy('id', 'desc')->first();
 
     if ($lastNote) {
         // Ambil angka setelah tanda strip
@@ -76,15 +78,16 @@ class PembelianPerKampusController extends Controller
         } catch (\Throwable $th) {
             return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
         }
-        // $data = NamaBarang::all();
-        return view('pembelian_new.create', compact('db'));
+        $data = NamaBarang::all();
+        return view('pembelian_new.create', compact('db', 'data'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nama_supplier' => 'required',
-            'pindah_barang' => 'required',
+            'nama_personil' => 'required',
+            'ket_pembayaran' => 'required',
             'total' => 'required|numeric',
             'data' => 'required|array',
         ]);
@@ -93,7 +96,8 @@ class PembelianPerKampusController extends Controller
             'tanggal' => Carbon::now(),
             'nota' => $this->generateNota(),
             'nama_supplier' => $request->nama_supplier,
-            'pindah_barang' => $request->pindah_barang,
+            'nama_personil' => $request->nama_personil,
+            'ket_pembayaran' => $request->ket_pembayaran,
             'total' => $request->total,
         ]);
 
@@ -170,7 +174,8 @@ class PembelianPerKampusController extends Controller
         if (!$pembelian) {
             return redirect()->back()->with('error', 'Pembelian tidak ditemukan');
         }
-        return view('pembelian_new.detail', compact('pembelian', 'detail', 'db'));
+        $data = NamaBarang::all();
+        return view('pembelian_new.detail', compact('pembelian', 'detail', 'db', 'data'));
         
     }
    
@@ -180,7 +185,8 @@ class PembelianPerKampusController extends Controller
         $request->validate([
             'tanggal' => 'required',
             'nama_supplier' => 'required',
-            'pindah_barang' => 'required',
+            'nama_personil' => 'required',
+            'ket_pembayaran' => 'required',
         ]);
 
         $pembelian = PembelianPerKampus::where('uuid', $uuid)->first();
@@ -191,7 +197,8 @@ class PembelianPerKampusController extends Controller
         $pembelian->update([
             'tanggal' => $request->tanggal,
             'nama_supplier' => $request->nama_supplier,
-            'pindah_barang' => $request->pindah_barang,
+            'nama_personil' => $request->nama_personil,
+            'ket_pembayaran' => $request->ket_pembayaran,
             
         ]);
 

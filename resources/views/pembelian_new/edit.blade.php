@@ -32,15 +32,24 @@
 
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700"><b>Masuk Ke-</b></label>
-                                <select id="pindah_barang" name="pindah_barang" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
-                                    <option disabled {{ $trj->pindah_barang ? '' : 'selected' }}>Pilih Masuk Ke-</option>
-                                    @foreach($db as $dbm)
-                                        <option value="{{ $dbm->tipe_po }}" {{ $dbm->tipe_po == $trj->pindah_barang ? 'selected' : '' }}>
-                                            {{ $dbm->tipe_po }}
+                                <select id="nama_personil" name="nama_personil" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled {{ $trj->nama_personil ? '' : 'selected' }}>Pilih Masuk Ke-</option>
+                                    @foreach($data as $dbm)
+                                        <option value="{{ $dbm->nama_personil }}" {{ $dbm->nama_personil == $trj->nama_personil ? 'selected' : '' }}>
+                                            {{ $dbm->nama_personil }}
                                         </option>
                                     @endforeach
                                 </select>
                             </div>
+
+                            <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Keterangan Pembayaran</b></label>
+                            <select id="ket_pembayaran" name="ket_pembayaran" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                                <option disabled {{ $trj->ket_pembayaran ? '' : 'selected' }}>Pilih Keterangan Pembayaran</option>
+                                <option value="Tunai">Tunai</option>
+                                <option value="Transfer">Transfer</option>
+                            </select>
+                        </div>
 
                     </div>
                 </div>

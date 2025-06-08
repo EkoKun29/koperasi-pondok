@@ -66,6 +66,8 @@ Route::put('/pembelian-new/{uuid}', [App\Http\Controllers\PembelianPerKampusCont
 Route::put('/pembelian-new/{uuid}/detail/update', [App\Http\Controllers\PembelianPerKampusController::class, 'updateDetail'])->name('pembelian-new.update-detail');
 Route::get('/pembelian-new/detail/delete/{id}', [App\Http\Controllers\PembelianPerKampusController::class, 'deleteDetail'])->name('delete-pembelian-new-detail');
 
+
+
 Route::group(['middleware' => 'auth'], function() {
 //------------------------------------------------------Penjualan Piutang----------------------------------------------------------------------
 Route::resource('penjualan-piutang', PenjualanPiutangController::class);
@@ -79,7 +81,6 @@ Route::get('penjualan-piutang/print/{uuid}', [PenjualanPiutangController::class,
 Route::post('penjualan-piutang-detail/{uuid}', [PenjualanPiutangController::class, 'storeDetail'])->name('penjualan-piutang-detail-create');
 Route::get('penjualan-piutang/detail/edit/{id}', [PenjualanPiutangController::class, 'editDetail'])->name('penjualan-piutang-edit-detail-create');
 Route::put('/penjualan-piutang/{uuid}/detail/update', [PenjualanPiutangController::class, 'updateDetail'])->name('penjualan-piutang-detail-update');
-
 
 
 //-------------------------------------------------------Penjualan Non Produksi---------------------------------------------------------------
@@ -181,6 +182,16 @@ Route::get('pelunasan/{pelunasan}', [PelunasanController::class, 'show']);
 Route::get('/pelunasan/{uuid}/edit', [PelunasanController::class, 'edit'])->name('pelunasan.edit');
 Route::put('/pelunasan/{uuid}', [PelunasanController::class, 'update'])->name('pelunasan.update');
 Route::get('/pelunasan/delete/{uuid}', [PelunasanController::class, 'Delete'])->name('delete-pelunasan');
+
+//-----------------------------------------Barang Masuk--------------------------------------------------------------------------------------------------------------------
+Route::resource('barang-masuk', App\Http\Controllers\BarangMasukController::class);
+Route::post('barang-masuk/create', [App\Http\Controllers\BarangMasukController::class, 'store'])->name('barang-masuk.store');
+Route::post('barang-masuk/store-detail/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'storeDetail'])->name('barang-masuk.store-detail');
+Route::get('/barang-masuk/{uuid}/edit', [App\Http\Controllers\BarangMasukController::class, 'edit'])->name('barang-masuk.edit');
+Route::put('/barang-masuk/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'update'])->name('barang-masuk.update');
+Route::get('barang-masuk/detail/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'show'])->name('barang-masuk.detail');
+Route::get('barang-masuk/delete/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'DeleteBarangMasuk'])->name('delete-barang-masuk');
+Route::get('barang-masuk/detail/delete/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'DeleteDetailBarangMasuk'])->name('delete-barang-masuk-detail');
 
 //--------------------------------------STOK----------------------------------------------------------------------------------------------------------------------------------------------
 

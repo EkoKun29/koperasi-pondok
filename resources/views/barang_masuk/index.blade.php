@@ -10,7 +10,7 @@
               <li class="text-sm leading-normal">
                 <a class="opacity-50 text-slate-700" style="text-decoration: none;" href="javascript:;">Pages</a>
               </li>
-              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/'] font-bold capitalize" aria-current="page">PEMBELIAN</li>
+              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/'] font-bold capitalize" aria-current="page">BARANG MASUK</li>
             </ol>
           </nav>
 
@@ -30,10 +30,10 @@
         </div>
       </nav>
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">PEMBELIAN</h1>
+    <h1 class="text-xl font-semibold mb-4">Barang Masuk</h1>
     <div class="mx-4">
         <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" 
-        href="{{ route('pembelian-new.create') }}">Tambah Data</a>
+        href="{{ route('barang-masuk.create') }}">Tambah Data</a>
       </div>
     <div class="table-responsive">
         <table id="datatable-basic" class="table-auto border-collapse w-full">
@@ -41,38 +41,34 @@
                 <tr class="text-left bg-gray-200">
                     <th class="border px-4 py-2">Tanggal</th>
                     <th class="border px-4 py-2">No Nota</th>
-                    <th class="border px-4 py-2">Nama Supplier</th>
                     <th class="border px-4 py-2">Nama Personil</th>
-                    <th class="border px-4 py-2">Ket. Pembayaran</th>
-                    <th class="border px-4 py-2">Total</th>
+                    <th class="border px-4 py-2">Masuk Ke-</th>
                     <th class="border px-4 py-2">Aksi</th>
                     
                 </tr>
             </thead>
             <tbody>
-                @foreach($pembelian as $trj)
+                @foreach($barang_masuk as $bm)
                 <tr>
-                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($trj->tanggal)->format('d-m-Y') }}
-                    <td class="border px-4 py-2">{{ $trj->nota}}</td>
-                    <td class="border px-4 py-2">{{ $trj->nama_supplier }}</td>
-                    <td class="border px-4 py-2">{{ $trj->nama_personil }}</td>
-                    <td class="border px-4 py-2">{{ $trj->ket_pembayaran }}</td>
-                    <td class="border px-4 py-2">{{ number_format($trj->total,2) }}</td>
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($bm->tanggal)->format('d-m-Y') }}
+                    <td class="border px-4 py-2">{{ $bm->nota}}</td>
+                    <td class="border px-4 py-2">{{ $bm->nama_personil }}</td>
+                    <td class="border px-4 py-2">{{ $bm->masuk_ke }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
                           
-                              <a href="{{ route('pembelian-new.detail', $trj['uuid']) }}"
+                              <a href="{{ route('barang-masuk.detail', $bm['uuid']) }}"
                                 class="btn btn-info btn-sm">Detail</a>
 
-                              <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $trj->uuid }}"
+                              <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $bm->uuid }}"
                                 class="btn btn-warning btn-sm">Edit</button>
 
-                             <a href="{{ route('delete-pembelian-new', $trj['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $trj->no_nota }} Ini ??')"
+                              <a href="{{ route('delete-barang-masuk', $bm['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $bm->nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
                             
                         </div>
                     </td>
-                    @include('pembelian_new.edit')
+                    @include('barang_masuk.edit')
                 </tr>
                 @endforeach
             </tbody>
@@ -100,17 +96,16 @@
 
     // Send AJAX request to get data for the selected item
     $.ajax({
-        url: '/pembelian-new/' + uuid + '/edit',
+        url: '/barang-masuk/' + uuid + '/edit',
         type: 'GET',
         success: function(response) {
             // Populate modal fields with the fetched data
             $('#editModal').find('#tanggal').val(response.tanggal);
-            $('#nama_supplier').val(response.nama_supplier);
             $('#nama_personil').val(response.nama_personil);
-            $('#ket_pembayaran').val(response.ket_pembayaran);
+            $('#masuk_ke').val(response.masuk_ke);
 
             // Set form action to update the data
-            $('#editForm').attr('action', '/pembelian-new/' + uuid);
+            $('#editForm').attr('action', '/barang-masuk/' + uuid);
 
             // Show modal
             $('#editModal').modal('show');

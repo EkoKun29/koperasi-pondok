@@ -14,6 +14,8 @@ class PembelianPerKampus extends Model
     'tanggal',
     'nota',
     'nama_supplier',
+    'nama_personil',
+    'ket_pembayaran',
     'pindah_barang',
     'total',
     'uuid',
