@@ -202,19 +202,6 @@
               Barang Masuk
             </a>
           </li>
-          </ul>
-      </li>
-          {{-- <li class="mt-0.5 w-full">
-            <a style="text-decoration: none;color: inherit;" class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ route('pembelian-titipan.index') }}">
-              <div class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sign-intersection-t-fill" viewBox="0 0 16 16">
-                  <title>Pembelian Titipan</title>
-                  <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098zM5 5h6v1.5H8.75V12h-1.5V6.5H5z"/>
-                </svg>
-              </div>
-              Titipan
-            </a>
-          </li>
           <li class="mt-0.5 w-full">
             <a style="text-decoration: none;color: inherit;" class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ route('pembelian-cash.index') }}">
               <div class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5">
@@ -229,6 +216,20 @@
               Cash
             </a>
           </li>
+          </ul>
+      </li>
+          {{-- <li class="mt-0.5 w-full">
+            <a style="text-decoration: none;color: inherit;" class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ route('pembelian-titipan.index') }}">
+              <div class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sign-intersection-t-fill" viewBox="0 0 16 16">
+                  <title>Pembelian Titipan</title>
+                  <path d="M9.05.435c-.58-.58-1.52-.58-2.1 0L.436 6.95c-.58.58-.58 1.519 0 2.098l6.516 6.516c.58.58 1.519.58 2.098 0l6.516-6.516c.58-.58.58-1.519 0-2.098zM5 5h6v1.5H8.75V12h-1.5V6.5H5z"/>
+                </svg>
+              </div>
+              Titipan
+            </a>
+          </li>
+          
           <li class="mt-0.5 w-full">
             <a style="text-decoration: none;color: inherit;" class="py-2.7 text-sm ease-nav-brand my-0 mx-4 flex items-center whitespace-nowrap px-4 transition-colors" href="{{ route('pembelian-hutangnonproduksi.index') }}">
               <div class="shadow-soft-2xl mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-white bg-center fill-current stroke-0 text-center xl:p-2.5">
