@@ -49,7 +49,7 @@
                             <select id="ket_pembayaran" name="ket_pembayaran" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                                 <option disabled selected>Pilih Keterangan Pembayaran</option>
                                 <option value="Tunai">Tunai</option>
-                                <option value="Transfer">Transfer</option>
+                                <option value="Hutang">Hutang</option>
                             </select>
                         </div>
                         </div>

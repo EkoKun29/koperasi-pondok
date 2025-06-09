@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\DetailBarangMasuk;
 use Illuminate\Http\Request;
 use App\Models\DetailBarangTerjual;
 use App\Models\DetailHutangNonProduksi;
@@ -131,6 +132,14 @@ public function exportPembelianNew($startDate, $endDate)
         $q->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate);})->get();
 
     return response()->json($detailPembelianNew );
+}
+
+public function exportBarangMasuk($startDate, $endDate)
+{
+    $detailBarangMasuk = DetailBarangMasuk::with('barangMasuk')->whereHas('barangMasuk', function ($q) use ($startDate, $endDate) {
+        $q->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate);})->get();
+
+    return response()->json($detailBarangMasuk);
 }
 
 }
