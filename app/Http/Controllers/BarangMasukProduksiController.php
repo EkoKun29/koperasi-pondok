@@ -50,7 +50,7 @@ class BarangMasukProduksiController extends Controller
         $inisial = Auth::user()->role;
     
         // Temukan nota terbaru dengan inisial yang sama, urutkan berdasarkan id secara menurun
-        $lastNote = BarangMasukProduksi::where('nota', 'like', 'BMK' . $inisial . '%')
+        $lastNote = BarangMasukProduksi::where('nota', 'like', 'BMPK' . $inisial . '%')
                                     ->orderBy('id', 'desc')
                                     ->first();
     
@@ -63,7 +63,7 @@ class BarangMasukProduksiController extends Controller
             $numericPart = 1; // Mulai dari 1 jika tidak ada record sebelumnya
         }
     
-        return 'BMK' . $inisial . '-' . $numericPart;
+        return 'BMPK' . $inisial . '-' . $numericPart;
     }
 
     public function create()
