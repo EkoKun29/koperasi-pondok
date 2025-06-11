@@ -92,6 +92,10 @@ class User extends Authenticatable
     public function barangMasuk(){
         return $this->hasMany(BarangMasuk::class);
     }
-    
+
+    public function barangMasukProduksi(){
+        return $this->hasMany(BarangMasukProduksi::class);
+    }
+
 }
 

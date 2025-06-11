@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">Detail Barang</h1>
-    
+    <h1 class="text-xl font-semibold mb-4">Detail Barang Masuk Produksi</h1>
+
     <div class="mx-4" id="modalTambahBarang">
         <a id="createPenjualanPiutang" style="text-decoration:none;" class="inline-block w-3 px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" 
-           data-bs-toggle="modal" data-bs-target="#modalTambahBarangForm{{$barangMasuk->uuid}}">Tambah Data</a>
+           data-bs-toggle="modal" data-bs-target="#modalTambahBarangForm{{$barangMasukProduksi->uuid}}">Tambah Data</a>
     </div>
 
     <div class="table-responsive">
@@ -21,7 +21,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($detailBarangMasuk as $dtl)
+                @foreach($detailBarangMasukProduksi as $dtl)
                 <tr>
                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                     <td class="border px-4 py-2">{{ $dtl->nama_barang }}</td>
@@ -32,11 +32,11 @@
                             {{-- <button data-bs-toggle="modal" data-bs-target="#modal-edit-detail{{ $dtl->uuid }}"
                                 class="btn btn-warning btn-sm">Edit</button> --}}
 
-                             <a href="{{ route('delete-barang-masuk-detail', $dtl['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')"
+                             <a href="{{ route('delete-barang-masuk-produksi-detail', $dtl['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')"
                                 class="btn btn-danger btn-sm">Hapus</a>
                         </div>
                     </td>
-                    @include('barang_masuk.edit-detail')
+                    @include('barang_masuk_produksi.edit-detail')
                 </tr>
                 @endforeach
             </tbody>
@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<div id="modalTambahBarangForm{{$barangMasuk->uuid}}" class="modal fade" tabindex="-1">
+<div id="modalTambahBarangForm{{$barangMasukProduksi->uuid}}" class="modal fade" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form id="createPenjualanPiutangForm">
@@ -89,7 +89,7 @@
 <script>
 $(document).ready(function() {
     $("#nama_barang").select2({
-        dropdownParent: $("#modalTambahBarangForm{{$barangMasuk->uuid}}")
+        dropdownParent: $("#modalTambahBarangForm{{$barangMasukProduksi->uuid}}")
     });
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
@@ -104,14 +104,14 @@ $(document).ready(function() {
     $('.editButton').on('click', function() {
     var uuid = $(this).data('id');
     $.ajax({
-        url: '/barang-masuk/' + uuid + '/edit/detail',
+        url: '/barang-masuk-produksi/' + uuid + '/edit/detail',
         type: 'GET',
         success: function(response) {
             $('#nama_barang').val(response.nama_barang);
             $('#satuan').val(response.satuan); 
 
             // Set form action to update the data
-            $('#editForm').attr('action', '/barang-masuk/' + uuid + '/detail/update');
+            $('#editForm').attr('action', '/barang-masuk-produksi/' + uuid + '/detail/update');
 
             // Show modal
             // $('#editDetailModal').modal('showDetail');
@@ -135,7 +135,7 @@ function addItem() {
     }
 
     $.ajax({
-        url: "{{ route('barang-masuk.store-detail', ['uuid' => $barangMasuk->uuid]) }}",
+        url: "{{ route('barang-masuk-produksi.store-detail', ['uuid' => $barangMasukProduksi->uuid]) }}",
         method: 'POST',
         data: {
             _token: '{{ csrf_token() }}',
@@ -156,7 +156,7 @@ function addItem() {
                         <td class="border px-4 py-2">${response.detail.satuan}</td>
                         <td class="border px-4 py-2">
                             <div class="d-flex">
-                                <a href="{{ route('delete-barang-masuk-detail', 'PLACEHOLDER_ID') }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang ${response.detail.nama_barang} ??')" class="btn btn-danger btn-sm">Hapus</a>
+                                <a href="{{ route('delete-barang-masuk-produksi-detail', 'PLACEHOLDER_ID') }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang ${response.detail.nama_barang} ??')" class="btn btn-danger btn-sm">Hapus</a>
                             </div>
                         </td>
                     </tr>
@@ -168,7 +168,7 @@ function addItem() {
                 resetModalForm();
 
                 // Tutup modal
-                var modalElement = document.getElementById('modalTambahBarangForm{{$barangMasuk->uuid}}');
+                var modalElement = document.getElementById('modalTambahBarangForm{{$barangMasukProduksi->uuid}}');
                 var modalInstance = bootstrap.Modal.getInstance(modalElement);
                 modalInstance.hide();
             } else {

@@ -32,3 +32,4 @@ Route::get('setoran/{startDate}/{endDate}/{nama_kampus}', [ExportDataController:
 Route::get('pelunasan/{startDate}/{endDate}/{nama_kampus}', [ExportDataController::class, 'exportPelunasan']);
 Route::get('pembelian-perkampus/{startDate}/{endDate}', [ExportDataController::class, 'exportPembelianNew']);
 Route::get('barang-masuk/{startDate}/{endDate}', [ExportDataController::class, 'exportBarangMasuk']);
+Route::get('barang-masuk-produksi/{startDate}/{endDate}', [ExportDataController::class, 'exportBarangMasukProduksi']);

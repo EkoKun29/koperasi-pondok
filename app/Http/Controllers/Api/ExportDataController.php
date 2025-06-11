@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\DetailBarangMasuk;
+use App\Models\DetailBarangMasukProduksi;
 use Illuminate\Http\Request;
 use App\Models\DetailBarangTerjual;
 use App\Models\DetailHutangNonProduksi;
@@ -142,4 +143,12 @@ public function exportBarangMasuk($startDate, $endDate)
     return response()->json($detailBarangMasuk);
 }
 
+public function exportBarangMasukProduksi($startDate, $endDate)
+{
+    $detailBarangMasukProduksi = DetailBarangMasukProduksi::with('barangMasukProduksi')->whereHas('barangMasukProduksi', function ($q) use ($startDate, $endDate) {
+        $q->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate);})->get();
+
+    return response()->json($detailBarangMasukProduksi);
+
+}
 }
