@@ -39,7 +39,8 @@
         <table id="datatable-basic" class="table-auto border-collapse w-full">
             <thead>
                 <tr class="text-left bg-gray-200">
-                    <th class="border px-4 py-2">Tanggal</th>
+                    <th class="border px-4 py-2">Tgl Barang Masuk</th>
+                    <th class="border px-4 py-2">Tgl Pembelian</th>
                     <th class="border px-4 py-2">No Nota</th>
                     <th class="border px-4 py-2">Nama Personil</th>
                     <th class="border px-4 py-2">Masuk Ke-</th>
@@ -50,6 +51,7 @@
             <tbody>
                 @foreach($barang_masuk as $bm)
                 <tr>
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($bm->created_at)->format('d-m-Y') }}
                     <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($bm->tanggal)->format('d-m-Y') }}
                     <td class="border px-4 py-2">{{ $bm->nota}}</td>
                     <td class="border px-4 py-2">{{ $bm->nama_personil }}</td>

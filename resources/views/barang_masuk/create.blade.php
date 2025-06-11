@@ -27,7 +27,7 @@
                 <div class="flex">
                     <div class="w-full md:w-1/2">
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal</b></label>
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal Pembelian</b></label>
                             <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                         </div>
                         <div class="mb-4">
@@ -87,8 +87,8 @@
                         <label for="barang">Nama Barang</label>
                         <select id="barang" name="barang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                             <option disabled selected>Pilih Barang</option>
-                            @foreach($detailPembelianPerKampus as $barang)
-                                <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
+                            @foreach($db as $barang)
+                                <option value="{{ $barang->nama_produk }}">{{ $barang->nama_produk }}</option>
                             @endforeach
                         </select>
                     </div>

@@ -19,6 +19,7 @@ class BarangMasuk extends Model
         'nama_personil',
         'nama_kampus',
         'masuk_ke',
+        'created_at',
         'uuid'
     ];
     public function detailBarangMasuk()

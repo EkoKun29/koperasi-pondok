@@ -39,7 +39,7 @@
         <table id="datatable-basic" class="table-auto border-collapse w-full">
             <thead>
                 <tr class="text-left bg-gray-200">
-                    <th class="border px-4 py-2">Tanggal</th>
+                    <th class="border px-4 py-2">Tgl Pembelian</th>
                     <th class="border px-4 py-2">No Nota</th>
                     <th class="border px-4 py-2">Nama Supplier</th>
                     <th class="border px-4 py-2">Nama Personil</th>

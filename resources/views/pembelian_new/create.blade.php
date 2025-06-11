@@ -27,6 +27,10 @@
                 <div class="flex">
                     <div class="w-full md:w-1/2">
                         <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal</b></label>
+                            <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        </div>
+                        <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Nama Supplier</b></label>
                             <select id="nama_supplier" name="nama_supplier" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                                 <option disabled selected>Pilih Supplier</option>
@@ -256,12 +260,13 @@
 
     // Submit semua data
     function submitAll() { 
+        var tanggal = $('#tanggal').val();
         var nama_supplier = $('#nama_supplier').val();
         var nama_personil = $('#nama_personil').val();
         var ket_pembayaran = $('#ket_pembayaran').val();
         var totalPembayaran = globalData.reduce((sum, item) => sum + item.subtotal, 0); // Hitung total pembayaran
 
-        if (!nama_supplier || !nama_personil || !ket_pembayaran || totalPembayaran === 0) {
+        if (!tanggal || !nama_supplier || !nama_personil || !ket_pembayaran || totalPembayaran === 0) {
             alert("Semua field harus diisi dan total pembayaran harus dihitung.");
             return;
         }
@@ -271,6 +276,7 @@
             method: "POST",
             contentType: "application/json", 
             data: JSON.stringify({
+                tanggal: tanggal,
                 nama_supplier: nama_supplier,
                 nama_personil: nama_personil,
                 ket_pembayaran: ket_pembayaran,

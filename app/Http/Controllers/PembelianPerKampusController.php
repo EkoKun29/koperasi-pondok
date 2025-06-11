@@ -85,6 +85,7 @@ class PembelianPerKampusController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'tanggal' => 'required',
             'nama_supplier' => 'required',
             'nama_personil' => 'required',
             'ket_pembayaran' => 'required',
@@ -93,7 +94,7 @@ class PembelianPerKampusController extends Controller
         ]);
         $pembelianNew = PembelianPerKampus::create([
             'id_user' => Auth::user()->id,
-            'tanggal' => Carbon::now(),
+            'tanggal' => $request->tanggal,
             'nota' => $this->generateNota(),
             'nama_supplier' => $request->nama_supplier,
             'nama_personil' => $request->nama_personil,

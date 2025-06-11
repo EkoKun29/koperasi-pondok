@@ -15,7 +15,7 @@
                                 <input type="text" name="nota" class="form-control" placeholder="Nota" value="{{ $bm->nota }}" readonly disabled>
                             </div>
                             <div class="mb-4">
-                                <label class="form-label">Tanggal</label>
+                                <label class="form-label">Tanggal Pembelian</label>
                                 <input type="date" name="tanggal" class="form-control" placeholder="Tanggal" value="{{ $bm->tanggal }}" required>
                             </div>
                             <div class="mb-4">
