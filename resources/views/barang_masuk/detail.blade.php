@@ -29,8 +29,8 @@
                     <td class="border px-4 py-2">{{ $dtl->satuan }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
-                            {{-- <button data-bs-toggle="modal" data-bs-target="#modal-edit-detail{{ $dtl->uuid }}"
-                                class="btn btn-warning btn-sm">Edit</button> --}}
+                            <button data-bs-toggle="modal" data-bs-target="#modal-edit-detail{{ $dtl->uuid }}"
+                                class="btn btn-warning btn-sm">Edit</button>
 
                              <a href="{{ route('delete-barang-masuk-detail', $dtl['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')"
                                 class="btn btn-danger btn-sm">Hapus</a>

@@ -189,6 +189,7 @@ Route::post('barang-masuk/create', [App\Http\Controllers\BarangMasukController::
 Route::post('barang-masuk/store-detail/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'storeDetail'])->name('barang-masuk.store-detail');
 Route::get('/barang-masuk/{uuid}/edit', [App\Http\Controllers\BarangMasukController::class, 'edit'])->name('barang-masuk.edit');
 Route::put('/barang-masuk/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'update'])->name('barang-masuk.update');
+Route::put('/barang-masuk/{uuid}/detail/update', [App\Http\Controllers\BarangMasukController::class, 'updateDetail'])->name('barang-masuk.update-detail');
 Route::get('barang-masuk/detail/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'show'])->name('barang-masuk.detail');
 Route::get('barang-masuk/delete/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'DeleteBarangMasuk'])->name('delete-barang-masuk');
 Route::get('barang-masuk/detail/delete/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'DeleteDetailBarangMasuk'])->name('delete-barang-masuk-detail');
@@ -199,6 +200,7 @@ Route::post('barang-masuk-produksi/create', [App\Http\Controllers\BarangMasukPro
 Route::post('barang-masuk-produksi/store-detail/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'storeDetail'])->name('barang-masuk-produksi.store-detail');
 Route::get('/barang-masuk-produksi/{uuid}/edit', [App\Http\Controllers\BarangMasukProduksiController::class, 'edit'])->name('barang-masuk-produksi.edit');
 Route::put('/barang-masuk-produksi/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'update'])->name('barang-masuk-produksi.update');
+Route::put('/barang-masuk-produksi/{uuid}/detail/update', [App\Http\Controllers\BarangMasukProduksiController::class, 'updateDetail'])->name('barang-masuk-produksi.update-detail');
 Route::get('barang-masuk-produksi/detail/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'show'])->name('barang-masuk-produksi.detail');
 Route::get('barang-masuk-produksi/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteBarangMasukProduksi'])->name('delete-barang-masuk-produksi');
 Route::get('barang-masuk-produksi/detail/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteDetailBarangMasukProduksi'])->name('delete-barang-masuk-produksi-detail');

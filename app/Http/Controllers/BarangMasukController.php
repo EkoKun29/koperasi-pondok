@@ -180,6 +180,20 @@ class BarangMasukController extends Controller
         return redirect()->route('barang-masuk.index')->with('success', 'Barang masuk updated successfully.');
     }
 
+    public function updateDetail(Request $request, $uuid)
+    {
+        $request->validate([
+            'nama_barang' => 'required|string',
+            'qty' => 'required|numeric',
+            'satuan' => 'required|string',
+        ]);
+
+        $detailBarangMasuk = DetailBarangMasuk::where('uuid', $uuid)->firstOrFail();
+        $detailBarangMasuk->update($request->all());
+
+        return redirect()->back()->with('success', 'Detail barang masuk updated successfully.');
+    }
+
     public function DeleteBarangMasuk($uuid)
     {
         $barangMasuk = BarangMasuk::where('uuid', $uuid)->firstOrFail();
