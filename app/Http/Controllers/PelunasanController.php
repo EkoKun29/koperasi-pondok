@@ -129,8 +129,8 @@ class PelunasanController extends Controller
                 // Filter data berdasarkan konsumen, tanggal, dan no_nota
                 $filteredData = array_filter($dataKonsumen, function ($item) use ($konsumen, $tanggal, $no_nota) {
                     return $item['konsumen'] == urldecode($konsumen) &&
-                           $item['tanggal'] == urldecode($tanggal) &&
-                           $item['no_nota'] == urldecode($no_nota);
+                            $item['tanggal'] == urldecode($tanggal) &&
+                            $item['no_nota'] == urldecode($no_nota);
                 });
 
                 // Ambil sisa piutang dari data yang sudah difilter
