@@ -116,13 +116,13 @@ class BukuPiutangController extends Controller
     {
         switch ($role) {
             case '1':
-                return 'https://script.google.com/macros/s/AKfycbxaubxopcaIFmXmGoz9fWNcrMJrR-0z7s9-kvBIOJS8T12Df3K63SetEJIz4-y0Umjj/exec';
+                return 'https://script.google.com/macros/s/AKfycbyuuJmZgA4qxIvnX0hQVVNoqhDzAmnYn97d5LwWOdV6UIs3OVZVh8vTz8UAqs1Ct64w/exec';
             case '2':
-                return 'https://script.google.com/macros/s/AKfycbyf_qgAGRxQsuASDLmCHIPXP_dpt3c-dCn-x_Op88Ib9XeHGDnPJWIr8pJ1vjl6ow/exec';
+                return 'https://script.google.com/macros/s/AKfycbzJIMPCCRXfn92CFfu73tCe1Dh4KDaXYxzPdO46uZceWGSaDsKvZj0yZ3ICHeJ2iXQd/exec';
             case '3':
-                return 'https://script.google.com/macros/s/AKfycbxDCr2UVkjWbGtVR4O20S0zTAdHzBJ91qSWxp_Oaj8NP8kk0E_JVF_8NbBSclLJYv899g/exec';
+                return 'https://script.google.com/macros/s/AKfycbzQqgEC7Md7ZC9iwY2xvOWZGpB8rAwWpAFbzA3CMFm42IMr7ehMSsyQa1k6HH1qpUPx_A/exec';
             case '4':
-                return 'https://script.google.com/macros/s/AKfycbw85bgFJw_1FHFVP6KT61_5G_w8AMMcMXx29perD4DhhYrCMq15GMyzDvljLTELfPouqw/exec';
+                return 'https://script.google.com/macros/s/AKfycbx_XMHS-JYMmlUgonvZtFs6ufw7DfxcDQZoJ4v_AMuefmDf66Ad9I7Uu6B4SWD7IwMKfA/exec';
             default:
                 return null; // Kembalikan null jika tidak ada role yang sesuai
         }

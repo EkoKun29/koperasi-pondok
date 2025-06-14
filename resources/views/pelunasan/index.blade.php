@@ -19,9 +19,14 @@
     </div>
 </nav>
 
+
 <div class="container mx-auto px-4">
     <h1 class="text-xl font-semibold mb-4">Pelunasan</h1>
-
+@if(isset($apiError))
+    <div class="alert alert-warning">
+        {{ $apiError }}
+    </div>
+@endif
     <div class="mx-4">
         <a href="javascript:;" style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#addPelunasanModal" class="inline-block w-3 px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102">
             Tambah Data
@@ -128,8 +133,15 @@
                                 <select id="add_tanggal_penjualan_piutang" name="tanggal_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Tanggal Penjualan Piutang</option>
                                     @foreach($dataKonsumen as $konsumen)
-                                    <option value="{{ \Carbon\Carbon::parse($konsumen['tanggal'])->format('d-m-Y') }}">{{ \Carbon\Carbon::parse($konsumen['tanggal'])->format('Y-m-d') }}</option>
-                                    @endforeach
+    @if($konsumen['tanggal_valid'])
+        @php
+            $tanggal = \Carbon\Carbon::createFromFormat('d-m-Y', $konsumen['tanggal']);
+        @endphp
+        <option value="{{ $tanggal->format('d-m-Y') }}">{{ $tanggal->format('Y-m-d') }}</option>
+    @else
+        <option disabled>{{ $konsumen['tanggal'] ?? 'Tanggal Tidak Valid' }} (Invalid)</option>
+    @endif
+@endforeach
                                 </select>
                             </div>
                         </div>
@@ -222,8 +234,16 @@
                                 <select id="edit_tanggal_penjualan_piutang" name="tanggal_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Tanggal Penjualan Piutang</option>
                                     @foreach($dataKonsumen as $konsumen)
-                                    <option value="{{ \Carbon\Carbon::parse($konsumen['tanggal'])->format('Y-m-d') }}">{{ \Carbon\Carbon::parse($konsumen['tanggal'])->format('d-m-Y') }}</option>
-                                    @endforeach
+    @if($konsumen['tanggal_valid'])
+        @php
+            $tanggal = \Carbon\Carbon::createFromFormat('d-m-Y', $konsumen['tanggal']);
+        @endphp
+        <option value="{{ $tanggal->format('d-m-Y') }}">{{ $tanggal->format('Y-m-d') }}</option>
+    @else
+        <option disabled>{{ $konsumen['tanggal'] ?? 'Tanggal Tidak Valid' }} (Invalid)</option>
+    @endif
+@endforeach
+
                                 </select>
                             </div>
                         </div>
