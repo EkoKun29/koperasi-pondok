@@ -316,6 +316,16 @@ class PembelianPerKampusController extends Controller
     return redirect()->back()->with('success', 'Detail berhasil dihapus');
 }
 
+    public function print($uuid)
+    {
+        $pembelian = PembelianPerKampus::where('uuid', $uuid)->first();
+        if (!$pembelian) {
+            return redirect()->back()->with('error', 'Pembelian tidak ditemukan');
+        }
+        $detail = DetailPembelianPerKampus::where('uuid_pembelian', $uuid)->get();
+        return view('pembelian_new.print', compact('pembelian', 'detail'));
+    }
+
 
 
 

@@ -187,7 +187,7 @@ public function edit($uuid)
 public function update(Request $request, $uuid)
 {
     $request->validate([
-        'nama_personil' => 'required',
+        'penyetor' => 'required',
         'nama_konsumen' => 'required',
         'nota_penjualan_piutang' => 'required',
         'tanggal_penjualan_piutang' => 'required|date_format:Y-m-d',
@@ -201,7 +201,7 @@ public function update(Request $request, $uuid)
 
     // Update pelunasan data
     $pelunasan->id_user = Auth::user()->id;
-    $pelunasan->no_nota = $pelunasan->no_nota; // Retain the original no_nota, no need to generate again
+    $pelunasan->no_nota = $pelunasan->no_nota; 
     $pelunasan->tanggal_penjualan_piutang = Carbon::createFromFormat('Y-m-d', $request->tanggal_penjualan_piutang)->format('Y-m-d');
     $pelunasan->nama_koperasi = 'KAMPUS ' . Auth::user()->role;
     $pelunasan->penyetor = $request->nama_personil;

@@ -67,6 +67,9 @@
                               <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $trj->uuid }}"
                                 class="btn btn-warning btn-sm">Edit</button>
 
+                              <a href="{{ route('pembelian-new.print', $trj['uuid']) }}"
+                                class="btn btn-secondary btn-sm">Print</a>
+
                              <a href="{{ route('delete-pembelian-new', $trj['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $trj->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
                             

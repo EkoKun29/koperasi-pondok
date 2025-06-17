@@ -56,6 +56,7 @@ Route::get('/pembelian-new/{uuid}/edit/detail', [App\Http\Controllers\PembelianP
 Route::put('/pembelian-new/{uuid}', [App\Http\Controllers\PembelianPerKampusController::class, 'update'])->name('pembelian-new.update');
 Route::put('/pembelian-new/{uuid}/detail/update', [App\Http\Controllers\PembelianPerKampusController::class, 'updateDetail'])->name('pembelian-new.update-detail');
 Route::get('/pembelian-new/detail/delete/{id}', [App\Http\Controllers\PembelianPerKampusController::class, 'deleteDetail'])->name('delete-pembelian-new-detail');
+Route::get('/pembelian-new/print/{uuid}', [App\Http\Controllers\PembelianPerKampusController::class, 'print'])->name('pembelian-new.print');
 
 
 
