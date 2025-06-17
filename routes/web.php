@@ -21,6 +21,7 @@ use App\Http\Controllers\PenjualanBarangTerjualController;
 use App\Http\Controllers\PenjualanProduksiTitipanController;
 use App\Http\Controllers\PembelianHutangNonProduksiController;
 use App\Http\Controllers\StokController;
+use App\Http\Controllers\PindahController;
 
 
 
@@ -186,6 +187,11 @@ Route::get('barang-masuk-produksi/detail/{uuid}', [App\Http\Controllers\BarangMa
 Route::get('barang-masuk-produksi/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteBarangMasukProduksi'])->name('delete-barang-masuk-produksi');
 Route::get('barang-masuk-produksi/detail/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteDetailBarangMasukProduksi'])->name('delete-barang-masuk-produksi-detail');
 //--------------------------------------STOK----------------------------------------------------------------------------------------------------------------------------------------------
+
+Route::get('pindah-stok', [PindahController::class, 'index'])->name('pindah.index');
+Route::get('form-pindah-stok', [PindahController::class, 'form'])->name('pindah.form');
+Route::post('pindah-stok/create', [PindahController::class, 'store'])->name('pindah.store');
+Route::get('pindah-stok/print/{id}', [PindahController::class, 'print'])->name('pindah.print');
 
 
 
