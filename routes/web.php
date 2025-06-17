@@ -57,6 +57,7 @@ Route::get('/pembelian-new/{uuid}/edit/detail', [App\Http\Controllers\PembelianP
 Route::put('/pembelian-new/{uuid}', [App\Http\Controllers\PembelianPerKampusController::class, 'update'])->name('pembelian-new.update');
 Route::put('/pembelian-new/{uuid}/detail/update', [App\Http\Controllers\PembelianPerKampusController::class, 'updateDetail'])->name('pembelian-new.update-detail');
 Route::get('/pembelian-new/detail/delete/{id}', [App\Http\Controllers\PembelianPerKampusController::class, 'deleteDetail'])->name('delete-pembelian-new-detail');
+Route::get('/pembelian-new/print/{uuid}', [App\Http\Controllers\PembelianPerKampusController::class, 'print'])->name('pembelian-new.print');
 
 Route::group(['middleware' => 'auth'], function() {
 //------------------------------------------------------Penjualan Piutang----------------------------------------------------------------------
@@ -196,7 +197,7 @@ Route::put('/barang-masuk-produksi/{uuid}/detail/update', [App\Http\Controllers\
 Route::get('barang-masuk-produksi/detail/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'show'])->name('barang-masuk-produksi.detail');
 Route::get('barang-masuk-produksi/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteBarangMasukProduksi'])->name('delete-barang-masuk-produksi');
 Route::get('barang-masuk-produksi/detail/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteDetailBarangMasukProduksi'])->name('delete-barang-masuk-produksi-detail');
-//--------------------------------------STOK----------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------PINDAH STOK----------------------------------------------------------------------------------------------------------------------------------------------
 
 Route::get('pindah-stok', [PindahController::class, 'index'])->name('pindah.index');
 Route::get('form-pindah-stok', [PindahController::class, 'form'])->name('pindah.form');
