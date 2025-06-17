@@ -40,6 +40,7 @@
             <thead>
                 <tr class="text-left bg-gray-200">
                     <th class="border px-4 py-2">Tgl Pembelian</th>
+                    <th class="border px-4 py-2">Tgl Input</th>
                     <th class="border px-4 py-2">No Nota</th>
                     <th class="border px-4 py-2">Nama Supplier</th>
                     <th class="border px-4 py-2">Nama Personil</th>
@@ -53,6 +54,7 @@
                 @foreach($pembelian as $trj)
                 <tr>
                     <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($trj->tanggal)->format('d-m-Y') }}
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($trj->created_at)->format('d-m-Y') }}
                     <td class="border px-4 py-2">{{ $trj->nota}}</td>
                     <td class="border px-4 py-2">{{ $trj->nama_supplier }}</td>
                     <td class="border px-4 py-2">{{ $trj->nama_personil }}</td>
