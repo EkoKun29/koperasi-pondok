@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('retur_penjualans', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_user')->nullable();
+            $table->date('tanggal')->nullable();
+            $table->string('nota_retur')->nullable();
+            $table->string('nota_penjualan')->nullable();
+            $table->string('tgl_penjualan')->nullable();
+            $table->string('nama_personil')->nullable();
+            $table->string('nama_konsumen')->nullable();
+            $table->string('keterangan')->nullable();
+            $table->integer('total')->nullable();
+            $table->uuid('uuid');
             $table->timestamps();
         });
     }
