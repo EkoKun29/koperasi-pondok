@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('detail_retur_penjualans', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid_retur_penjualan')->nullable();
+            $table->string('nama_barang')->nullable();
+            $table->integer('harga')->nullable();
+            $table->integer('qty')->nullable();
+            $table->string('satuan')->nullable();
+            $table->integer('subtotal')->nullable();
+            $table->uuid('uuid');
             $table->timestamps();
         });
     }

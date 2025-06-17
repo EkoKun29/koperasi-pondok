@@ -59,7 +59,7 @@
         <p style="font-size: 1.2em; ">
             <strong>
             <br>NOTA : {{ $pembelian->nota }}
-            <br>TANGGAL : {{ \Carbon\Carbon::parse($pembelian->tanggal)->format('d-m-') }}
+            <br>TANGGAL : {{ \Carbon\Carbon::parse($pembelian->tanggal)->format('d-m-Y') }}
             <br>SUPPLIER : {{ $pembelian->nama_supplier }}
             <br>PERSONIL : {{ $pembelian->nama_personil }}
             </strong>

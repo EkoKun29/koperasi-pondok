@@ -17,10 +17,11 @@ return new class extends Migration
             $table->date('tanggal')->nullable();
             $table->string('nota_retur')->nullable();
             $table->string('nota_penjualan')->nullable();
-            $table->string('tgl_penjualan')->nullable();
+            $table->date('tgl_penjualan')->nullable();
             $table->string('nama_personil')->nullable();
             $table->string('nama_konsumen')->nullable();
-            $table->string('keterangan')->nullable();
+            $table->string('jenis_penjualan')->nullable();
+            $table->string('jenis_transaksi')->nullable();
             $table->integer('total')->nullable();
             $table->uuid('uuid');
             $table->timestamps();
