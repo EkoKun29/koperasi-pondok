@@ -197,12 +197,27 @@ Route::put('/barang-masuk-produksi/{uuid}/detail/update', [App\Http\Controllers\
 Route::get('barang-masuk-produksi/detail/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'show'])->name('barang-masuk-produksi.detail');
 Route::get('barang-masuk-produksi/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteBarangMasukProduksi'])->name('delete-barang-masuk-produksi');
 Route::get('barang-masuk-produksi/detail/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteDetailBarangMasukProduksi'])->name('delete-barang-masuk-produksi-detail');
-//--------------------------------------PINDAH STOK----------------------------------------------------------------------------------------------------------------------------------------------
 
+//--------------------------------------PINDAH STOK----------------------------------------------------------------------------------------------------------------------------------------------
 Route::get('pindah-stok', [PindahController::class, 'index'])->name('pindah.index');
 Route::get('form-pindah-stok', [PindahController::class, 'form'])->name('pindah.form');
 Route::post('pindah-stok/create', [PindahController::class, 'store'])->name('pindah.store');
 Route::get('pindah-stok/print/{id}', [PindahController::class, 'print'])->name('pindah.print');
+
+//--------------------------------------RETUR PENJUALAN----------------------------------------------------------------------------------------------------------------------------------------------
+Route::resource('retur-penjualan', App\Http\Controllers\ReturPenjualanController::class);
+Route::post('retur-penjualan/create', [App\Http\Controllers\ReturPenjualanController::class, 'store'])->name('retur-penjualan.store');
+Route::post('retur-penjualan/store-detail/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'storeDetail'])->name('retur-penjualan.store-detail');
+Route::get('/retur-penjualan/{uuid}/edit', [App\Http\Controllers\ReturPenjualanController::class, 'edit'])->name('retur-penjualan.edit');
+Route::put('/retur-penjualan/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'update'])->name('retur-penjualan.update');
+Route::put('/retur-penjualan/{uuid}/detail/update', [App\Http\Controllers\ReturPenjualanController::class, 'updateDetail'])->name('retur-penjualan.detail.update');
+Route::get('retur-penjualan/detail/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'show'])->name('retur-penjualan.detail');
+Route::get('retur-penjualan/delete/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'destroy'])->name('delete-retur-penjualan');
+Route::get('retur-penjualan/detail/delete/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'destroyDetail'])->name('delete-retur-penjualan-detail');
+Route::get('retur-penjualan/print/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'print'])->name('retur-penjualan.print');
+
+
+
 
 
 

@@ -18,6 +18,7 @@ class ReturPenjualan extends Model
         'nota_retur',
         'nota_penjualan',
         'tgl_penjualan',
+        'nama_kampus',
         'nama_personil',
         'nama_konsumen',
         'jenis_penjualan',

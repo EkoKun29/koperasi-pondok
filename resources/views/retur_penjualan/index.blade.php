@@ -53,13 +53,13 @@
                     <td class="border px-4 py-2">{{ number_format($ret->total,2) }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
-                            <a href="{{ route('penjualan-piutang.detail', $ret['uuid']) }}"
+                            <a href="{{ route('retur-penjualan.detail', $ret['uuid']) }}"
                                 class="btn btn-info btn-sm">Detail</a>
                             <a href="javascript:void(0);" data-id="{{ $ret['uuid'] }}" class="btn btn-primary btn-sm editButton">Edit</a>
-                            <a href="{{ route('delete-penjualan-piutang', $ret['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $ret->nota_retur }} Ini ??')"
-                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
-                            <a href="{{ route('penjualan-piutang.print', $ret['uuid']) }}"
+                            <a href="{{ route('retur-penjualan.print', $ret['uuid']) }}"
                                 class="btn btn-secondary btn-sm">Print</a>
+                            <a href="{{ route('delete-retur-penjualan', $ret['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $ret->nota_retur }} Ini ??')"
+                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
                         </div>
                     </td>
                 </tr>
@@ -84,37 +84,93 @@
                 <form id="editForm" method="POST" action="">
                     @csrf
                     @method('PUT')
-                    
-                    <!-- Nama Pembeli Input -->
-                    <div class="mb-4">
-                        <label for="nama_pembeli" class="block text-sm font-medium text-gray-700">
-                            <b>Konsumen</b>
-                        </label>
-                        <input type="text" id="nama_pembeli" name="nama_pembeli" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" placeholder="Masukkan Nama Pembeli" required>
+                    <div class="flex flex-wrap -mx-2">
+                    <div class="w-full md:w-1/2 px-2">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal Retur</b></label>
+                            <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal"
+                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="nama_personil" class="block text-sm font-medium text-gray-700">
+                                <b>Nama Personil</b>
+                            </label>
+                            <select id="nama_personil" name="nama_personil"
+                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                                <option disabled selected>Pilih Personil</option>
+                                @foreach($data as $barang)
+                                    <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="nama_konsumen" class="block text-sm font-medium text-gray-700">
+                                <b>Konsumen</b>
+                            </label>
+                            <input type="text" id="nama_konsumen" name="nama_konsumen"
+                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg"
+                                placeholder="Masukkan Nama Konsumen" required>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="jenis_penjualan" class="block text-sm font-medium text-gray-700">
+                                <b>Jenis Penjualan</b>
+                            </label>
+                            <select id="jenis_penjualan" name="jenis_penjualan"
+                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                                <option disabled selected>Pilih Jenis Penjualan</option>
+                                <option value="Piutang">Piutang</option>
+                                <option value="Produksi Titipan">Produksi Titipan</option>
+                                <option value="Non Produksi">Non Produksi</option>
+                                <option value="Barang Terjual">Barang Terjual</option>
+                            </select>
+                        </div>
                     </div>
-                    
-                    <!-- Nama Personil Dropdown -->
-                    <div class="mb-4">
-                        <label for="nama_personil" class="block text-sm font-medium text-gray-700">
-                            <b>Nama Personil</b>
-                        </label>
-                        <select id="nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                            <option disabled selected>Pilih Personil</option>
-                            @foreach($data as $barang)
-                                <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    
-                    <div class="mb-4">
+
+                    <!-- Kolom Kanan -->
+                    <div class="w-full md:w-1/2 px-2">
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Nota Penjualan</b></label>
+                            <select id="nota_penjualan" name="nota_penjualan"
+                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                                <option disabled selected>Pilih Nota Penjualan</option>
+                                @foreach($dataNoNota as $no_nota)
+                                    <option value="{{ $no_nota }}">{{ $no_nota }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal Penjualan</b></label>
+                            <input type="date" id="tgl_penjualan" name="tgl_penjualan" placeholder="Tanggal Penjualan"
+                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Jenis Transaksi</b></label>
+                            <select name="jenis_transaksi" id="jenis_transaksi"
+                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                                <option disabled selected>Pilih Jenis Transaksi</option>
+                                <option value="Minta Cash">Minta Cash</option>
+                                <option value="Ngurang Piutang">Ngurang Piutang</option>
+                            </select>
+                        </div>
+                        <div class="mb-4">
                         <label for="editTotal" class="block text-sm font-medium text-gray-700">
                             <b>Total</b>
                         </label>
                         <input type="number" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="editTotal" name="total" step="0.01" required>
                     </div>
-                    
-                    <br>
+                    </div>
+                </div>
+
+                 <br>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+                    
+                   
                 </form>
             </div>
         </div>
@@ -144,22 +200,30 @@ $('.editButton').on('click', function() {
 
     // Send AJAX request to get data for the selected item
     $.ajax({
-        url: '/penjualan-piutang/' + uuid + '/edit',
+        url: '/retur-penjualan/' + uuid + '/edit',
         type: 'GET',
         success: function(response) {
             // Populate modal fields with the fetched data
-            $('#nama_pembeli').val(response.nama_pembeli); // Update input field for Nama Pembeli
+            $('#nama_konsumen').val(response.nama_konsumen); // Update input field for Nama Konsumen
             $('#nama_personil').val(response.nama_personil);
-            $('#shift').val(response.shift);
+            $('#tanggal').val(response.tanggal);
+            $('#jenis_penjualan').val(response.jenis_penjualan);
+            $('#nota_penjualan').val(response.nota_penjualan);
+            $('#tgl_penjualan').val(response.tgl_penjualan);
+            $('#jenis_transaksi').val(response.jenis_transaksi);
+
             $('#editTotal').val(response.total);
 
             // Set form action to update the data
-            $('#editForm').attr('action', '/penjualan-piutang/' + uuid);
+            $('#editForm').attr('action', '/retur-penjualan/' + uuid);
 
             // Show modal
             $('#editModal').modal('show');
 
             $("#nama_personil").select2({
+                dropdownParent: $('#editModal')
+            });
+            $("#nota_penjualan").select2({
                 dropdownParent: $('#editModal')
             });
         }

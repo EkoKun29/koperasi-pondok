@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('nota_penjualan')->nullable();
             $table->date('tgl_penjualan')->nullable();
             $table->string('nama_personil')->nullable();
+            $table->string('nama_kampus')->nullable();
             $table->string('nama_konsumen')->nullable();
             $table->string('jenis_penjualan')->nullable();
             $table->string('jenis_transaksi')->nullable();

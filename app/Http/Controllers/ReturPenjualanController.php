@@ -1,10 +1,394 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\ReturPenjualan;
+use App\Models\NamaBarang;
+use App\Models\PenjualanPiutang;
+use App\Models\PenjualanProduksiTitipan;
+use App\Models\PenjualanNonProduksi;
+use App\Models\BarangTerjual;
+use App\Models\DetailReturPenjualan;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use GuzzleHttp\Client;
 
 use Illuminate\Http\Request;
 
 class ReturPenjualanController extends Controller
 {
-    //
+    public function index()
+    {
+        if (Auth::user()->role == 'admin') {
+            $retur = ReturPenjualan::orderBy('uuid', 'desc')->get();
+        } elseif (Auth::user()->role == '1'){
+            $usersWithRole1 = User::where('role', '1')->pluck('id');
+            $retur = ReturPenjualan::whereIn('id_user', $usersWithRole1)->orderBy('uuid', 'desc')->get();
+
+        }elseif(Auth::user()->role == '2'){
+            $usersWithRole2 = User::where('role', '2')->pluck('id');
+            $retur = ReturPenjualan::whereIn('id_user', $usersWithRole2)->orderBy('uuid', 'desc')->get();
+
+        }elseif(Auth::user()->role == '3'){
+            $usersWithRole3 = User::where('role', '3')->pluck('id');
+            $retur = ReturPenjualan::whereIn('id_user', $usersWithRole3)->orderBy('uuid', 'desc')->get();
+
+        }elseif(Auth::user()->role == '4'){
+            $usersWithRole4 = User::where('role', '4')->pluck('id');
+            $retur = ReturPenjualan::whereIn('id_user', $usersWithRole4)->orderBy('uuid', 'desc')->get();
+
+        }else{
+            abort(403, 'Unauthorized action.');
+        }
+
+        $data=NamaBarang::all();
+        
+        $penjualanPiutang = PenjualanPiutang::all();
+        $penjualanProduksi = PenjualanProduksiTitipan::all();
+        $penjualanNonProduksi = PenjualanNonProduksi::all();
+        $barangTerjual = BarangTerjual::all();
+
+        // saya ingin mengambail data no_nota dari penjualanPiutang, penjualanProduksi, penjualanNonProduksi, baranTerjual
+        $dataNoNota = $penjualanPiutang->pluck('no_nota')
+            ->merge($penjualanProduksi->pluck('no_nota'))
+            ->merge($penjualanNonProduksi->pluck('no_nota'))
+            ->merge($barangTerjual->pluck('no_nota'))
+            ->unique();
+
+        return view('retur_penjualan.index',compact('retur', 'data', 'dataNoNota'))->with('i', (request()->input('page', 1) - 1) * 10);
+    }
+
+    private function generateNota()
+    {
+        $inisial = Auth::user()->role;
+    
+        // Temukan nota terbaru dengan inisial yang sama, urutkan berdasarkan id secara menurun
+        $lastNote = PenjualanPiutang::where('no_nota', 'like', 'RP' . $inisial . '%')
+                                    ->orderBy('id', 'desc')
+                                    ->first();
+    
+        if ($lastNote) {
+            // Ekstrak bagian numerik dari no_nota
+            $parts = explode('-', $lastNote->no_nota);
+            $numericPart = (int)end($parts);
+            $numericPart++; // Increment bagian numerik
+        } else {
+            $numericPart = 1; // Mulai dari 1 jika tidak ada record sebelumnya
+        }
+
+        return 'RP' . $inisial . '-' . $numericPart;
+    }
+
+    public function create(){
+
+        try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
+        $data = NamaBarang::all();
+        
+        $penjualanPiutang = PenjualanPiutang::all();
+        $penjualanProduksi = PenjualanProduksiTitipan::all();
+        $penjualanNonProduksi = PenjualanNonProduksi::all();
+        $barangTerjual = BarangTerjual::all();
+        $dataNoNota = $penjualanPiutang->pluck('no_nota')
+            ->merge($penjualanProduksi->pluck('no_nota'))
+            ->merge($penjualanNonProduksi->pluck('no_nota'))
+            ->merge($barangTerjual->pluck('no_nota'))
+            ->unique();
+        return view('retur_penjualan.create', compact('data', 'dataNoNota', 'db'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'tanggal' => 'required',
+            'nota_penjualan' => 'required',
+            'tgl_penjualan' => 'required',
+            'nama_personil' => 'required',
+            'nama_konsumen' => 'required',
+            'jenis_penjualan' => 'required',
+            'jenis_transaksi' => 'required',
+            'total' => 'required',
+            'data' => 'required|array',
+        ]);
+
+        $retur = ReturPenjualan::create([
+            'id_user' => Auth::user()->id,
+            'nota_retur' => $this->generateNota(),
+            'tanggal' => $request->tanggal,
+            'nota_penjualan' => $request->nota_penjualan,
+            'tgl_penjualan' => $request->tgl_penjualan,
+            'nama_personil' => $request->nama_personil,
+            'nama_kampus' => 'KAMPUS ' . Auth::user()->role,
+            'nama_konsumen' => $request->nama_konsumen,
+            'jenis_penjualan' => $request->jenis_penjualan,
+            'jenis_transaksi' => $request->jenis_transaksi,
+            'total' => $request->total,
+        ]);
+        
+        foreach ($request->data as $item) {
+            DetailReturPenjualan::create([
+                'uuid_retur_penjualan' => $retur->uuid,
+                'nama_barang' => $item['nama_barang'],
+                'harga' => $item['harga'],
+                'qty' => $item['qty'],
+                'satuan' => $item['satuan'],
+                'subtotal' => $item['subtotal'],
+            ]);
+        }
+
+        return response()->json(['success' => true, 'uuid' => $retur->uuid]);
+
+    }
+
+    public function storeDetail(Request $request, $uuid)
+    {
+        $request->validate([
+            'nama_barang' => 'required',
+            'harga' => 'required',
+            'qty' => 'required',
+            'satuan' => 'required',
+            'subtotal' => 'required',
+        ]);
+
+    try{
+            $detail = DetailReturPenjualan::create([
+            'uuid_retur_penjualan' => $uuid,
+            'nama_barang' => $request->nama_barang,
+            'harga' => $request->harga,
+            'qty' => $request->qty,
+            'satuan' => $request->satuan,
+            'subtotal' => $request->subtotal,
+        ]);
+
+        $retur = ReturPenjualan::where('uuid', $uuid)->first();
+        $retur->total += $request->subtotal;
+        $retur->save();
+
+        return response()->json(['success' => true, 'detail' => $detail, 'total' => $retur->total]);
+    }
+    catch(\Exception $e){
+        return response()->json(['success' => false, 'message' => 'Gagal menyimpan detail retur: ' . $e->getMessage()], 500);
+        }
+        return response()->json(['success' => true]);
+    }
+
+    public function edit($uuid)
+    {
+        $retur = ReturPenjualan::where('uuid', $uuid)->first();
+        if (!$retur) {
+            return redirect()->route('retur_penjualan.index')->with('error', 'Retur Penjualan tidak ditemukan.');
+        }
+
+        $data = NamaBarang::all();
+        
+        $penjualanPiutang = PenjualanPiutang::all();
+        $penjualanProduksi = PenjualanProduksiTitipan::all();
+        $penjualanNonProduksi = PenjualanNonProduksi::all();
+        $barangTerjual = BarangTerjual::all();
+        $dataNoNota = $penjualanPiutang->pluck('no_nota')
+            ->merge($penjualanProduksi->pluck('no_nota'))
+            ->merge($penjualanNonProduksi->pluck('no_nota'))
+            ->merge($barangTerjual->pluck('no_nota'))
+            ->unique();
+
+        return response()->json([
+        'tanggal' => $retur->tanggal,
+        'nota_penjualan' => $retur->nota_penjualan,
+        'tgl_penjualan' => $retur->tgl_penjualan,
+        'nama_konsumen' => $retur->nama_konsumen,
+        'nama_personil' => $retur->nama_personil,
+        'jenis_penjualan' => $retur->jenis_penjualan,
+        'jenis_transaksi' => $retur->jenis_transaksi,
+        'total' => $retur->total, 
+    ]);
+    }
+
+    public function update(Request $request, $uuid)
+    {
+        $request->validate([
+            'tanggal' => 'required',
+            'nota_penjualan' => 'required',
+            'tgl_penjualan' => 'required',
+            'nama_personil' => 'required',
+            'nama_konsumen' => 'required',
+            'jenis_penjualan' => 'required',
+            'jenis_transaksi' => 'required',
+            'total' => 'required',
+        ]);
+
+        $retur = ReturPenjualan::where('uuid', $uuid)->first();
+        if (!$retur) {
+            return redirect()->route('retur_penjualan.index')->with('error', 'Retur Penjualan tidak ditemukan.');
+        }
+
+        $retur->update([
+            'tanggal' => $request->tanggal,
+            'nota_penjualan' => $request->nota_penjualan,
+            'tgl_penjualan' => $request->tgl_penjualan,
+            'nama_personil' => $request->nama_personil,
+            'nama_konsumen' => $request->nama_konsumen,
+            'jenis_penjualan' => $request->jenis_penjualan,
+            'jenis_transaksi' => $request->jenis_transaksi,
+            'total' => $request->total,
+        ]);
+
+        return redirect()->route('retur-penjualan.index')->with('success', 'Retur Penjualan berhasil diperbarui.');
+
+    }   
+
+    public function show($uuid)
+    {
+
+        try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
+        $retur = ReturPenjualan::where('uuid', $uuid)->first();
+        if (!$retur) {
+            return redirect()->route('retur_penjualan.index')->with('error', 'Retur Penjualan tidak ditemukan.');
+        }
+
+        $detailRetur = DetailReturPenjualan::where('uuid_retur_penjualan', $uuid)->get();
+        $data = NamaBarang::all();
+        return view('retur_penjualan.detail', compact('retur', 'detailRetur', 'data', 'db'));
+    }
+
+    public function editDetail($uuid)
+    {
+        try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
+        $retur = ReturPenjualan::where('uuid', $uuid)->first();
+        $detail = DetailReturPenjualan::where('uuid_retur_penjualan', $retur->uuid)->get();
+
+        $data = NamaBarang::all();
+
+        return view('retur_penjualan.edit_detail', compact('retur', 'detail', 'data', 'db'));
+    }
+
+    public function updateDetail(Request $request, $uuid)
+    {
+        $request->validate([
+            'id' => 'required|exists:detail_retur_penjualans,id',
+            'nama_barang' => 'required',
+            'harga' => 'required',
+            'qty' => 'required',
+            'satuan' => 'required',
+            'subtotal' => 'required',
+        ]);
+
+        
+            $retur = ReturPenjualan::where('uuid', $uuid)->firstOrFail();
+
+            $detail = DetailReturPenjualan::findOrFail($request->id);
+            $oldSubtotal = $detail->subtotal;
+
+            $detail->update([
+                'nama_barang' => $request->nama_barang,
+                'harga' => $request->harga,
+                'qty' => $request->qty,
+                'satuan' => $request->satuan,
+                'subtotal' => $request->harga * $request->qty,
+            ]);
+
+            if ($retur) {
+                $newSubtotal = $request->harga * $request->qty;
+                $retur->total += ($newSubtotal - $oldSubtotal);
+                $retur->save();
+            } 
+
+         return response()->json([
+                'success' => true,
+                'message' => 'Data barang berhasil diperbarui',
+                'detail' => $detail // Returning the updated detail
+            ]);
+    }
+
+    public function destroy($uuid)
+    {
+        $retur = ReturPenjualan::where('uuid', $uuid)->first();
+        if ($retur) {
+            $retur->detailReturPenjualans()->delete();
+            $retur->delete();
+            return redirect()->route('retur-penjualan.index')->with('success', 'Retur Penjualan berhasil dihapus.');
+        }else{
+            return redirect()->back()->with('error', 'Pembelian tidak ditemukan');
+        }
+
+        
+    }
+
+
+    public function destroyDetail($uuid)
+    {
+        $detail = DetailReturPenjualan::with('returPenjualan')->where('uuid', $uuid)->first();
+        if (!$detail) {
+            return redirect()->back()->with('error', 'Detail retur penjualan tidak ditemukan.');
+        }
+
+        $jumlahDetail = DetailReturPenjualan::where('uuid_retur_penjualan', $detail->uuid_retur_penjualan)->count();
+
+        if ($jumlahDetail == 1) {
+        $detail->delete();
+        $detail->returPenjualan?->delete();
+        return redirect()->route('retur-penjualan.index')->with('success', 'Data retur penjualan & detail terakhir berhasil dihapus');
+        }
+        
+        if ($detail->returPenjualan) {
+            $detail->returPenjualan->total -= $detail->subtotal;
+            $detail->returPenjualan->save();
+        }
+
+        // Hapus detail retur penjualan
+        $detail->delete();
+
+        return redirect()->back()->with('success', 'Detail retur penjualan berhasil dihapus.');
+    }
+
+    public function print($uuid)
+    {
+        $retur = ReturPenjualan::where('uuid', $uuid)->firstOrFail();
+        $detailRetur = DetailReturPenjualan::where('uuid_retur_penjualan', $retur->uuid)->get();
+
+        return view('retur_penjualan.print', compact('retur', 'detailRetur'));
+    }
+
 }
