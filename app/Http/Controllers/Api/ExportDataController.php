@@ -17,6 +17,7 @@ use App\Models\DetailPenjualanProduksiTitipan;
 use App\Models\DetailPenjualanPiutang;
 use App\Models\Pelunasan;
 use App\Models\Setoran;
+use App\Models\DetailReturPenjualan;
 
 class ExportDataController extends Controller
 {
@@ -150,5 +151,12 @@ public function exportBarangMasukProduksi($startDate, $endDate)
 
     return response()->json($detailBarangMasukProduksi);
 
+}
+
+public function exportReturPenjualan($startDate, $endDate)
+{
+    $detailReturPenjualan = DetailReturPenjualan::with('returPenjualan')->whereHas('returPenjualan', function ($q) use ($startDate, $endDate) {
+        $q->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate);})->get();
+    return response()->json($detailReturPenjualan);
 }
 }

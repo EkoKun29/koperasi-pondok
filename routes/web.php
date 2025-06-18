@@ -220,8 +220,10 @@ Route::get('retur-penjualan/print/{uuid}', [App\Http\Controllers\ReturPenjualanC
 
 
 
+//--------------------------------------CETAK LABEL----------------------------------------------------------------------------------------------------------------------------------------------
 
-
+Route::resource('cetak-label', App\Http\Controllers\CetakLabelController::class);
+Route::get('/cetak-label-sync', [App\Http\Controllers\CetakLabelController::class, 'sync'])->name('cetak-label.sync');
 
 
 //--------------------------------------barang----------------------------------------------------------------------------------------------------------------------------------------------
