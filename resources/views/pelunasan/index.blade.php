@@ -204,7 +204,7 @@
                                 <select id="edit_nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Personil</option>
                                     @foreach($data as $barang)
-                                        <option value="{{ $barang->nama_personil }}" {{ $barang->nama_personil == $p->penyetor ? 'selected' : '' }} >{{ $barang->nama_personil }}</option>
+                                        <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -214,7 +214,7 @@
                                 <select id="edit_nama_konsumen" name="nama_konsumen" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Konsumen</option>
                                     @foreach($dataKonsumen as $konsumen)
-                                        <option value="{{ $konsumen['konsumen'] }}" {{ $konsumen['konsumen'] == $p->nama_konsumen ? 'selected' : '' }}>{{ $konsumen['konsumen'] }}</option>
+                                        <option value="{{ $konsumen['konsumen'] }}">{{ $konsumen['konsumen'] }}</option>
                                     @endforeach
                                 </select>
                             </div>
