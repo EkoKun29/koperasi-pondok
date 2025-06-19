@@ -87,6 +87,12 @@
                     @csrf
                     @method('PUT')
                     
+                    <div class="mb-4">
+                        <label for="tanggal" class="block text-sm font-medium text-gray-700">
+                            <b>Tanggal</b>
+                        </label>
+                        <input type="date" id="tanggal" name="created_at" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                    </div>
                     <!-- Nama Pembeli Input -->
                     <div class="mb-4">
                         <label for="nama_pembeli" class="block text-sm font-medium text-gray-700">
@@ -164,6 +170,10 @@ $('.editButton').on('click', function() {
         type: 'GET',
         success: function(response) {
             // Populate modal fields with the fetched data
+            let date = new Date(response.created_at);
+            let formattedDate = date.toISOString().split('T')[0];
+
+            $('#tanggal').val(formattedDate);
             $('#nama_pembeli').val(response.nama_pembeli); // Update input field for Nama Pembeli
             $('#nama_personil').val(response.nama_personil);
             $('#shift').val(response.shift);

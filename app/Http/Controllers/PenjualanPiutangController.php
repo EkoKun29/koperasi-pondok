@@ -157,6 +157,7 @@ public function edit($uuid)
     $piutang = PenjualanPiutang::where('uuid', $uuid)->firstOrFail(); // Replace with your actual model name and logic if needed
 
     return response()->json([
+        'created_at' => $piutang->created_at->format('Y-m-d'),
         'nama_pembeli' => $piutang->nama_pembeli,
         'nama_personil' => $piutang->nama_personil,
         'shift' => $piutang->shift,
@@ -167,6 +168,7 @@ public function update(Request $request, $uuid)
 {
     // Validate the incoming request data
     $request->validate([
+        'created_at' => 'required',
         'nama_pembeli' => 'required|string|max:255',
         'nama_personil' => 'required|string|max:255',
         'shift' => 'required|string|max:10',
@@ -178,6 +180,7 @@ public function update(Request $request, $uuid)
 
     // Update the entry with validated data
     $piutang->update([
+        'created_at' => $request->created_at,
         'nama_pembeli' => $request->nama_pembeli,
         'nama_personil' => $request->nama_personil,
         'shift' => $request->shift,

@@ -18,6 +18,7 @@ class PenjualanPiutang extends Model
         'shift',
         'total',
         'uuid',
+        'created_at',
     ];
     
     protected $primaryKey = 'uuid';
