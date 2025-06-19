@@ -27,16 +27,13 @@
     </table>
 </div>
     <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        setTimeout(() => {
-            if (window.Android && typeof window.Android.printPage === "function") {
-                window.Android.printPage();
-            } else {
-                window.print();
-            }
-        }, 300);
-    });
+    if (window.Android) {
+        window.Android.printPage();
+    } else {
+        window.print();
+    }
 </script>
+
 
 </body>
 </html>

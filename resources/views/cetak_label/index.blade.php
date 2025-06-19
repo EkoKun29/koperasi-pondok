@@ -56,20 +56,16 @@
                             <h2 class="card-title"><b>DATA LABEL </b></h2>
                             <div class="w-full md:w-1/2 px-2">
                                 <div id="modalTambahBarang" class="mb-4">
-                                    <form action="{{ route('cetak-label.print') }}" method="GET" target="_blank" class="flex items-center gap-2">
-                                        <!-- Dropdown Tanggal di kiri -->
-                                        <select name="tanggal" id="tanggal" class="form-input block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                                    <div class="flex items-center gap-2">
+                                        <select id="tanggal" class="form-input block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                                             <option disabled selected>Pilih Tanggal</option>
                                             @foreach($unique as $label)
                                                 <option value="{{ $label->tanggal }}">{{ $label->tanggal }}</option>
                                             @endforeach
                                         </select>
 
-                                        <!-- Tombol Print di kanan -->
-                                        <button type="submit" class="btn btn-secondary">
-                                            Print
-                                        </button>
-                                    </form>
+                                        <button id="printButton" class="btn btn-secondary">Print</button>
+                                    </div>
                                 </div>
                             </div>
                             {{-- <div style="float: right">
@@ -142,5 +138,16 @@
         if (alert) alert.remove();
     }, 2000); // hilang setelah 2 detik
 
+
+document.getElementById('printButton').addEventListener('click', function () {
+        const tanggal = document.getElementById('tanggal').value;
+        if (!tanggal) {
+            alert('Pilih tanggal dulu!');
+            return;
+        }
+
+        // Arahkan ke URL cetak dalam halaman yang sama
+        window.location.href = `/cetak-label/print?tanggal=${tanggal}`;
+    });
 </script>
 @endpush
