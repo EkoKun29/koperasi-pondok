@@ -11,7 +11,7 @@
     </style>
 </head>
 <body>
-
+<div>
     <table border="1" cellpadding="10" cellspacing="0">
         <tbody>
             @foreach($labels as $index => $label)
@@ -25,12 +25,18 @@
             @endforeach
         </tbody>
     </table>
+</div>
     <script>
-        if (window.Android) {
-            window.Android.printPage();
-        } else {
-            window.print();
-        }
-    </script>
+    document.addEventListener("DOMContentLoaded", function () {
+        setTimeout(() => {
+            if (window.Android && typeof window.Android.printPage === "function") {
+                window.Android.printPage();
+            } else {
+                window.print();
+            }
+        }, 300);
+    });
+</script>
+
 </body>
 </html>
