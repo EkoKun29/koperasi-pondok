@@ -10,7 +10,7 @@
         }
     </style>
 </head>
-<body onload="window.print()">
+<body>
 
     <table border="1" cellpadding="10" cellspacing="0">
         <tbody>
@@ -25,5 +25,12 @@
             @endforeach
         </tbody>
     </table>
+    <script>
+        if (window.Android) {
+            window.Android.printPage();
+        } else {
+            window.print();
+        }
+    </script>
 </body>
 </html>
