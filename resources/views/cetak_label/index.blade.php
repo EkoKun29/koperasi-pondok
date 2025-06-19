@@ -23,24 +23,61 @@
     <div class="content-wrapper">
         <!-- Main content -->
         <section class="content">
-            <div class="container-fluid">
+            @if(session('syncing'))
+                <div id="loading-alert" style="
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    background-color: #d1d5db;
+                    color: #111827;
+                    padding: 16px 24px;
+                    border-radius: 8px;
+                    font-weight: bold;
+                    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+                    z-index: 9999;">
+                    ⏳ Sedang menyinkronkan data...
+                </div>
+            @endif
+
+
+
+            {{-- <div class="container-fluid">
                 @if (session('success'))
                     <div class="alert alert-success" id="myAlert">
                         {{ session('success') }}
                     </div>
                 @endif
-            </div>
+            </div> --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
                             <h2 class="card-title"><b>DATA LABEL </b></h2>
-                            <div style="float: right">
+                            <div class="w-full md:w-1/2 px-2">
+                                <div id="modalTambahBarang" class="mb-4">
+                                    <form action="{{ route('cetak-label.print') }}" method="GET" target="_blank" class="flex items-center gap-2">
+                                        <!-- Dropdown Tanggal di kiri -->
+                                        <select name="tanggal" id="tanggal" class="form-input block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                                            <option disabled selected>Pilih Tanggal</option>
+                                            @foreach($unique as $label)
+                                                <option value="{{ $label->tanggal }}">{{ $label->tanggal }}</option>
+                                            @endforeach
+                                        </select>
+
+                                        <!-- Tombol Print di kanan -->
+                                        <button type="submit" class="btn btn-secondary">
+                                            Print
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            {{-- <div style="float: right">
                                 <a href="{{ route('cetak-label.sync') }}" class="btn btn-primary">Sinkronisasi Data</a>
                             </div>
-                            <br>
+                            <br> --}}
                         </div>
-                         <div class="table-responsive">
+                        <div class="table-responsive">
                                 <table id="datatable-basic" class="table-auto border-collapse w-full">
                                     <thead>
                                         <tr class="text-left bg-gray-200">
@@ -78,19 +115,32 @@
 
 @push('js')
     <script>
- $(document).ready(function() {
-    // Cek dan hancurkan DataTable jika sudah ada
-    if ($.fn.DataTable.isDataTable('#datatable-basic')) {
-        $('#datatable-basic').DataTable().destroy();
-    }
-    
-    // Inisialisasi DataTable
-    $('#datatable-basic').DataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
-        }
-    });
-});
+        $(document).ready(function() {
+            // Cek dan hancurkan DataTable jika sudah ada
+            if ($.fn.DataTable.isDataTable('#datatable-basic')) {
+                $('#datatable-basic').DataTable().destroy();
+            }
+            
+            // Inisialisasi DataTable
+            $('#datatable-basic').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
+                }
+            });
+        });
+        $(document).ready(function() {
+            $("#tanggal").select2({
+            dropdownParent: $("#modalTambahBarang")
+            });
+            $('#modalTambahBarang').on('hidden.bs.modal', function () {
+                $('#createPenjualanPiutang')[0].reset();
+            });                                 
+        });
+
+        setTimeout(() => {
+        const alert = document.getElementById("loading-alert");
+        if (alert) alert.remove();
+    }, 2000); // hilang setelah 2 detik
 
 </script>
 @endpush

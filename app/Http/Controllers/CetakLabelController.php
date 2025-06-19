@@ -10,56 +10,69 @@ use Carbon\Carbon;
 class CetakLabelController extends Controller
 {
     public function index(){
+
+        session()->flash('syncing', true);
+        $this->sync();
+
         $labels = CetakLabel::get();
-        return view('cetak_label.index', compact('labels'));
+        $unique = CetakLabel::select('tanggal')->distinct()->get();
+        return view('cetak_label.index', compact('labels', 'unique'));
     }
 
-    public function sync(){
+    private function sync()
+{
+    CetakLabel::truncate();
 
-        CetakLabel::truncate();
+    try {
+        $client = new Client();
+        $url = "https://script.google.com/macros/s/AKfycbz9V5nVOfO22OToQSusVcsCMu9wflDDx3LoD_lOf0ZlGByN_LHb5gKdBbTPALfSWgwl/exec";
 
-        // HIT API
-        try {
-            $client = new Client();
+        $response = $client->request('GET', $url, ['verify' => false]);
+        $data = json_decode($response->getBody());
+        $pakets = collect($data);
+    } catch (\Throwable $th) {
+        // Bisa log error, tapi jangan redirect
+        return;
+    }
 
-            $url = "https://script.google.com/macros/s/AKfycbz9V5nVOfO22OToQSusVcsCMu9wflDDx3LoD_lOf0ZlGByN_LHb5gKdBbTPALfSWgwl/exec";
-
-            $response = $client->request('GET', $url, [
-                'verify'  => false,
-            ]);
-
-            // Decode JSON dari response
-            $data = json_decode($response->getBody());
-            $pakets = collect($data); // Ubah ke koleksi
-        } catch (\Throwable $th) {
-            return redirect()->back()->with('delete', 'Data Barang Gagal di Syncronize!');
+    foreach ($pakets as $paket) {
+        if (!$paket->label || !$paket->tanggal) {
+            continue;
         }
 
-        // INSERT KE DATABASE
-        foreach ($pakets as $paket) {
-            // Lewati jika data kosong atau tidak sesuai
-            if (!$paket->label || !$paket->tanggal) {
+        $itemInBarang = CetakLabel::where('label', $paket->label)->first();
+
+        if (!$itemInBarang) {
+            try {
+                $tanggalFormatted = Carbon::createFromFormat('d-m-Y', $paket->tanggal)->format('Y-m-d');
+
+                CetakLabel::create([
+                    'tanggal' => $tanggalFormatted,
+                    'label' => $paket->label,
+                ]);
+            } catch (\Exception $e) {
                 continue;
             }
-
-            $itemInBarang = CetakLabel::where('label', $paket->label)->first();
-
-            if (!$itemInBarang) {
-                try {
-                    // Konversi tanggal dari d-m-Y ke Y-m-d
-                    $tanggalFormatted = Carbon::createFromFormat('d-m-Y', $paket->tanggal)->format('Y-m-d');
-
-                    CetakLabel::create([
-                        'tanggal' => $tanggalFormatted,
-                        'label' => $paket->label,
-                    ]);
-                } catch (\Exception $e) {
-                    // Lewati jika tanggal tidak valid
-                    continue;
-                }
-            }
-        }        
-        return redirect()->back()->with('success', 'Data Barang Berhasil di Syncronize!');
-
+        }
     }
+}
+
+
+    public function print(Request $request)
+{
+    $tanggal = $request->tanggal;
+
+    if (!$tanggal) {
+        return redirect()->back()->with('error', 'Tanggal harus dipilih');
+    }
+
+    $labels = CetakLabel::whereDate('tanggal', $tanggal)->get();
+
+    if ($labels->isEmpty()) {
+        return redirect()->back()->with('error', 'Tidak ada data label untuk tanggal tersebut.');
+    }
+
+    return view('cetak_label.print', compact('labels', 'tanggal'));
+}
+
 }
