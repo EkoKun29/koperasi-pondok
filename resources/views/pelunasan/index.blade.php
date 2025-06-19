@@ -202,7 +202,7 @@
                             <div class="mb-3">
                                 <label for="edit_nama_personil" class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
                                 <select id="edit_nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
-                                    <option disabled {{ $pelunasan->penyetor ? '' : 'selected' }}>Pilih Personil</option>
+                                    <option disabled {{ $p->penyetor ? '' : 'selected' }}>Pilih Personil</option>
                                     @foreach($data as $barang)
                                         <option value="{{ $barang->nama_personil }}" {{ $barang->nama_personil == $p->penyetor ? 'selected' : '' }} >{{ $barang->nama_personil }}</option>
                                     @endforeach
@@ -212,7 +212,7 @@
                             <div class="mb-3">
                                 <label for="edit_nama_konsumen" class="block text-sm font-medium text-gray-700"><b>Nama Konsumen</b></label>
                                 <select id="edit_nama_konsumen" name="nama_konsumen" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
-                                    <option disabled {{ $pelunasan->nama_konsumen ? '' : 'selected' }}>Pilih Konsumen</option>
+                                    <option disabled {{ $p->nama_konsumen ? '' : 'selected' }}>Pilih Konsumen</option>
                                     @foreach($dataKonsumen as $konsumen)
                                         <option value="{{ $konsumen['konsumen'] }}" {{ $konsumen['konsumen'] == $p->nama_konsumen ? 'selected' : '' }}>{{ $konsumen['konsumen'] }}</option>
                                     @endforeach
@@ -232,7 +232,7 @@
                             <div class="mb-3">
                                 <label for="edit_tanggal_penjualan_piutang" class="block text-sm font-medium text-gray-700"><b>Tanggal Penjualan Piutang</b></label>
                                 <select id="edit_tanggal_penjualan_piutang" name="tanggal_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
-                                    <option disabled {{ $pelunasan->tanggal_penjualan_piutang ? '' : 'selected' }}>Pilih Tanggal Penjualan Piutang</option>
+                                    <option disabled {{ $p->tanggal_penjualan_piutang ? '' : 'selected' }}>Pilih Tanggal Penjualan Piutang</option>
                                     @foreach($dataKonsumen as $konsumen)
                                         @if($konsumen['tanggal_valid'])
                                             @php
