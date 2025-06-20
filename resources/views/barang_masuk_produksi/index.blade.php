@@ -67,6 +67,9 @@
                               <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $bm->uuid }}"
                                 class="btn btn-warning btn-sm">Edit</button>
 
+                                <a href="{{ route('barang-masuk-produksi.print', $bm['uuid']) }}"
+                                class="btn btn-secondary btn-sm">Print</a>
+
                               <a href="{{ route('delete-barang-masuk-produksi', $bm['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $bm->nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm">Hapus</a>
                             

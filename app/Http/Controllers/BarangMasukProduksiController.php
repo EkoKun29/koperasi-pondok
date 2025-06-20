@@ -220,5 +220,15 @@ class BarangMasukProduksiController extends Controller
 
         return redirect()->back()->with('success', 'Detail barang masuk deleted successfully.');
     }
+
+    public function print ($uuid)
+    {
+        $barangMasukProduksi = BarangMasukProduksi::where('uuid', $uuid)->first();
+        if (!$barangMasukProduksi) {
+            return redirect()->back()->with('error', 'Barang Masuk Produksi tidak ditemukan');
+        }
+        $detail = DetailBarangMasukProduksi::where('uuid_masukproduksi', $uuid)->get();
+        return view('barang_masuk_produksi.print', compact('barangMasukProduksi', 'detail'));
+    }
     
 }

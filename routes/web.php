@@ -186,6 +186,8 @@ Route::put('/barang-masuk/{uuid}/detail/update', [App\Http\Controllers\BarangMas
 Route::get('barang-masuk/detail/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'show'])->name('barang-masuk.detail');
 Route::get('barang-masuk/delete/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'DeleteBarangMasuk'])->name('delete-barang-masuk');
 Route::get('barang-masuk/detail/delete/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'DeleteDetailBarangMasuk'])->name('delete-barang-masuk-detail');
+Route::get('barang-masuk/print/{uuid}', [App\Http\Controllers\BarangMasukController::class, 'print'])->name('barang-masuk.print');
+
 
 //-----------------------------------------Barang Masuk Produksi--------------------------------------------------------------------------------------------------------------------
 Route::resource('barang-masuk-produksi', App\Http\Controllers\BarangMasukProduksiController::class);
@@ -197,6 +199,7 @@ Route::put('/barang-masuk-produksi/{uuid}/detail/update', [App\Http\Controllers\
 Route::get('barang-masuk-produksi/detail/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'show'])->name('barang-masuk-produksi.detail');
 Route::get('barang-masuk-produksi/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteBarangMasukProduksi'])->name('delete-barang-masuk-produksi');
 Route::get('barang-masuk-produksi/detail/delete/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'DeleteDetailBarangMasukProduksi'])->name('delete-barang-masuk-produksi-detail');
+Route::get('barang-masuk-produksi/print/{uuid}', [App\Http\Controllers\BarangMasukProduksiController::class, 'print'])->name('barang-masuk-produksi.print');
 
 //--------------------------------------PINDAH STOK----------------------------------------------------------------------------------------------------------------------------------------------
 Route::get('pindah-stok', [PindahController::class, 'index'])->name('pindah.index');

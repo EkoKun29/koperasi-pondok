@@ -218,7 +218,19 @@ class BarangMasukController extends Controller
 
         return redirect()->back()->with('success', 'Detail barang masuk deleted successfully.');
     }
+
+    public function print ($uuid)
+    {
+        $barangMasuk = BarangMasuk::where('uuid', $uuid)->first();
+        if (!$barangMasuk) {
+            return redirect()->back()->with('error', 'Barang Masuk tidak ditemukan');
+        }
+        $detail = DetailBarangMasuk::where('uuid_barangmasuk', $uuid)->get();
+        return view('barang_masuk.print', compact('barangMasuk', 'detail'));
+    }
+}
+
     
 
 
-}
+
