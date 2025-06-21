@@ -20,7 +20,7 @@
                             </div>
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700"><b>Nama Supplier</b></label>
-                                <select id="nama_supplier" name="nama_supplier" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                <select class="nama-supplier" name="nama_supplier" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled {{ $trj->nama_supplier ? '' : 'selected' }}>Pilih Supplier</option>
                                     @foreach($db as $dbm)
                                         <option value="{{ $dbm->nama_supplier }}" {{ $dbm->nama_supplier == $trj->nama_supplier ? 'selected' : '' }}>
@@ -32,7 +32,7 @@
 
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700"><b>Masuk Ke-</b></label>
-                                <select id="nama_personil" name="nama_personil" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                <select class="nama-personil" name="nama_personil" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled {{ $trj->nama_personil ? '' : 'selected' }}>Pilih Masuk Ke-</option>
                                     @foreach($data as $dbm)
                                         <option value="{{ $dbm->nama_personil }}" {{ $dbm->nama_personil == $trj->nama_personil ? 'selected' : '' }}>
@@ -65,5 +65,31 @@
         </div>
     </div>
 </div>
+
+@push('js')
+<script>
+$(document).ready(function () {
+    // Saat modal dibuka
+    $('.modal').on('shown.bs.modal', function () {
+        const $modal = $(this);
+
+        // Inisialisasi Select2 dalam modal yang aktif
+        $modal.find('.nama-supplier').select2({
+            dropdownParent: $modal,
+            placeholder: 'Pilih Barang',
+            allowClear: true,
+            width: '100%'
+        });
+
+        $modal.find('.nama-personil').select2({
+            dropdownParent: $modal,
+            placeholder: 'Pilih Satuan',
+            allowClear: true,
+            width: '100%'
+        });
+    });
+});
+</script>
+@endpush
 
 

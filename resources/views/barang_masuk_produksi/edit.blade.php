@@ -20,7 +20,7 @@
                             </div>
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
-                                <select id="nama_personil" name="nama_personil" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                <select class="nama-personil" name="nama_personil" style="width: 100%" required>
                                     <option disabled {{ $bm->nama_personil ? '' : 'selected' }}>Pilih Personil</option>
                                     @foreach($data as $dbm)
                                         <option value="{{ $dbm->nama_personil }}" {{ $dbm->nama_personil == $bm->nama_personil ? 'selected' : '' }}>
@@ -44,4 +44,22 @@
     </div>
 </div>
 
+@push('js')
+<script>
+$(document).ready(function () {
+    // Saat modal dibuka
+    $('.modal').on('shown.bs.modal', function () {
+        const $modal = $(this);
+
+        // Inisialisasi Select2 dalam modal yang aktif
+        $modal.find('.nama-personil').select2({
+            dropdownParent: $modal,
+            placeholder: 'Pilih Personil',
+            allowClear: true,
+            width: '100%'
+        });
+    });
+});
+</script>
+@endpush
 

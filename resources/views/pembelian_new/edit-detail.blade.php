@@ -12,7 +12,7 @@
                         <div class="col">
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700"><b>Nama Barang</b></label>
-                                <select id="nama_barang" name="nama_barang" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                <select class="select-barang" name="nama_barang" style="width: 100%" required>
                                     <option disabled {{ $dtl->nama_barang ? '' : 'selected' }}>Pilih Barang</option>
                                     @foreach($db as $dbm)
                                         <option value="{{ $dbm->nama_produk }}" {{ $dbm->nama_produk == $dtl->nama_produk ? 'selected' : '' }}>
@@ -31,7 +31,7 @@
                             </div>
                             <div class="mb-4">
                                 <label class="block text-sm font-medium text-gray-700"><b>Satuan</b></label>
-                                <select id="satuan" name="satuan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                <select class="select-satuan" name="satuan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled {{ $dtl->satuan ? '' : 'selected' }}>Pilih Satuan</option>
                                     @foreach($db as $dbm)
                                         <option value="{{ $dbm->satuan }}" {{ $dbm->satuan == $dtl->satuan ? 'selected' : '' }}>
@@ -56,3 +56,28 @@
     </div>
 </div>
 
+@push('js')
+<script>
+$(document).ready(function () {
+    // Saat modal dibuka
+    $('.modal').on('shown.bs.modal', function () {
+        const $modal = $(this);
+
+        // Inisialisasi Select2 dalam modal yang aktif
+        $modal.find('.select-barang').select2({
+            dropdownParent: $modal,
+            placeholder: 'Pilih Barang',
+            allowClear: true,
+            width: '100%'
+        });
+
+        $modal.find('.select-satuan').select2({
+            dropdownParent: $modal,
+            placeholder: 'Pilih Satuan',
+            allowClear: true,
+            width: '100%'
+        });
+    });
+});
+</script>
+@endpush
