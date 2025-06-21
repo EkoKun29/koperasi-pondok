@@ -156,12 +156,11 @@ public function exportBarangMasukProduksi($startDate, $endDate)
 public function exportReturPenjualan($startDate, $endDate, $nama_koperasi)
 {
     $detailReturPenjualan = DetailReturPenjualan::with('returPenjualan')->whereHas('returPenjualan', function ($q) use ($nama_koperasi, $startDate, $endDate) {
-        $q->where('nama_koperasi', $nama_koperasi)
+        $q->where('nama_kampus', $nama_koperasi)
           ->whereDate('created_at', '>=', $startDate)
           ->whereDate('created_at', '<=', $endDate);
     })->get();
 
     return response()->json($detailReturPenjualan);
 }
-
 }
