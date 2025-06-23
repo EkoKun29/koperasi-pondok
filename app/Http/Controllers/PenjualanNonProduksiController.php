@@ -185,6 +185,7 @@ public function storeDetail(Request $request, $uuid)
     $nonproduksi = PenjualanNonProduksi::where('uuid', $uuid)->firstOrFail(); // Replace with your actual model name and logic if needed
 
     return response()->json([
+        'created_at' => $nonproduksi->created_at->format('Y-m-d'),
         'nama_personil' => $nonproduksi->nama_personil,
         'shift' => $nonproduksi->shift,
         'total' => $nonproduksi->total, // If you want to send the personil list back for dropdown (if used elsewhere)
@@ -194,6 +195,7 @@ public function update(Request $request, $uuid)
 {
     // Validate the incoming request data
     $request->validate([
+        'created_at' => 'required',
         'nama_personil' => 'required|string|max:255',
         'shift' => 'required|string|max:10',
         'total' => 'required|numeric',
@@ -204,6 +206,7 @@ public function update(Request $request, $uuid)
 
     // Update the entry with validated data
     $nonproduksi->update([
+        'created_at' => $request->created_at,
         'nama_personil' => $request->nama_personil,
         'shift' => $request->shift,
         'total' => $request->total,

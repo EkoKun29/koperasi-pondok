@@ -96,9 +96,8 @@
                             <label for="nama_personil" class="block text-sm font-medium text-gray-700">
                                 <b>Nama Personil</b>
                             </label>
-                            <select id="nama_personil" name="nama_personil"
-                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                                <option disabled selected>Pilih Personil</option>
+                            <select class="nama-personil" name="nama_personil" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                <option disabled {{ $ret->nama_personil ? '' : 'selected' }}>Pilih Personil</option>
                                 @foreach($data as $barang)
                                     <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
                                 @endforeach
@@ -133,9 +132,8 @@
                     <div class="w-full md:w-1/2 px-2">
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Nota Penjualan</b></label>
-                            <select id="nota_penjualan" name="nota_penjualan"
-                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                                <option disabled selected>Pilih Nota Penjualan</option>
+                            <select class="nota-penjualan" name="nota_penjualan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                <option disabled {{ $ret->nota_penjualan ? '' : 'selected' }}>Pilih Nota Penjualan</option>
                                 @foreach($dataNoNota as $no_nota)
                                     <option value="{{ $no_nota }}">{{ $no_nota }}</option>
                                 @endforeach
@@ -187,6 +185,7 @@
         $('#datatable-basic').DataTable().destroy();
     }
     
+    
     // DataTable Initialization
     $('#datatable-basic').DataTable({
         "language": {
@@ -220,9 +219,33 @@ $('.editButton').on('click', function() {
             // Show modal
             $('#editModal').modal('show');
 
-            $("#nama_personil").select2({
-                dropdownParent: $('#editModal')
-            });
+            $('.modal').on('shown.bs.modal', function () {
+        const $modal = $(this);
+
+        // Inisialisasi Select2 dalam modal yang aktif
+        $modal.find('.nota-penjualan').select2({
+            dropdownParent: $('#editModal'),
+            placeholder: 'Pilih Nota Penjualan',
+            allowClear: true,
+            width: '100%'
+        });
+
+        $modal.find('.nama-personil').select2({
+            dropdownParent: $('#editModal'),
+            placeholder: 'Pilih Nama Personil',
+            allowClear: true,
+            width: '100%'
+        });
+    });
+            // $("#nama_personil").select2({
+            //     dropdownParent: $('#editModal')
+            // });
+        //     $modal.find('.nama-personil').select2({
+        //     dropdownParent: $('#editModal'),
+        //     placeholder: 'Pilih Satuan',
+        //     allowClear: true,
+        //     width: '100%'
+        // });
             $("#nota_penjualan").select2({
                 dropdownParent: $('#editModal')
             });

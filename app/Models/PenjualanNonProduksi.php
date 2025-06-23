@@ -16,6 +16,7 @@ class PenjualanNonProduksi extends Model
         'nama_personil',
         'shift',
         'total',
+        'created_at',
         'uuid',
     ];
     

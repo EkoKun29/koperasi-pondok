@@ -16,6 +16,7 @@ class PenjualanProduksiTitipan extends Model
         'nama_personil',
         'shift',
         'total',
+        'created_at',
         'uuid',
     ];
 
