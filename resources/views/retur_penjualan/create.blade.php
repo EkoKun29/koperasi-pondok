@@ -21,7 +21,7 @@
 
 <!-- Page content -->
 <div class="container mx-auto mt-6">
-    <h1 class="text-xl font-semibold mb-4">Tambah Retur Penjualan</h1>
+    <h1 class="text-xl font-semibold mb-4">Tambah Retur Pembelian</h1>
     <div class="w-full">
         <div class="bg-white shadow-md rounded-lg">
             <div class="p-6">
@@ -41,10 +41,10 @@
                             </select>
                         </div>
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Nama Konsumen</b></label>
-                            <input type="text" id="nama_konsumen" name="nama_konsumen" placeholder="Konsumen" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <label class="block text-sm font-medium text-gray-700"><b>Nama Supplier</b></label>
+                            <input type="text" id="nama_supplier" name="nama_supplier" placeholder="Konsumen" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                         </div>
-                        <div class="mb-4">
+                        {{-- <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Jenis Penjualan</b></label>
                             <select name="jenis_penjualan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="jenis_penjualan">
                                 <option disabled selected>Pilih Jenis Penjualan</option>
@@ -53,12 +53,12 @@
                                 <option value="Non Produksi">Non Produksi</option>
                                 <option value="Barang Terjual">Barang Terjual</option>
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="w-full md:w-1/2 p-6 rounded">
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Nota Penjualan</b></label>
-                            <select id="nota_penjualan" name="nota_penjualan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <label class="block text-sm font-medium text-gray-700"><b>Nota Barang Masuk</b></label>
+                            <select id="nota_barang_masuk" name="nota_barang_masuk" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                                 <option disabled selected>Pilih Nota Penjualan</option>
                                 @foreach($dataNoNota as $no_nota)
                                     <option value="{{ $no_nota }}">{{ $no_nota }}</option>
@@ -66,21 +66,17 @@
                             </select>
                         </div>
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal Penjualan</b></label>
-                            <input type="date" id="tgl_penjualan" name="tgl_penjualan" placeholder="Tanggal Penjualan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal Barang Masuk</b></label>
+                            <input type="date" id="tgl_barang_masuk" name="tgl_barang_masuk" placeholder="Tanggal Penjualan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                         </div>
-                        <div class="mb-4">
+                        {{-- <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Jenis Transaksi</b></label>
                             <select name="jenis_transaksi" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="jenis_transaksi">
                                 <option disabled selected>Pilih Jenis Transaksi</option>
                                 <option value="Minta Cash">Minta Cash</option>
                                 <option value="Ngurang Piutang">Ngurang Piutang</option>
                             </select>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Total Pembayaran</b></label>
-                            <h1 class="text-2xl font-bold mt-2" id="TotalPembayaran">Rp. 0</h1>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
 
@@ -96,10 +92,8 @@
                                 <tr>
                                     <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">#</th>
                                     <th class="px-6 py-3 font-bold text-left uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Nama Barang</th>
-                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Harga Jual</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Qty</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Satuan</th>
-                                    <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Subtotal</th>
                                     <th class="px-6 py-3 font-bold text-center uppercase align-middle bg-transparent border-b border-gray-200 shadow-none text-xxs text-slate-400 opacity-70">Action</th>
                                 </tr>
                             </thead>
@@ -139,10 +133,6 @@
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label for="harga">Harga</label>
-                        <input type="number" id="harga" name="harga" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
-                    </div>
-                    <div class="mb-4">
                         <label for="qty">Qty</label>
                         <input type="number" id="qty" name="qty" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
@@ -176,13 +166,11 @@
     function addItem() {
         // Ambil nilai dari inputan
         var nama_barang = $('#barang').val();
-        var harga = parseFloat($('#harga').val());
         var qty = parseInt($('#qty').val());
         var satuan = $('#satuan').val();
-        var subtotal = harga * qty;
 
         // Validasi jika semua input telah diisi
-        if (!nama_barang || !harga || !qty || !satuan) {
+        if (!nama_barang ||!qty || !satuan) {
             alert('Semua field harus diisi.');
             return;
         }
@@ -190,10 +178,8 @@
         // Simpan data ke globalData untuk disubmit nanti
         globalData.push({
             nama_barang: nama_barang,
-            harga: harga,
             qty: qty,
-            satuan: satuan,
-            subtotal: subtotal
+            satuan: satuan
         });
 
         // Tambahkan data langsung ke tabel HTML
@@ -202,10 +188,8 @@
             <tr>
                 <td>${rowCount + 1}</td>
                 <td>${nama_barang}</td>
-                <td>${harga}</td>
                 <td>${qty}</td>
                 <td>${satuan}</td>
-                <td>${subtotal}</td>
                 <td><button class="btn btn-danger" onclick="removeItem(${rowCount})">Hapus</button></td>
             </tr>
         `);
@@ -236,10 +220,8 @@
                 <tr>
                     <td>${index + 1}</td>
                     <td>${item.nama_barang}</td>
-                    <td>${item.harga}</td>
                     <td>${item.qty}</td>
                     <td>${item.satuan}</td>
-                    <td>${item.subtotal}</td>
                     <td><button class="btn btn-danger" onclick="removeItem(${index})">Hapus</button></td>
                 </tr>
             `);
@@ -255,7 +237,7 @@
     // Event handler untuk reset form setelah modal ditutup
     $(document).ready(function() {
     $("#nama_personil").select2();
-    $("#nota_penjualan").select2();
+    $("#nota_barang_masuk").select2();
     $("#barang").select2({
     dropdownParent: $("#modalTambahBarang")
     });
@@ -268,16 +250,14 @@
     function submitAll() { 
         var nama_personil = $('#nama_personil').val();
         var tanggal = $('#tanggal').val();
-        var nama_konsumen = $('#nama_konsumen').val();
-        var jenis_penjualan = $('#jenis_penjualan').val();
-        var nota_penjualan = $('#nota_penjualan').val();
-        var tgl_penjualan = $('#tgl_penjualan').val();
-        var jenis_transaksi = $('#jenis_transaksi').val();
+        var nama_supplier = $('#nama_supplier').val();
+        var nota_barang_masuk = $('#nota_barang_masuk').val();
+        var tgl_barang_masuk = $('#tgl_barang_masuk').val();
 
         var totalPembayaran = globalData.reduce((sum, item) => sum + item.subtotal, 0); // Hitung total pembayaran
 
         // Validasi input sebelum submit
-        if (!tanggal || !nama_konsumen || !jenis_penjualan || !nota_penjualan || !tgl_penjualan || !jenis_transaksi) {
+        if (!tanggal || !nama_supplier || !nota_barang_masuk || !tgl_barang_masuk) {
             alert("Semua field harus diisi.");
             return;
         }
@@ -288,12 +268,9 @@
             data: {
                 nama_personil: nama_personil,
                 tanggal: tanggal,
-                nama_konsumen: nama_konsumen,
-                jenis_penjualan: jenis_penjualan,
-                nota_penjualan: nota_penjualan,
-                tgl_penjualan: tgl_penjualan,
-                jenis_transaksi: jenis_transaksi,
-                total: totalPembayaran,
+                nama_supplier: nama_supplier,
+                nota_barang_masuk: nota_barang_masuk,
+                tgl_barang_masuk: tgl_barang_masuk,
                 data: globalData,  // Kirim data barang
                 _token: "{{ csrf_token() }}"  // Sertakan CSRF token untuk keamanan
             },

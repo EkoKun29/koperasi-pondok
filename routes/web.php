@@ -108,6 +108,11 @@ Route::get('barang-terjual/delete/{uuid}', [BarangTerjualController::class, 'Del
 Route::get('barang-terjual/detail/delete/{id}', [BarangTerjualController::class, 'DeleteDetailTerjual'])->name('delete-barang-terjual-detail');
 Route::get('barang-terjual/print/{uuid}', [BarangTerjualController::class, 'print'])->name('barang-terjual.print');
 Route::post('barang-terjual-detail/{uuid}', [BarangTerjualController::class, 'storeDetail'])->name('barang-terjual-detail-create');
+Route::get('/barang-terjual/{uuid}/edit', [BarangTerjualController::class, 'edit'])->name('barang-terjual.edit');
+Route::put('/barang-terjual/{uuid}', [BarangTerjualController::class, 'update'])->name('barang-terjual.update');
+Route::put('/barang-terjual/{uuid}/detail/update', [BarangTerjualController::class, 'updateDetail'])->name('barang-terjual-update-detail');
+
+
 
 
 //--------------------------------------------------------Pembelian Titipan---------------------------------------------------------------

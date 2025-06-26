@@ -33,6 +33,7 @@
                     <td class="border px-4 py-2">{{ number_format($dtl->subtotal,2) }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
+                            <a href="javascript:void(0)" onclick="openEditModal({{ $dtl->id }}, '{{ $dtl->nama_barang }}', {{ $dtl->qty }}, {{ $dtl->harga }}, '{{ $dtl->keterangan }}')" class="btn btn-warning btn-sm ml-2">Edit</a>
                              <a href="{{ route('delete-barang-terjual-detail', $dtl['id']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')"
                                 class="btn btn-danger btn-sm">Hapus</a>
                         </div>
@@ -87,6 +88,51 @@
         </div>
     </div>
 </div>
+
+<div id="modalEditBarang" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="editPenjualanNonProduksiForm">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Barang</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>    
+                <div class="modal-body">
+                    <input type="hidden" id="editItemId">
+                    <div class="mb-4">
+                        <label for="editBarang">Nama Barang</label>
+                        <select id="editBarang" name="editBarang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            @foreach($data as $barang)
+                                <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="editHarga">Harga</label>
+                        <input type="number" id="editHarga" name="editHarga" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="editQty">Qty</label>
+                        <input type="number" id="editQty" name="editQty" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                    </div>
+                <div class="mb-4">
+                    <label for="editKeterangan" class="block text-sm font-medium text-gray-700"><b>Keterangan</b></label>
+                    <select name="editKeterangan" id="editKeterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                        <option disabled selected>Pilih Keterangan</option>
+                        <option value="Dus" {{ old('keterangan', $dtl->keterangan ?? '') == 'Dus' ? 'selected' : '' }}>Dus</option>
+                        <option value="Pcs" {{ old('keterangan', $dtl->keterangan ?? '') == 'Pcs' ? 'selected' : '' }}>Pcs</option>
+                        <option value="Pack" {{ old('keterangan', $dtl->keterangan ?? '') == 'Pack' ? 'selected' : '' }}>Pack</option>
+                    </select>
+                </div>       
+                </div>                         
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="updateItem()">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('js')
@@ -177,5 +223,57 @@ function resetModalForm() {
     $('#qty').val('');            // Kosongkan input qty
     $('#keterangan').val('');     // Reset select box keterangan
 }
+
+function openEditModal(id, nama_barang, qty, harga, keterangan) {
+    $('#editItemId').val(id);
+    $('#editBarang').val(nama_barang).trigger('change');
+    $('#editQty').val(qty);
+    $('#editHarga').val(harga);
+    $('#editKeterangan').val(keterangan).trigger('change');
+    
+    var modalElement = document.getElementById('modalEditBarang');
+    var modalInstance = new bootstrap.Modal(modalElement);
+    modalInstance.show();
+}
+
+function updateItem() {
+    var id = $('#editItemId').val();
+    var barang = $('#editBarang').val();
+    var harga = $('#editHarga').val();
+    var qty = $('#editQty').val();
+    var keterangan = $('#editKeterangan').val();
+    var subtotal = harga * qty;
+
+    if (barang == '' || harga == '' || qty == '' || keterangan == '') {
+        alert('Data harus diisi semua!');
+        return false;
+    }
+
+    $.ajax({
+        url: "{{ route('barang-terjual-update-detail', ['uuid' => $terjual->uuid]) }}",
+        method: 'PUT',
+        data: {
+            _token: '{{ csrf_token() }}',
+            id: id,
+            barang: barang,
+            harga: harga,
+            qty: qty,
+            keterangan: keterangan,
+            subtotal: subtotal
+        },
+        success: function(response) {
+            if (response.success) {
+                location.reload();
+            } else {
+                alert('Gagal memperbarui barang!');
+            }
+        },
+        error: function(xhr) {
+            console.error(xhr.responseText);
+            alert('Gagal memperbarui barang!');
+        }
+    });
+}
+
 </script>
 @endpush

@@ -16,14 +16,11 @@ class ReturPenjualan extends Model
         'id_user',
         'tanggal',
         'nota_retur',
-        'nota_penjualan',
-        'tgl_penjualan',
+        'nota_barang_masuk',
+        'tgl_barang_masuk',
         'nama_kampus',
         'nama_personil',
-        'nama_konsumen',
-        'jenis_penjualan',
-        'jenis_transaksi',
-        'total',
+        'nama_supplier',
     ];
 
     public function detailReturPenjualans()

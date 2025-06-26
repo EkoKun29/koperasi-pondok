@@ -31,11 +31,9 @@
                     <th class="border px-4 py-2">Nota Retur</th>
                     <th class="border px-4 py-2">Tgl Retur</th>
                     <th class="border px-4 py-2">Personil</th>
-                    <th class="border px-4 py-2">Nota Penjualan</th>
-                    <th class="border px-4 py-2">Tgl Penjualan</th>
-                    <th class="border px-4 py-2">Konsumen</th>
-                    <th class="border px-4 py-2">Jenis Penjualan</th>
-                    <th class="border px-4 py-2">Total</th>
+                    <th class="border px-4 py-2">Nota Barang Masuk</th>
+                    <th class="border px-4 py-2">Tgl Barang Masuk</th>
+                    <th class="border px-4 py-2">Nama Supplier</th>
                     <th class="border px-4 py-2">Aksi</th>
                     
                 </tr>
@@ -46,11 +44,9 @@
                     <td class="border px-4 py-2">{{ $ret->nota_retur }}</td>
                     <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($ret->tanggal)->format('d-m-Y') }}</td>
                     <td class="border px-4 py-2">{{ $ret->nama_personil }}</td>
-                    <td class="border px-4 py-2">{{ $ret->nota_penjualan }}</td>
-                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($ret->tgl_penjualan)->format('d-m-Y') }}</td>
-                    <td class="border px-4 py-2">{{ $ret->nama_konsumen }}</td>
-                    <td class="border px-4 py-2">{{ $ret->jenis_penjualan }}</td>
-                    <td class="border px-4 py-2">{{ number_format($ret->total,2) }}</td>
+                    <td class="border px-4 py-2">{{ $ret->nota_barang_masuk }}</td>
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($ret->tgl_barang_masuk)->format('d-m-Y') }}</td>
+                    <td class="border px-4 py-2">{{ $ret->nama_supplier }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
                             <a href="{{ route('retur-penjualan.detail', $ret['uuid']) }}"
@@ -105,35 +101,21 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="nama_konsumen" class="block text-sm font-medium text-gray-700">
-                                <b>Konsumen</b>
+                            <label for="nama_supplier" class="block text-sm font-medium text-gray-700">
+                                <b>Supplier</b>
                             </label>
-                            <input type="text" id="nama_konsumen" name="nama_konsumen"
+                            <input type="text" id="nama_supplier" name="nama_supplier"
                                 class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg"
-                                placeholder="Masukkan Nama Konsumen" required>
-                        </div>
-
-                        <div class="mb-4">
-                            <label for="jenis_penjualan" class="block text-sm font-medium text-gray-700">
-                                <b>Jenis Penjualan</b>
-                            </label>
-                            <select id="jenis_penjualan" name="jenis_penjualan"
-                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                                <option disabled selected>Pilih Jenis Penjualan</option>
-                                <option value="Piutang">Piutang</option>
-                                <option value="Produksi Titipan">Produksi Titipan</option>
-                                <option value="Non Produksi">Non Produksi</option>
-                                <option value="Barang Terjual">Barang Terjual</option>
-                            </select>
+                                placeholder="Masukkan Nama Supplier" required>
                         </div>
                     </div>
 
                     <!-- Kolom Kanan -->
                     <div class="w-full md:w-1/2 px-2">
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Nota Penjualan</b></label>
-                            <select class="nota-penjualan" name="nota_penjualan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
-                                <option disabled selected>Pilih Nota Penjualan</option>
+                            <label class="block text-sm font-medium text-gray-700"><b>Nota Barang Masuk</b></label>
+                            <select class="nota-penjualan" name="nota_barang_masuk" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                <option disabled selected>Pilih Nota Barang Masuk</option>
                                 @foreach($dataNoNota as $no_nota)
                                     <option value="{{ $no_nota }}">{{ $no_nota }}</option>
                                 @endforeach
@@ -141,26 +123,11 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal Penjualan</b></label>
-                            <input type="date" id="tgl_penjualan" name="tgl_penjualan" placeholder="Tanggal Penjualan"
+                            <label class="block text-sm font-medium text-gray-700"><b>Tanggal Barang Masuk</b></label>
+                            <input type="date" id="tgl_barang_masuk" name="tgl_barang_masuk" placeholder="Tanggal Penjualan"
                                 class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                         </div>
-
-                        <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700"><b>Jenis Transaksi</b></label>
-                            <select name="jenis_transaksi" id="jenis_transaksi"
-                                class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                                <option disabled selected>Pilih Jenis Transaksi</option>
-                                <option value="Minta Cash">Minta Cash</option>
-                                <option value="Ngurang Piutang">Ngurang Piutang</option>
-                            </select>
-                        </div>
-                        <div class="mb-4">
-                        <label for="editTotal" class="block text-sm font-medium text-gray-700">
-                            <b>Total</b>
-                        </label>
-                        <input type="number" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="editTotal" name="total" step="0.01" required>
-                    </div>
+                    
                     </div>
                 </div>
 
@@ -203,13 +170,11 @@ $('.editButton').on('click', function() {
         type: 'GET',
         success: function(response) {
             // Populate modal fields with the fetched data
-            $('#nama_konsumen').val(response.nama_konsumen); // Update input field for Nama Konsumen
+            $('#nama_supplier').val(response.nama_supplier); // Update input field for Nama Konsumen
             $('#nama_personil').val(response.nama_personil);
             $('#tanggal').val(response.tanggal);
-            $('#jenis_penjualan').val(response.jenis_penjualan);
-            $('#nota_penjualan').val(response.nota_penjualan);
-            $('#tgl_penjualan').val(response.tgl_penjualan);
-            $('#jenis_transaksi').val(response.jenis_transaksi);
+            $('#nota_barang_masuk').val(response.nota_barang_masuk);
+            $('#tgl_barang_masuk').val(response.tgl_barang_masuk);
 
             $('#editTotal').val(response.total);
 
@@ -246,7 +211,7 @@ $('.editButton').on('click', function() {
         //     allowClear: true,
         //     width: '100%'
         // });
-            $("#nota_penjualan").select2({
+            $("#nota_barang_masuk").select2({
                 dropdownParent: $('#editModal')
             });
         }

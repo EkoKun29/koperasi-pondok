@@ -38,7 +38,8 @@ class BarangTerjualController extends Controller
         }else{
             abort(403, 'Unauthorized action.');
         }
-        return view('barang_terjual.index',compact('terjual'))->with('i', (request()->input('page', 1) - 1) * 10);
+        $data = NamaBarang::all();
+        return view('barang_terjual.index',compact('terjual','data'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     private function generateNota()
@@ -161,38 +162,82 @@ public function show($uuid)
     return view('barang_terjual.detail', compact('terjual', 'detail', 'data'));
 }
 
-public function edit(BarangTerjual $barangTerjual)
+public function edit($uuid)
 {
-    $detail = DetailBarangTerjual::where('uuid_terjual', $barangTerjual->uuid)->get();
-    return view('barang_terjual.edit', compact( 'detail'));
+    $barangTerjual = BarangTerjual::where('uuid', $uuid)->firstOrFail();
+
+    return response()->json([
+        'created_at' => $barangTerjual->created_at->format('Y-m-d'),
+        'nama_personil' => $barangTerjual->nama_personil,
+        'shift' => $barangTerjual->shift,
+        'total' => $barangTerjual->total,
+    ]);
 }
 
 /**
  * Update the specified resource in storage.
  */
-public function update(Request $request, BarangTerjual $barangTerjual)
+public function update(Request $request, $uuid)
 {
-    $detailBarangTerjual = DetailBarangTerjual::where('uuid_terjual', $barangTerjual->uuid)->get();
-    foreach($barangTerjual as $dpp){
-        $dpp->nama_barang = $request->barang;
-        $dpp->qty = $request->qty;
-        $dpp->harga = $request->harga;
-        $dpp->keterangan = $request->keterangan;
-        $dpp->subtotal = $request->qty * $request->harga;
-        $dpp->save();
-    }
 
-    //update total penjualan terjual
-    $detailBarangTerjual = DetailBarangTerjual::where('uuid_terjual',$barangTerjual->uuid)->get();
-    $barangTerjual->total = $detailBarangTerjual->sum('subtotal');
-    $barangTerjual->save();
+    $request->validate([
+        'created_at' => 'required',
+        'nama_personil' => 'required|string',
+        'shift' => 'required|string',
+        'total' => 'required|numeric',
+    ]);
 
+    $barangTerjual = BarangTerjual::where('uuid', $uuid)->firstOrFail();
+
+    $barangTerjual->update([
+        'created_at' => $request->created_at,
+        'nama_personil' => $request->nama_personil,
+        'shift' => $request->shift,
+        'total' => $request->total,
+    ]);
     return redirect()->back()->with('success', 'Data berhasil diubah');
 }
 
-/**
- * Remove the specified resource from storage.
- */
+    public function editDetail($uuid)
+    {
+        $data = NamaBarang::all();
+        $terjual = BarangTerjual::where('uuid', $uuid)->firstOrFail();
+        $detail = DetailBarangTerjual::where('uuid_terjual', $terjual->uuid)->get();
+
+        return view('barang_terjual.edit_detail', compact('terjual', 'detail', 'data'));
+    }
+
+    public function updateDetail(Request $request, $uuid){
+        $request->validate([
+            'barang' => 'required|string',
+            'harga' => 'required|numeric',
+            'qty' => 'required|numeric',
+            'keterangan' => 'nullable|string',
+            'subtotal' => 'required|numeric',
+        ]);
+
+        $detail = DetailBarangTerjual::where('uuid_terjual', $uuid)->firstOrFail();
+
+        // Update detail barang terjual
+        $detail->update([
+            'barang' => $request->barang,
+            'harga' => $request->harga,
+            'qty' => $request->qty,
+            'keterangan' => $request->keterangan,
+            'subtotal' => $request->subtotal,
+        ]);
+
+        // Update total di BarangTerjual
+        $barangTerjual = BarangTerjual::where('uuid', $uuid)->firstOrFail();
+        $barangTerjual->total = DetailBarangTerjual::where('uuid_terjual', $uuid)->sum('subtotal');
+        $barangTerjual->save();
+
+        return response()->json([
+                'success' => true,
+                'message' => 'Data barang berhasil diperbarui',
+                'detail' => $detail // Returning the updated detail
+            ]);
+    }
 public function DeleteBarangTerjual($uuid)
 {
     $terjual = BarangTerjual::where('uuid', $uuid)->first();

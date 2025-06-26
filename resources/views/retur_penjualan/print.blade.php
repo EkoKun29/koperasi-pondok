@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="style.css">
-    <title>Koperasi Kampus {{ Auth::user()->role }}</title>
+    <title>Print Retur Pembelian</title>
     <style>
         * {
             font-size: 8px;
@@ -50,6 +50,8 @@
             border-top: 2px dashed black; /* Atur lebar dan gaya garis sesuai kebutuhan */
             height: 0;
     }
+
+    
     </style>
 </head>
 
@@ -57,44 +59,41 @@
     <div class="ticket">
         <p class="centered"><b><strong>KOPERASI KAMPUS {{ Auth::user()->role }}</strong></b>
             <br>
-            <b><strong>NOTA RETUR PENJUALAN</strong></b>
+            <b><strong>NOTA RETUR PEMBELIAN</strong></b>
         </p>
         <p style="font-size: 1.2em; ">
             <strong>
-            <br>KARYAWAN : {{  $retur->nama_personil }}
             <br>NOTA : {{ $retur->nota_retur }}
-            <br>TANGGAL : {{ \Carbon\Carbon::parse($retur->tanggal)->format('d-m-Y') }}
-            <br>JENIS RETUR : {{ $retur->jenis_penjualan }}
-            <br>JENIS TRANSAKSI : {{ $retur->jenis_transaksi }}
-            <br>NAMA KONSUMEN : {{ $retur->nama_konsumen }}
+            <br>TANGGAL: {{ \Carbon\Carbon::parse($retur->tanggal)->format('d-m-Y') }}
+            <br>KARYAWAN: {{ $retur->nama_personil }}
+            <br>SUPPLIER : {{ $retur->nama_supplier }}
             </strong>
-            <hr>
         </p>
-        <table>
+        <hr style="border: none; border-top: 2px dashed black; margin: 10px 0;">
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th style="border: 1px solid black;">Nama Barang</th>
+                    <th style="border: 1px solid black;">Qty</th>
+                    <th style="border: 1px solid black;">Satuan</th>
+                </tr>
+            </thead>
             <tbody>
                 @foreach ($detailRetur as $item)
                 <tr>
-                    <td class="description" style="font-size: 1.2em; ">{{ $item->nama_barang }}</td>
-                    <td class="description" style="text-align: right; font-size: 1.2em; ">Rp {{number_format($item->subtotal, 2, ',', '.') }}</td>
-                </tr>
-                <tr>
-                    <td class="description" style="font-size: 1.2em; ">{{ $item->qty }} {{ $item->satuan }} x Rp {{number_format($item->harga, 2, ',', '.') }}</td>
-                    <td class="description"></td>
+                    <td style="border: 1px solid black;">{{ $item->nama_barang }}</td>
+                    <td style="border: 1px solid black;">{{ $item->qty }}</td>
+                    <td style="border: 1px solid black;">{{ $item->satuan }}</td>
                 </tr>
                 @endforeach
-            </tbody>
-        </table>
-        <hr>
-        <table>
-            <tbody>
                 <tr>
-                    <td class="description" style="font-weight: bold; font-size: 1.8em;">Total : </td>
-                    <td class="description" style="text-align: right; font-weight: bold; font-size: 1.8em;">Rp {{number_format($retur->total, 2, ',', '.') }}</td>
+                    <td colspan="3" style="text-align:center;">------------------------------</td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align:center;"><b>** TERIMAKASIH **</b></td>
                 </tr>
             </tbody>
         </table>
-        <hr>
-        <p class="centered"><b>** TERIMAKASIH **</b>
     </div>
     <script>
         if (window.Android) {

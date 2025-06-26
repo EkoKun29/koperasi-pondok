@@ -16,9 +16,7 @@
                     <th class="border px-4 py-2">#</th>
                     <th class="border px-4 py-2">Nama Barang</th>
                     <th class="border px-4 py-2">Qty</th>
-                    <th class="border px-4 py-2">Harga</th>
                     <th class="border px-4 py-2">Satuan</th>
-                    <th class="border px-4 py-2">Subtotal</th>
                     <th class="border px-4 py-2">Aksi</th>
                 </tr>
             </thead>
@@ -28,12 +26,10 @@
                     <td class="border px-4 py-2">{{ $loop->iteration }}</td>
                     <td class="border px-4 py-2">{{ $dtl->nama_barang }}</td>
                     <td class="border px-4 py-2">{{ $dtl->qty }}</td>
-                    <td class="border px-4 py-2">{{ $dtl->harga }}</td>
                     <td class="border px-4 py-2">{{ $dtl->satuan }}</td>
-                    <td class="border px-4 py-2">{{ number_format($dtl->subtotal, 2) }}</td>
                     <td class="border px-4 py-2">
                     <div class="d-flex">
-                        <a href="javascript:void(0)" onclick="openEditModal({{ $dtl->id }}, '{{ $dtl->nama_barang }}', {{ $dtl->qty }}, {{ $dtl->harga }}, '{{ $dtl->satuan }}')" class="btn btn-warning btn-sm ml-2">Edit</a>
+                        <a href="javascript:void(0)" onclick="openEditModal({{ $dtl->id }}, '{{ $dtl->nama_barang }}', {{ $dtl->qty }}, '{{ $dtl->satuan }}')" class="btn btn-warning btn-sm ml-2">Edit</a>
                         <a href="{{ route('delete-retur-penjualan-detail', $dtl['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')" class="btn btn-danger btn-sm">Hapus</a>
                         </div>
                     </td>
@@ -62,10 +58,6 @@
                                 <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="harga">Harga</label>
-                        <input type="number" id="harga" name="harga" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
                     <div class="mb-4">
                         <label for="qty">Qty</label>
@@ -108,10 +100,6 @@
                                 <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="editHarga">Harga</label>
-                        <input type="number" id="editHarga" name="editHarga" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
                     <div class="mb-4">
                         <label for="editQty">Qty</label>
@@ -163,13 +151,11 @@ $(document).ready(function() {
 
 function addItem() {
     var nama_barang = $('#barang').val();
-    var harga = $('#harga').val();
     var qty = $('#qty').val();
     var satuan = $('#satuan').val();
-    var subtotal = harga * qty;
 
     // Validate that all required fields are filled
-    if (nama_barang === '' || harga === '' || qty === '' || satuan === '') {
+    if (nama_barang === '' ||  qty === '' || satuan === '') {
         alert('Semua data harus diisi!');
         return false;
     }
@@ -181,10 +167,8 @@ function addItem() {
         data: {
             _token: '{{ csrf_token() }}',
             nama_barang: nama_barang,
-            harga: harga,
             qty: qty,
-            satuan: satuan,
-            subtotal: subtotal
+            satuan: satuan
         },
         success: function(response) {
             if (response.success) {
@@ -194,12 +178,10 @@ function addItem() {
                         <td class="border px-4 py-2">${$('#itemList tr').length + 1}</td>
                         <td class="border px-4 py-2">${response.detail.nama_barang}</td>
                         <td class="border px-4 py-2">${response.detail.qty}</td>
-                        <td class="border px-4 py-2">${response.detail.harga}</td>
                         <td class="border px-4 py-2">${response.detail.satuan}</td>
-                        <td class="border px-4 py-2">${parseFloat(response.detail.subtotal).toFixed(2)}</td>
                         <td class="border px-4 py-2">
                             <div class="d-flex">
-                                <a href="javascript:void(0);" onclick="openEditModal(${response.detail.id}, '${response.detail.nama_barang}', ${response.detail.qty}, ${response.detail.harga}, '${response.detail.satuan}')" 
+                                <a href="javascript:void(0);" onclick="openEditModal(${response.detail.id}, '${response.detail.nama_barang}', ${response.detail.qty}, '${response.detail.satuan}')" 
                                    class="btn btn-warning btn-sm ml-2">Edit</a>
                                 <a href="{{ route('delete-retur-penjualan-detail', 'id_placeholder') }}" 
                                    id="btn-delete-post" 
@@ -228,8 +210,7 @@ function addItem() {
 }
 
 function resetModalForm() {
-    $('#barang').val('').trigger('change');  // Reset select2 dropdown
-    $('#harga').val('');
+    $('#barang').val('').trigger('change');
     $('#qty').val('');
     $('#satuan').val('').trigger('change');
 }
@@ -239,7 +220,6 @@ function openEditModal(id, nama_barang, qty, harga, satuan) {
      $('#editItemId').val(id);
     $('#editBarang').val(nama_barang).trigger('change');
     $('#editQty').val(qty);
-    $('#editHarga').val(harga);
     $('#editSatuan').val(satuan).trigger('change');
 
     var modalElement = document.getElementById('modalEditBarang');
@@ -250,12 +230,10 @@ function openEditModal(id, nama_barang, qty, harga, satuan) {
 function updateItem() {
     var id = $('#editItemId').val();
     var nama_barang = $('#editBarang').val();
-    var harga = $('#editHarga').val();
     var qty = $('#editQty').val();
     var satuan = $('#editSatuan').val();
-    var subtotal = harga * qty;
 
-    if (nama_barang == '' || harga == '' || qty == '' || satuan == '') {
+    if (nama_barang == '' || qty == '' || satuan == '') {
         alert('Data harus diisi semua!');
         return false;
     }
@@ -267,10 +245,8 @@ function updateItem() {
             _token: '{{ csrf_token() }}',
             id: id,
             nama_barang: nama_barang,
-            harga: harga,
             qty: qty,
-            satuan: satuan,
-            subtotal: subtotal
+            satuan: satuan
         },
         success: function(response) {
             if (response.success) {

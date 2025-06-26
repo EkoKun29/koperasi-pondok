@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use App\Models\BarangMasuk;
+use App\Models\BarangMasukProduksi;
 use App\Models\ReturPenjualan;
 use App\Models\NamaBarang;
 use App\Models\PenjualanPiutang;
@@ -42,16 +45,12 @@ class ReturPenjualanController extends Controller
 
         $data=NamaBarang::all();
         
-        $penjualanPiutang = PenjualanPiutang::all();
-        $penjualanProduksi = PenjualanProduksiTitipan::all();
-        $penjualanNonProduksi = PenjualanNonProduksi::all();
-        $barangTerjual = BarangTerjual::all();
+        $barangMasuk = BarangMasuk::all();
+        $barangMasukProduksi = BarangMasukProduksi::all();
 
         // saya ingin mengambail data no_nota dari penjualanPiutang, penjualanProduksi, penjualanNonProduksi, baranTerjual
-        $dataNoNota = $penjualanPiutang->pluck('no_nota')
-            ->merge($penjualanProduksi->pluck('no_nota'))
-            ->merge($penjualanNonProduksi->pluck('no_nota'))
-            ->merge($barangTerjual->pluck('no_nota'))
+        $dataNoNota = $barangMasuk->pluck('nota')
+            ->merge($barangMasukProduksi->pluck('nota'))
             ->unique();
 
         return view('retur_penjualan.index',compact('retur', 'data', 'dataNoNota'))->with('i', (request()->input('page', 1) - 1) * 10);
@@ -62,13 +61,13 @@ class ReturPenjualanController extends Controller
         $inisial = Auth::user()->role;
     
         // Temukan nota terbaru dengan inisial yang sama, urutkan berdasarkan id secara menurun
-        $lastNote = PenjualanPiutang::where('no_nota', 'like', 'RP' . $inisial . '%')
+        $lastNote = ReturPenjualan::where('nota_retur', 'like', 'RP' . $inisial . '%')
                                     ->orderBy('id', 'desc')
                                     ->first();
     
         if ($lastNote) {
             // Ekstrak bagian numerik dari no_nota
-            $parts = explode('-', $lastNote->no_nota);
+            $parts = explode('-', $lastNote->nota_retur);
             $numericPart = (int)end($parts);
             $numericPart++; // Increment bagian numerik
         } else {
@@ -98,14 +97,10 @@ class ReturPenjualanController extends Controller
         }
         $data = NamaBarang::all();
         
-        $penjualanPiutang = PenjualanPiutang::all();
-        $penjualanProduksi = PenjualanProduksiTitipan::all();
-        $penjualanNonProduksi = PenjualanNonProduksi::all();
-        $barangTerjual = BarangTerjual::all();
-        $dataNoNota = $penjualanPiutang->pluck('no_nota')
-            ->merge($penjualanProduksi->pluck('no_nota'))
-            ->merge($penjualanNonProduksi->pluck('no_nota'))
-            ->merge($barangTerjual->pluck('no_nota'))
+        $barangMasuk = BarangMasuk::all();
+        $barangMasukProduksi = BarangMasukProduksi::all();
+        $dataNoNota = $barangMasuk->pluck('nota')
+            ->merge($barangMasukProduksi->pluck('nota'))
             ->unique();
         return view('retur_penjualan.create', compact('data', 'dataNoNota', 'db'));
     }
@@ -114,13 +109,10 @@ class ReturPenjualanController extends Controller
     {
         $request->validate([
             'tanggal' => 'required',
-            'nota_penjualan' => 'required',
-            'tgl_penjualan' => 'required',
+            'nota_barang_masuk' => 'required',
+            'tgl_barang_masuk' => 'required',
             'nama_personil' => 'required',
-            'nama_konsumen' => 'required',
-            'jenis_penjualan' => 'required',
-            'jenis_transaksi' => 'required',
-            'total' => 'required',
+            'nama_supplier' => 'required',
             'data' => 'required|array',
         ]);
 
@@ -128,24 +120,19 @@ class ReturPenjualanController extends Controller
             'id_user' => Auth::user()->id,
             'nota_retur' => $this->generateNota(),
             'tanggal' => $request->tanggal,
-            'nota_penjualan' => $request->nota_penjualan,
-            'tgl_penjualan' => $request->tgl_penjualan,
+            'nota_barang_masuk' => $request->nota_barang_masuk,
+            'tgl_barang_masuk' => $request->tgl_barang_masuk,
             'nama_personil' => $request->nama_personil,
             'nama_kampus' => 'KAMPUS ' . Auth::user()->role,
-            'nama_konsumen' => $request->nama_konsumen,
-            'jenis_penjualan' => $request->jenis_penjualan,
-            'jenis_transaksi' => $request->jenis_transaksi,
-            'total' => $request->total,
+            'nama_supplier' => $request->nama_supplier,
         ]);
         
         foreach ($request->data as $item) {
             DetailReturPenjualan::create([
                 'uuid_retur_penjualan' => $retur->uuid,
                 'nama_barang' => $item['nama_barang'],
-                'harga' => $item['harga'],
                 'qty' => $item['qty'],
                 'satuan' => $item['satuan'],
-                'subtotal' => $item['subtotal'],
             ]);
         }
 
@@ -157,27 +144,23 @@ class ReturPenjualanController extends Controller
     {
         $request->validate([
             'nama_barang' => 'required',
-            'harga' => 'required',
             'qty' => 'required',
             'satuan' => 'required',
-            'subtotal' => 'required',
         ]);
 
     try{
             $detail = DetailReturPenjualan::create([
             'uuid_retur_penjualan' => $uuid,
             'nama_barang' => $request->nama_barang,
-            'harga' => $request->harga,
             'qty' => $request->qty,
             'satuan' => $request->satuan,
-            'subtotal' => $request->subtotal,
         ]);
 
-        $retur = ReturPenjualan::where('uuid', $uuid)->first();
-        $retur->total += $request->subtotal;
-        $retur->save();
+        // $retur = ReturPenjualan::where('uuid', $uuid)->first();
+        // $retur->total += $request->subtotal;
+        // $retur->save();
 
-        return response()->json(['success' => true, 'detail' => $detail, 'total' => $retur->total]);
+        return response()->json(['success' => true, 'detail' => $detail]);
     }
     catch(\Exception $e){
         return response()->json(['success' => false, 'message' => 'Gagal menyimpan detail retur: ' . $e->getMessage()], 500);
@@ -194,25 +177,18 @@ class ReturPenjualanController extends Controller
 
         $data = NamaBarang::all();
         
-        $penjualanPiutang = PenjualanPiutang::all();
-        $penjualanProduksi = PenjualanProduksiTitipan::all();
-        $penjualanNonProduksi = PenjualanNonProduksi::all();
-        $barangTerjual = BarangTerjual::all();
-        $dataNoNota = $penjualanPiutang->pluck('no_nota')
-            ->merge($penjualanProduksi->pluck('no_nota'))
-            ->merge($penjualanNonProduksi->pluck('no_nota'))
-            ->merge($barangTerjual->pluck('no_nota'))
+        $barangMasuk = BarangMasuk::all();
+        $barangMasukProduksi = BarangMasukProduksi::all();
+        $dataNoNota = $barangMasuk->pluck('nota')
+            ->merge($barangMasukProduksi->pluck('nota'))
             ->unique();
 
         return response()->json([
         'tanggal' => $retur->tanggal,
-        'nota_penjualan' => $retur->nota_penjualan,
-        'tgl_penjualan' => $retur->tgl_penjualan,
-        'nama_konsumen' => $retur->nama_konsumen,
+        'nota_barang_masuk' => $retur->nota_barang_masuk,
+        'tgl_barang_masuk' => $retur->tgl_barang_masuk,
+        'nama_supplier' => $retur->nama_supplier,
         'nama_personil' => $retur->nama_personil,
-        'jenis_penjualan' => $retur->jenis_penjualan,
-        'jenis_transaksi' => $retur->jenis_transaksi,
-        'total' => $retur->total, 
     ]);
     }
 
@@ -220,13 +196,10 @@ class ReturPenjualanController extends Controller
     {
         $request->validate([
             'tanggal' => 'required',
-            'nota_penjualan' => 'required',
-            'tgl_penjualan' => 'required',
+            'nota_barang_masuk' => 'required',
+            'tgl_barang_masuk' => 'required',
             'nama_personil' => 'required',
-            'nama_konsumen' => 'required',
-            'jenis_penjualan' => 'required',
-            'jenis_transaksi' => 'required',
-            'total' => 'required',
+            'nama_supplier' => 'required',
         ]);
 
         $retur = ReturPenjualan::where('uuid', $uuid)->first();
@@ -236,13 +209,10 @@ class ReturPenjualanController extends Controller
 
         $retur->update([
             'tanggal' => $request->tanggal,
-            'nota_penjualan' => $request->nota_penjualan,
-            'tgl_penjualan' => $request->tgl_penjualan,
+            'nota_barang_masuk' => $request->nota_barang_masuk,
+            'tgl_barang_masuk' => $request->tgl_barang_masuk,
             'nama_personil' => $request->nama_personil,
-            'nama_konsumen' => $request->nama_konsumen,
-            'jenis_penjualan' => $request->jenis_penjualan,
-            'jenis_transaksi' => $request->jenis_transaksi,
-            'total' => $request->total,
+            'nama_supplier' => $request->nama_supplier,
         ]);
 
         return redirect()->route('retur-penjualan.index')->with('success', 'Retur Penjualan berhasil diperbarui.');
@@ -309,10 +279,8 @@ class ReturPenjualanController extends Controller
         $request->validate([
             'id' => 'required|exists:detail_retur_penjualans,id',
             'nama_barang' => 'required',
-            'harga' => 'required',
             'qty' => 'required',
             'satuan' => 'required',
-            'subtotal' => 'required',
         ]);
 
         
@@ -323,19 +291,17 @@ class ReturPenjualanController extends Controller
 
             $detail->update([
                 'nama_barang' => $request->nama_barang,
-                'harga' => $request->harga,
                 'qty' => $request->qty,
                 'satuan' => $request->satuan,
-                'subtotal' => $request->harga * $request->qty,
             ]);
 
-            if ($retur) {
-                $newSubtotal = $request->harga * $request->qty;
-                $retur->total += ($newSubtotal - $oldSubtotal);
-                $retur->save();
-            } 
+            // if ($retur) {
+            //     $newSubtotal = $request->harga * $request->qty;
+            //     $retur->total += ($newSubtotal - $oldSubtotal);
+            //     $retur->save();
+            // } 
 
-         return response()->json([
+        return response()->json([
                 'success' => true,
                 'message' => 'Data barang berhasil diperbarui',
                 'detail' => $detail // Returning the updated detail
@@ -372,10 +338,10 @@ class ReturPenjualanController extends Controller
         return redirect()->route('retur-penjualan.index')->with('success', 'Data retur penjualan & detail terakhir berhasil dihapus');
         }
         
-        if ($detail->returPenjualan) {
-            $detail->returPenjualan->total -= $detail->subtotal;
-            $detail->returPenjualan->save();
-        }
+        // if ($detail->returPenjualan) {
+        //     $detail->returPenjualan->total -= $detail->subtotal;
+        //     $detail->returPenjualan->save();
+        // }
 
         // Hapus detail retur penjualan
         $detail->delete();
