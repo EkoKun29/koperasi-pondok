@@ -20,7 +20,7 @@
 </nav>
 
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">Retur Penjualan</h1>
+    <h1 class="text-xl font-semibold mb-4">Retur Pembelian</h1>
     <div class="mx-4">
         <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('retur-penjualan.create') }}">Tambah Data</a>
     </div>
@@ -71,7 +71,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Retur Penjualan</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Retur Pembelian</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
