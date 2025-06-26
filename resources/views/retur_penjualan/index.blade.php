@@ -97,7 +97,7 @@
                                 <b>Nama Personil</b>
                             </label>
                             <select class="nama-personil" name="nama_personil" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
-                                <option disabled {{ $ret->nama_personil ? '' : 'selected' }}>Pilih Personil</option>
+                                <option disabled selected>Pilih Personil</option>
                                 @foreach($data as $barang)
                                     <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
                                 @endforeach
@@ -133,7 +133,7 @@
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Nota Penjualan</b></label>
                             <select class="nota-penjualan" name="nota_penjualan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
-                                <option disabled {{ $ret->nota_penjualan ? '' : 'selected' }}>Pilih Nota Penjualan</option>
+                                <option disabled selected>Pilih Nota Penjualan</option>
                                 @foreach($dataNoNota as $no_nota)
                                     <option value="{{ $no_nota }}">{{ $no_nota }}</option>
                                 @endforeach
