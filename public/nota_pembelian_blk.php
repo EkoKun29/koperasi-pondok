@@ -55,24 +55,21 @@ foreach ($barang as $id => $key) {
         }
 
         .item-line {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 3mm; /* jarak aman */
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 3mm;
+    align-items: start;
 }
 
 .item-line span:first-child {
-    flex: 1;
-    max-width: 60%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    white-space: normal;        /* agar bisa turun baris */
+    word-break: break-word;     /* agar bisa potong kata */
 }
 
 .item-line span:last-child {
-    min-width: 35%;
     text-align: right;
     padding-right: 5mm;
+    white-space: nowrap;        /* agar harga tetap satu baris */
 }
 
         .nota-section {

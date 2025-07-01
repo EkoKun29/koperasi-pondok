@@ -1,11 +1,11 @@
 <?php
-$setoran = explode(",", $_GET["SETORAN"]);
-$result = array();
-foreach ($setoran as $id => $key) {
-    $setoran += (int) str_replace(['.', ','], '', $setoran[$id]);
+$setoranList = explode(",", $_GET["SETORAN"]);
+$total = 0;
+
+foreach ($setoranList as $val) {
+    $total += (int) str_replace(['.', ','], '', $val);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -17,7 +17,6 @@ foreach ($setoran as $id => $key) {
                 size: 58mm 3276mm;
                 margin: 0;
             }
-
             body {
                 margin: 0;
                 padding: 0;
@@ -26,11 +25,12 @@ foreach ($setoran as $id => $key) {
 
         body {
             width: 48mm;
-            font-family: 'Courier New', monospace;
-            font-size: 11px;
-            margin: 0;
-            padding: 0mm 0 0mm 0mm; /* TOP RIGHT BOTTOM LEFT */
+            font-family: Consolas, 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.5;
             color: #000;
+            margin: 0;
+            padding: 0;
         }
 
         .center {
@@ -38,69 +38,60 @@ foreach ($setoran as $id => $key) {
         }
 
         .dashed {
-            border-top: 1px dashed black;
-            margin: 6px 0;
-        }
-
-        .item-line {
-    display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
-    gap: 3mm; /* jarak aman */
-}
-
-.item-line span:first-child {
-    flex: 1;
-    max-width: 60%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.item-line span:last-child {
-    min-width: 35%;
-    text-align: right;
-    padding-right: 5mm;
-}
-
-        .nota-section {
-            margin-top: 5px;
+            border-top: 2px dashed black;
+            margin: 8px 0;
         }
 
         .bold {
             font-weight: bold;
         }
 
+        .item-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
         .thankyou {
             text-align: center;
             margin-top: 15px;
         }
+
+        .penerima {
+            margin-top: 20px;
+            text-align: left;
+            padding-left: 5mm;
+        }
     </style>
 </head>
 <body>
-    <div class="center">
-        <div class="bold">MQ BAKERY</div>
-        <div>NOTA SETORAN</div>
-    </div>
+    <div class="center bold">MQ BAKERY</div>
+    <div class="center">NOTA SETORAN</div>
 
     <div class="dashed"></div>
 
     <div class="nota-section">
-        No Nota: <?= $_GET["NO"] ?><br>
-        Tanggal: <?= date('d/m/Y', strtotime($_GET["TANGGAL"])) ?><br>
-        Nama Tempat: <?= $_GET["NAMA_UNIT"] ?>
-        Keterangan: <?= $_GET["KETERANGAN"] ?>
+        No. Nota : <?= $_GET["NO"] ?><br>
+        Tanggal Transaksi : <?= date('d/m/Y', strtotime($_GET["TANGGAL"])) ?><br>
+        Nama Tempat : <?= $_GET["NAMA_UNIT"] ?><br>
+        Keterangan : <?= $_GET["KETERANGAN"] ?>
     </div>
 
     <div class="dashed"></div>
 
-
-    <div class="nota-section bold item-line">
-        <span>Total :</span>
-        <span>Rp <?= number_format($setoran, 0, ',', '.') ?></span>
+    <div class="item-line">
+        <span>Total Setoran :</span>
+        <span>Rp <?= number_format($total, 0, ',', '.') ?></span>
     </div>
 
     <div class="dashed"></div>
+
+    <div class="penerima">
+        Penerima,
+    </div>
 
     <div class="thankyou">
         ** TERIMAKASIH **
