@@ -54,24 +54,31 @@ foreach ($barang as $id => $key) {
 
         .item-line {
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-between;
     align-items: flex-start;
-    gap: 3mm; /* jarak aman */
+    gap: 5mm;
+    flex-wrap: wrap; /* penting untuk membungkus saat tidak cukup */
 }
 
-.item-line span:first-child {
-    flex: 1;
-    max-width: 60%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+.item-name {
+    flex: 1 1 60%;
+    white-space: normal;
+    word-break: break-word;
 }
 
-.item-line span:last-child {
+.item-price {
     min-width: 35%;
     text-align: right;
     padding-right: 5mm;
+    white-space: nowrap;
 }
+
+.item-sub {
+    margin-top: 1mm;
+    font-size: 90%;
+    color: #444;
+}
+
 
         .nota-section {
             margin-top: 5px;
@@ -109,12 +116,13 @@ $total = 0;
 foreach ($result as $row) {
     echo '
     <div class="nota-section">
-        <div class="item-line">
-            <span>' . htmlspecialchars($row['barang']) . '</span>
-            <span>Rp ' . number_format($row['subtotal'], 0, ',', '.') . '</span>
-        </div>
-        <div>' . $row['jumlah'] . ' x Rp ' . number_format($row['harga'], 0, ',', '.') . '</div>
-    </div>';
+    <div class="item-line">
+        <div class="item-name">' . htmlspecialchars($row['barang']) . '</div>
+        <div class="item-price">Rp ' . number_format($row['subtotal'], 0, ',', '.') . '</div>
+    </div>
+    <div class="item-sub"> ' . $row['jumlah'] . ' x Rp ' . number_format($row['harga'], 0, ',', '.') . '</div>
+</div>
+';
     
     $total += $row['subtotal'];
 }
