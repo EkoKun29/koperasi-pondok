@@ -92,6 +92,8 @@ foreach ($setoranList as $val) {
     <div class="penerima">
         Penerima,
     </div>
+    <br><br>
+        <hr>
 
     <div class="thankyou">
         ** TERIMAKASIH **
