@@ -77,6 +77,10 @@ class User extends Authenticatable
         return $this->hasMany(Pelunasan::class);
     }
 
+    public function PelunasanPembelian(){
+        return $this->hasMany(PelunasanPembelian::class);
+    }
+
     public function PengajuanPo(){
         return $this->hasMany(PengajuanPo::class);
     }

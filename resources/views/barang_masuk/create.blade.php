@@ -231,7 +231,8 @@
             }),
             success: function(response) {
                 if (response.success) {
-                    window.location.href = "{{ url('barang-masuk') }}";
+                    var uuid = response.uuid;
+                    window.location.href = "{{ url('barang-masuk/print') }}/" + uuid;
                 } else {
                     alert("Gagal menyimpan data.");
                 }

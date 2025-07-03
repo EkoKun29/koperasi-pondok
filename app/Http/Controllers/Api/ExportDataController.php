@@ -16,6 +16,7 @@ use App\Models\DetailPengajuanPo;
 use App\Models\DetailPenjualanProduksiTitipan;
 use App\Models\DetailPenjualanPiutang;
 use App\Models\Pelunasan;
+use App\Models\PelunasanPembelian;
 use App\Models\Setoran;
 use App\Models\DetailReturPenjualan;
 
@@ -162,5 +163,13 @@ public function exportReturPenjualan($startDate, $endDate, $nama_koperasi)
     })->get();
 
     return response()->json($detailReturPenjualan);
+}
+
+public function exportPelunasanPembelian($startDate, $endDate)
+{
+    $pelunasanPembelian = PelunasanPembelian::whereDate('created_at', '>=', $startDate)
+          ->whereDate('created_at', '<=', $endDate)->get();
+
+    return response()->json($pelunasanPembelian);
 }
 }

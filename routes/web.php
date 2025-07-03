@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\PenjualanProduksiTitipan;
 use App\Http\Controllers\SetoranController;
 use App\Http\Controllers\PelunasanController;
+use App\Http\Controllers\PelunasanPembelianController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\NamaBarangController;
 use App\Http\Controllers\PengajuanPoController;
@@ -179,6 +180,15 @@ Route::get('pelunasan/{pelunasan}', [PelunasanController::class, 'show']);
 Route::get('/pelunasan/{uuid}/edit', [PelunasanController::class, 'edit'])->name('pelunasan.edit');
 Route::put('/pelunasan/{uuid}', [PelunasanController::class, 'update'])->name('pelunasan.update');
 Route::get('/pelunasan/delete/{uuid}', [PelunasanController::class, 'Delete'])->name('delete-pelunasan');
+
+//-----------------------------------------Pelunasan Pembelian--------------------------------------------------------------------------------------------------------------------
+Route::resource('pelunasan-pembelian', PelunasanPembelianController::class);
+Route::post('/pelunasan-pembelian', [ PelunasanPembelianController::class, 'store'])->name('pelunasan-pembelian.store');
+Route::get('/pelunasan-pembelian-sisa', [ PelunasanPembelianController::class, 'getSisaPiutang']);
+Route::get('pelunasan-pembelian/{pelunasan}', [ PelunasanPembelianController::class, 'show']);
+Route::get('/pelunasan-pembelian/{uuid}/edit', [ PelunasanPembelianController::class, 'edit'])->name('pelunasan-pembelian.edit');
+Route::put('/pelunasan-pembelian/{uuid}', [ PelunasanPembelianController::class, 'update'])->name('pelunasan-pembelian.update');
+Route::get('/pelunasan-pembelian/delete/{uuid}', [ PelunasanPembelianController::class, 'Delete'])->name('delete-pelunasan-pembelian');
 
 //--------------------------------------BARANG MASUK----------------------------------------------------------------------------------------------------------------------------------------------
 
