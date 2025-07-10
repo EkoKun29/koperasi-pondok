@@ -93,7 +93,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="addPelunasanForm" method="POST" action="{{ route('pelunasan.store') }}">
+                <form id="addPelunasanForm" method="POST" onsubmit="const btn=document.getElementById('btn-simpan'); btn.disabled=true; btn.innerText='Menyimpan...';">
                     @csrf
                     <div class="row">
                         <!-- Left Column -->
@@ -175,7 +175,7 @@
                             </div>
                         </div>
                         </div>
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" id="btn-simpan" class="btn btn-primary">Simpan</button>
                 </form>
             </div>
         </div>
@@ -193,7 +193,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="editPelunasanForm" method="POST">
+                <form id="editPelunasanForm" method="POST" onsubmit="const btn=document.getElementById('btn-simpan'); btn.disabled=true; btn.innerText='Menyimpan...';">
                     @csrf
                     @method('PUT')
                     <div class="row">
@@ -276,7 +276,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="submit" id="btn-simpan" class="btn btn-primary">Simpan Perubahan</button>
                 </form>
             </div>
         </div>
