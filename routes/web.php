@@ -251,7 +251,7 @@ Route::resource('barang', App\Http\Controllers\NamaBarangController::class);
 Route::get('/barang-sync', [App\Http\Controllers\NamaBarangController::class, 'sync'])->name('barang.sync');
 
 
-//--------------------------------------barang----------------------------------------------------------------------------------------------------------------------------------------------
+//--------------------------------------buku piutang----------------------------------------------------------------------------------------------------------------------------------------------
 Route::resource('buku-piutang', App\Http\Controllers\BukuPiutangController::class);
 Route::get('/buku-piutang-sync', [App\Http\Controllers\BukuPiutangController::class, 'sync'])->name('buku-piutang.sync');
 });

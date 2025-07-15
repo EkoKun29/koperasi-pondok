@@ -251,9 +251,10 @@ function updateItem() {
 
     $.ajax({
         url: "{{ route('barang-terjual-update-detail', ['uuid' => $terjual->uuid]) }}",
-        method: 'PUT',
+        method: 'POST',
         data: {
             _token: '{{ csrf_token() }}',
+            _method: 'PUT',
             id: id,
             barang: barang,
             harga: harga,

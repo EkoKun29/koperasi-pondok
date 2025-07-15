@@ -216,7 +216,10 @@ public function update(Request $request, $uuid)
             'subtotal' => 'required|numeric',
         ]);
 
-        $detail = DetailBarangTerjual::where('uuid_terjual', $uuid)->firstOrFail();
+        $detail = DetailBarangTerjual::where('uuid_terjual', $uuid)
+            ->where('id', $request->id)
+            ->firstOrFail();
+
 
         // Update detail barang terjual
         $detail->update([
