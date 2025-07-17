@@ -66,7 +66,7 @@
 
                 <!-- Bottom Buttons -->
                 <div class="flex justify-end mt-6">
-                    <button class="btn btn-primary" type="button" onclick="submitAll()">Simpan</button>
+                    <button id="submitBtn" class="btn btn-primary" type="button" onclick="submitAll()">Simpan</button>
                 </div>
             </div>
         </div>
@@ -216,6 +216,11 @@
             alert("Semua field harus diisi ");
             return;
         }
+
+        var submitButton = $('#submitBtn');
+        submitButton.prop('disabled', true);
+        submitButton.text('Menyimpan...');
+
 
         $.ajax({
             url: "{{ route('barang-masuk.store') }}",
