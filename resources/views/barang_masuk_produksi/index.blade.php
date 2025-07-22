@@ -64,18 +64,16 @@
                               <a href="{{ route('barang-masuk-produksi.detail', $bm['uuid']) }}"
                                 class="btn btn-info btn-sm">Detail</a>
 
-                              <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $bm->uuid }}"
-                                class="btn btn-warning btn-sm">Edit</button>
+                              <a href="javascript:void(0);" data-id="{{ $bm['uuid'] }}" class="btn btn-primary btn-sm ml-2 editButton">Edit</a>
 
                                 <a href="{{ route('barang-masuk-produksi.print', $bm['uuid']) }}"
-                                class="btn btn-secondary btn-sm">Print</a>
+                                class="btn btn-secondary btn-sm ml-2">Print</a>
 
                               <a href="{{ route('delete-barang-masuk-produksi', $bm['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $bm->nota }} Ini ??')"
-                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
+                                value="Delete" class="btn btn-danger btn-sm ml-2">Hapus</a>
                             
                         </div>
                     </td>
-                    @include('barang_masuk_produksi.edit')
                 </tr>
                 @endforeach
             </tbody>
@@ -83,6 +81,47 @@
     </div>
 </div>
 @endsection
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Pembelian</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="POST" action="">
+                    @csrf
+                    @method('PUT')
+                     <div class="mb-4">
+                                <label for="nota" class="form-label">Nota</label>
+                                <input type="text" id="nota" name="nota" class="form-control" placeholder="Nota" readonly disabled>
+                            </div>
+                            <div for="tanggal" class="mb-4">
+                                <label class="form-label">Tanggal Pembelian</label>
+                                <input type="date" id="tanggal" name="tanggal" class="form-control" placeholder="Tanggal" required>
+                            </div>
+                            <div for="nama_personil" class="mb-4">
+                                <label class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
+                                <select class="nama-personil" id="nama_personil" name="nama_personil" style="width: 100%" required>
+                                    <option disabled {{ $bm->nama_personil ? '' : 'selected' }}>Pilih Personil</option>
+                                    @foreach($data as $dbm)
+                                        <option value="{{ $dbm->nama_personil }}" {{ $dbm->nama_personil == $bm->nama_personil ? 'selected' : '' }}>
+                                            {{ $dbm->nama_personil }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @push('js')
 <script>
@@ -108,6 +147,7 @@
         success: function(response) {
             // Populate modal fields with the fetched data
             $('#editModal').find('#tanggal').val(response.tanggal);
+            $('#nota').val(response.nota);
             $('#nama_personil').val(response.nama_personil);
             $('#masuk_ke').val(response.masuk_ke);
 

@@ -167,6 +167,18 @@ class BarangMasukController extends Controller
         return view('barang_masuk.detail', compact('barangMasuk', 'detailBarangMasuk', 'data', 'detailPembelianPerKampus', 'db'));
     }
 
+    public function edit($uuid)
+{
+    $barangMasuk = BarangMasuk::where('uuid', $uuid)->firstOrFail();
+
+    return response()->json([
+        'nota' => $barangMasuk->nota,
+        'tanggal' => $barangMasuk->created_at->format('Y-m-d'),
+        'nama_personil' => $barangMasuk->nama_personil,
+        'masuk_ke' => $barangMasuk->masuk_ke,
+    ]);
+}
+
     public function update( Request $request, $uuid)
     {
         $request->validate([

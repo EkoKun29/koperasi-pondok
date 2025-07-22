@@ -65,13 +65,11 @@
                                 class="btn btn-info btn-sm ml-2">Detail</a>
 
                               <a href="javascript:void(0);" data-id="{{ $trj['uuid'] }}" class="btn btn-primary btn-sm ml-2 editButton">Edit</a>
-                              {{-- <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $trj->uuid }}"
-                                class="btn btn-warning btn-sm ml-2">Edit</button> --}}
 
                               <a href="{{ route('pembelian-new.print', $trj['uuid']) }}"
                                 class="btn btn-secondary btn-sm ml-2">Print</a>
 
-                             <a href="{{ route('delete-pembelian-new', $trj['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $trj->no_nota }} Ini ??')"
+                              <a href="{{ route('delete-pembelian-new', $trj['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $trj->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm ml-2">Hapus</a>
                             
                         </div>
