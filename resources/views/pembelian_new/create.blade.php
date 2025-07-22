@@ -28,7 +28,7 @@
                     <div class="w-full md:w-1/2">
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Tanggal</b></label>
-                            <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                         </div>
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Nama Supplier</b></label>

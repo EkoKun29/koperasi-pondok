@@ -10,7 +10,7 @@
               <li class="text-sm leading-normal">
                 <a class="opacity-50 text-slate-700" style="text-decoration: none;" href="javascript:;">Pages</a>
               </li>
-              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/'] font-bold capitalize" aria-current="page">PEMBELIAN</li>
+              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/'] font-bold capitalize" aria-current="page">Pembelian Global</li>
             </ol>
           </nav>
 
@@ -30,10 +30,9 @@
         </div>
       </nav>
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">PEMBELIAN</h1>
+    <h1 class="text-xl font-semibold mb-4">Pembelian Global</h1>
     <div class="mx-4">
-        <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" 
-        href="{{ route('pembelian-new.create') }}">Tambah Data</a>
+        <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('pembelian-new.create') }}">Tambah Data</a>
       </div>
     <div class="table-responsive">
         <table id="datatable-basic" class="table-auto border-collapse w-full">
@@ -47,7 +46,6 @@
                     <th class="border px-4 py-2">Ket. Pembayaran</th>
                     <th class="border px-4 py-2">Total</th>
                     <th class="border px-4 py-2">Aksi</th>
-                    
                 </tr>
             </thead>
             <tbody>
@@ -85,41 +83,54 @@
     </div>
 </div>
 @endsection
+
+
 @push('js')
 <script>
-$(document).ready(function() {
-    // Inisialisasi DataTables hanya sekali
+ $(document).ready(function() {
+    // Cek dan hancurkan DataTable jika sudah ada
+    if ($.fn.DataTable.isDataTable('#datatable-basic')) {
+        $('#datatable-basic').DataTable().destroy();
+    }
+    
+    // Inisialisasi DataTable
     $('#datatable-basic').DataTable({
-        pageLength: 10,
-        lengthMenu: [10, 25, 50, 100],
-        deferRender: true,
-        language: {
-            url: "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
         }
     });
 
-    // Event tombol edit
-    $('.editButton').on('click', function() {
-        var uuid = $(this).data('id');
+$('.editButton').on('click', function() {
+    var uuid = $(this).data('id');
 
-        $.ajax({
-            url: '/pembelian-new/' + uuid + '/edit',
-            type: 'GET',
-            success: function(response) {
-                $('#editModal').find('#tanggal').val(response.tanggal);
-                $('#nama_supplier').val(response.nama_supplier);
-                $('#nama_personil').val(response.nama_personil);
-                $('#ket_pembayaran').val(response.ket_pembayaran);
+    // Send AJAX request to get data for the selected item
+    $.ajax({
+        url: '/pembelian-new/' + uuid + '/edit',
+        type: 'GET',
+        success: function(response) {
+            // Populate modal fields with the fetched data
+            let date = new Date(response.tanggal);
+            let formattedDate = date.toISOString().split('T')[0];
 
-                $('#editForm').attr('action', '/pembelian-new/' + uuid);
-                $('#editModal').modal('show');
+            $('#tanggal').val(formattedDate);
+            $('#nama_supplier').val(response.nama_supplier);
+            $('#nama_personil').val(response.nama_personil);
+            $('#ket_pembayaran').val(response.ket_pembayaran);
 
-                $("#nama_personil").select2({
-                    dropdownParent: $('#editModal')
-                });
-            }
-        });
+            // Set form action to update the data
+            $('#editForm').attr('action', '/pembelian-new/' + uuid);
+
+            // Show modal
+            $('#editModal').modal('show');
+
+            $("#nama_personil").select2({
+                dropdownParent: $('#editModal')
+            });
+        }
     });
 });
+
+});
+
 </script>
 @endpush
