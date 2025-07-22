@@ -13,6 +13,7 @@ use App\Models\DetailPembelianCash;
 use App\Models\DetailPembelianPerKampus;
 use App\Models\DetailPembelianTitipan;
 use App\Models\DetailPengajuanPo;
+use App\Models\DetailPenjualanAcara;
 use App\Models\DetailPenjualanProduksiTitipan;
 use App\Models\DetailPenjualanPiutang;
 use App\Models\Pelunasan;
@@ -171,5 +172,15 @@ public function exportPelunasanPembelian($startDate, $endDate)
           ->whereDate('created_at', '<=', $endDate)->get();
 
     return response()->json($pelunasanPembelian);
+}
+
+public function exportPenjualanAcara($startDate, $endDate)
+{
+    $detailPenjualanAcara = DetailPenjualanAcara::with('penjualanAcara')->whereHas('penjualanAcara', function ($q) use ($startDate, $endDate) {
+        $q->whereDate('created_at', '>=', $startDate)
+          ->whereDate('created_at', '<=', $endDate);
+    })->get();
+
+    return response()->json($detailPenjualanAcara);
 }
 }
