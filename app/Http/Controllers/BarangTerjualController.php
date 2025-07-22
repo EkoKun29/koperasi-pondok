@@ -9,6 +9,7 @@ use App\Models\NamaBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use GuzzleHttp\Client;
 
 
 class BarangTerjualController extends Controller
@@ -66,8 +67,24 @@ class BarangTerjualController extends Controller
 
     public function create()
     {
+        try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
         $data = NamaBarang::all();
-        return view('barang_terjual.create', compact('data'));
+        return view('barang_terjual.create', compact('data', 'db'));
     }
 
     public function store(Request $request)
@@ -148,6 +165,22 @@ public function storeDetail(Request $request, $uuid)
 
 public function show($uuid)
 {
+    try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
     $data = NamaBarang::all();
     $terjual = BarangTerjual::where('uuid', $uuid)->first();
     if (!$terjual) {
@@ -159,7 +192,7 @@ public function show($uuid)
         dd('Detail Barang terjual tidak ditemukan');
     }
 
-    return view('barang_terjual.detail', compact('terjual', 'detail', 'data'));
+    return view('barang_terjual.detail', compact('terjual', 'detail', 'data', 'db'));
 }
 
 public function edit($uuid)
@@ -200,16 +233,33 @@ public function update(Request $request, $uuid)
 
     public function editDetail($uuid)
     {
+        try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
+
         $data = NamaBarang::all();
         $terjual = BarangTerjual::where('uuid', $uuid)->firstOrFail();
         $detail = DetailBarangTerjual::where('uuid_terjual', $terjual->uuid)->get();
 
-        return view('barang_terjual.edit_detail', compact('terjual', 'detail', 'data'));
+        return view('barang_terjual.edit_detail', compact('terjual', 'detail', 'data', 'db'));
     }
 
     public function updateDetail(Request $request, $uuid){
         $request->validate([
-            'barang' => 'required|string',
+            'nama_barang' => 'required|string',
             'harga' => 'required|numeric',
             'qty' => 'required|numeric',
             'keterangan' => 'nullable|string',
@@ -223,7 +273,7 @@ public function update(Request $request, $uuid)
 
         // Update detail barang terjual
         $detail->update([
-            'barang' => $request->barang,
+            'nama_barang' => $request->nama_barang,
             'harga' => $request->harga,
             'qty' => $request->qty,
             'keterangan' => $request->keterangan,

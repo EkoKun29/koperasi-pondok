@@ -116,14 +116,14 @@
                         <input type="number" id="editQty" name="editQty" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
                 <div class="mb-4">
-                    <label for="editKeterangan" class="block text-sm font-medium text-gray-700"><b>Keterangan</b></label>
-                    <select name="editKeterangan" id="editKeterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                        <option disabled selected>Pilih Keterangan</option>
-                        <option value="Dus" {{ old('keterangan', $dtl->keterangan ?? '') == 'Dus' ? 'selected' : '' }}>Dus</option>
-                        <option value="Pcs" {{ old('keterangan', $dtl->keterangan ?? '') == 'Pcs' ? 'selected' : '' }}>Pcs</option>
-                        <option value="Pack" {{ old('keterangan', $dtl->keterangan ?? '') == 'Pack' ? 'selected' : '' }}>Pack</option>
-                    </select>
-                </div>       
+                        <label for="editKeterangan">Satuan</label>
+                        <select id="editKeterangan" name="editKeterangan" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <option disabled selected>Pilih Satuan</option>
+                            @foreach($db as $satuan)
+                                <option value="{{ $satuan->satuan }}">{{ $satuan->satuan }}</option>
+                            @endforeach
+                        </select>
+                    </div>        
                 </div>                         
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="updateItem()">Update</button>
@@ -141,6 +141,15 @@ $(document).ready(function() {
     $("#barang").select2({
         dropdownParent: $("#modalTambahBarangForm{{$terjual->uuid}}")
     });
+
+    $("#editBarang").select2({
+                dropdownParent: $('#modalEditBarang')
+            });
+
+    $("#editKeterangan").select2({
+                dropdownParent: $('#modalEditBarang')
+            });
+
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }
@@ -238,7 +247,7 @@ function openEditModal(id, nama_barang, qty, harga, keterangan) {
 
 function updateItem() {
     var id = $('#editItemId').val();
-    var barang = $('#editBarang').val();
+    var nama_barang = $('#editBarang').val();
     var harga = $('#editHarga').val();
     var qty = $('#editQty').val();
     var keterangan = $('#editKeterangan').val();
@@ -256,7 +265,7 @@ function updateItem() {
             _token: '{{ csrf_token() }}',
             _method: 'PUT',
             id: id,
-            barang: barang,
+            nama_barang: nama_barang,
             harga: harga,
             qty: qty,
             keterangan: keterangan,

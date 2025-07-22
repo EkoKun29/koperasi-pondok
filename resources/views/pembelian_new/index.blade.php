@@ -126,7 +126,6 @@
                                     @endforeach
                                 </select>
                             </div>
-
                             <div class="mb-4">
                             <label for="ket_pembayaran" class="block text-sm font-medium text-gray-700"><b>Keterangan Pembayaran</b></label>
                             <select id="ket_pembayaran" name="ket_pembayaran" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
@@ -134,7 +133,7 @@
                                 <option value="Tunai">Tunai</option>
                                 <option value="Transfer">Transfer</option>
                             </select>
-                        </div>
+                            </div>
                     <br>
                     <button type="submit" class="btn btn-primary">Save Changes</button>
                 </form>
