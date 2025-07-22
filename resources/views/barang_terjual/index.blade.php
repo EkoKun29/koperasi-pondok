@@ -94,10 +94,9 @@
                         <label for="tanggal" class="block text-sm font-medium text-gray-700">
                             <b>Tanggal</b>
                         </label>
-                        <input type="date" id="tanggal" name="created_at" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }} required>
+                        <input type="date" id="tanggal" name="created_at" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" required>
                     </div>
                     
-                    <!-- Nama Personil Dropdown -->
                     <div class="mb-4">
                         <label for="nama_personil" class="block text-sm font-medium text-gray-700">
                             <b>Nama Personil</b>

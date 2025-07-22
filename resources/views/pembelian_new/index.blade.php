@@ -64,8 +64,9 @@
                               <a href="{{ route('pembelian-new.detail', $trj['uuid']) }}"
                                 class="btn btn-info btn-sm ml-2">Detail</a>
 
-                              <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $trj->uuid }}"
-                                class="btn btn-warning btn-sm ml-2">Edit</button>
+                              <a href="javascript:void(0);" data-id="{{ $trj['uuid'] }}" class="btn btn-primary btn-sm ml-2 editButton">Edit</a>
+                              {{-- <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $trj->uuid }}"
+                                class="btn btn-warning btn-sm ml-2">Edit</button> --}}
 
                               <a href="{{ route('pembelian-new.print', $trj['uuid']) }}"
                                 class="btn btn-secondary btn-sm ml-2">Print</a>
@@ -75,7 +76,6 @@
                             
                         </div>
                     </td>
-                    @include('pembelian_new.edit')
                 </tr>
                 @endforeach
             </tbody>
@@ -83,7 +83,67 @@
     </div>
 </div>
 @endsection
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editModalLabel">Edit Pembelian</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editForm" method="POST" action="">
+                    @csrf
+                    @method('PUT')
+                    
+                    <div class="mb-4">
+                                <label for="nota" class="form-label">Nota</label>
+                                <input type="text" id="nota" name="nota" class="form-control" placeholder="Nota"readonly disabled>
+                            </div>
+                            <div class="mb-4">
+                                <label for="tanggal" class="form-label">Tanggal</label>
+                                <input type="date" id="tanggal" name="tanggal" class="form-control" placeholder="Tanggal" required>
+                            </div>
+                            <div class="mb-4">
+                                <label for="nama_supplier" class="block text-sm font-medium text-gray-700"><b>Nama Supplier</b></label>
+                                <select id="nama_supplier" name="nama_supplier" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled>Pilih Supplier</option>
+                                    @foreach($db as $dbm)
+                                        <option value="{{ $dbm->nama_supplier }}">
+                                            {{ $dbm->nama_supplier }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
 
+                            <div class="mb-4">
+                                <label for="nama_personil" class="block text-sm font-medium text-gray-700"><b>Masuk Ke-</b></label>
+                                <select id="nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                    <option disabled>Pilih Masuk Ke-</option>
+                                    @foreach($data as $dbm)
+                                        <option value="{{ $dbm->nama_personil }}">
+                                            {{ $dbm->nama_personil }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                            <label for="ket_pembayaran" class="block text-sm font-medium text-gray-700"><b>Keterangan Pembayaran</b></label>
+                            <select id="ket_pembayaran" name="ket_pembayaran" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                                <option disabled>Pilih Keterangan Pembayaran</option>
+                                <option value="Tunai">Tunai</option>
+                                <option value="Transfer">Transfer</option>
+                            </select>
+                        </div>
+                    <br>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 @push('js')
 <script>
@@ -124,6 +184,10 @@ $('.editButton').on('click', function() {
             $('#editModal').modal('show');
 
             $("#nama_personil").select2({
+                dropdownParent: $('#editModal')
+            });
+
+             $("#nama_supplier").select2({
                 dropdownParent: $('#editModal')
             });
         }

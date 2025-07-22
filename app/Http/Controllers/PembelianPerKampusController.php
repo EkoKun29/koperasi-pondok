@@ -179,6 +179,19 @@ class PembelianPerKampusController extends Controller
         return view('pembelian_new.detail', compact('pembelian', 'detail', 'db', 'data'));
         
     }
+
+    public function edit($uuid)
+{
+    $pembelian = PembelianPerKampus::where('uuid', $uuid)->firstOrFail();
+
+    return response()->json([
+        'tanggal' => $pembelian->created_at->format('Y-m-d'),
+        'nama_personil' => $pembelian->nama_personil,
+        'nama_supplier' => $pembelian->nama_supplier,
+        'shift' => $pembelian->shift,
+        'ket_pembayaran' => $pembelian->ket_pembayaran,
+    ]);
+}
    
     public function update(Request $request, $uuid)
     {
