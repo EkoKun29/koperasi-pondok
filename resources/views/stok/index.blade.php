@@ -63,11 +63,11 @@
                     <td class="border px-4 py-2">
                         <div class="d-flex">
                               <a href="{{ route('barang-terjual.detail', $trj['uuid']) }}"
-                                class="btn btn-info btn-sm">Detail</a>
+                                class="btn btn-info btn-sm ml-2">Detail</a>
                              <a href="{{ route('delete-barang-terjual', $trj['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $trj->no_nota }} Ini ??')"
-                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
+                                value="Delete" class="btn btn-danger btn-sm ml-2">Hapus</a>
                               <a href="{{ route('barang-terjual.print', $trj['uuid']) }}"
-                                class="btn btn-secondary btn-sm">Print</a>
+                                class="btn btn-secondary btn-sm ml-2">Print</a>
                         </div>
                     </td>
                 </tr>

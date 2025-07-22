@@ -10,7 +10,7 @@
               <li class="text-sm leading-normal">
                 <a class="opacity-50 text-slate-700" style="text-decoration: none;" href="javascript:;">Pages</a>
               </li>
-              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/'] font-bold capitalize" aria-current="page">Barang Terjual</li>
+              <li class="text-sm pl-2 capitalize leading-normal text-slate-700 before:float-left before:pr-2 before:text-gray-600 before:content-['/'] font-bold capitalize" aria-current="page">Penjualan Acara</li>
             </ol>
           </nav>
 
@@ -30,16 +30,15 @@
         </div>
       </nav>
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">Barang Terjual</h1>
+    <h1 class="text-xl font-semibold mb-4">Penjualan Acara</h1>
     <div class="mx-4">
-        <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('barang-terjual.create') }}">Tambah Data</a>
+        <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('penjualan-acara.create') }}">Tambah Data</a>
       </div>
     <div class="table-responsive">
         <table id="datatable-basic" class="table-auto border-collapse w-full">
             <thead>
                 <tr class="text-left bg-gray-200">
                     <th class="border px-4 py-2">Nota</th>
-                    <th class="border px-4 py-2">Nama Koperasi</th>
                     <th class="border px-4 py-2">Tanggal</th>
                     <th class="border px-4 py-2">Nama Personil</th>
                     <th class="border px-4 py-2">Shift</th>
@@ -49,23 +48,22 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($terjual as $trj)
+                @foreach($penjualanAcara as $pj)
                 <tr>
-                    <td class="border px-4 py-2">{{ $trj->no_nota }}</td>
-                    <td class="border px-4 py-2">{{ $trj->nama_koperasi }}</td>
-                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($trj->created_at)->format('d-m-Y') }}</td>
-                    <td class="border px-4 py-2">{{ $trj->nama_personil }}</td>
-                    <td class="border px-4 py-2">{{ $trj->shift }}</td>
-                    <td class="border px-4 py-2">{{ number_format($trj->total,2) }}</td>
+                    <td class="border px-4 py-2">{{ $pj->no_nota }}</td>
+                    <td class="border px-4 py-2">{{ \Carbon\Carbon::parse($pj->tanggal)->format('d-m-Y') }}</td>
+                    <td class="border px-4 py-2">{{ $pj->nama_personil }}</td>
+                    <td class="border px-4 py-2">{{ $pj->shift }}</td>
+                    <td class="border px-4 py-2">{{ number_format($pj->total,2) }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
-                              <a href="{{ route('barang-terjual.detail', $trj['uuid']) }}"
+                              <a href="{{ route('penjualan-acara.detail', $pj['uuid']) }}"
                                 class="btn btn-info btn-sm ml-2">Detail</a>
-                              <a href="javascript:void(0);" data-id="{{ $trj['uuid'] }}" class="btn btn-primary btn-sm ml-2 editButton">Edit</a>
-                              <a href="{{ route('delete-barang-terjual', $trj['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $trj->no_nota }} Ini ??')"
+                              <a href="javascript:void(0);" data-id="{{ $pj['uuid'] }}" class="btn btn-primary btn-sm ml-2 editButton">Edit</a>
+                              <a href="{{ route('delete-penjualan-acara', $pj['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $pj->no_nota }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm ml-2">Hapus</a>
-                              <a href="{{ route('barang-terjual.print', $trj['uuid']) }}"
-                                class="btn btn-secondary btn-sm ml-2">Print</a>
+                              <a href="{{ route('penjualan-acara.print', $pj['uuid']) }}"
+                                class="btn btn-secondary ml-2 btn-sm">Print</a>
                         </div>
                     </td>
                 </tr>
@@ -80,7 +78,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editModalLabel">Edit Barang Terjual</h5>
+                <h5 class="modal-title" id="editModalLabel">Edit Penjualan Acara</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -91,44 +89,44 @@
                     @method('PUT')
                     
                     <div class="mb-4">
-                        <label for="tanggal" class="block text-sm font-medium text-gray-700">
-                            <b>Tanggal</b>
-                        </label>
-                        <input type="date" id="tanggal" name="created_at" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                        <label for="tanggal">Tanggal</label>
+                        <input type="date" id="editTanggal" name="tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required
+                        value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                     </div>
                     
                     <!-- Nama Personil Dropdown -->
-                    <div class="mb-4">
+                    <div class="mb-4"> 
                         <label for="nama_personil" class="block text-sm font-medium text-gray-700">
                             <b>Nama Personil</b>
                         </label>
-                        <select id="nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                            <option disabled selected>Pilih Personil</option>
+                        <select id="editPersonil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                             @foreach($data as $barang)
                                 <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
                             @endforeach
                         </select>
                     </div>
+
                     
                     <!-- Shift Dropdown -->
                     <div class="mb-4">
                         <label for="shift" class="block text-sm font-medium text-gray-700">
                             <b>Shift</b>
                         </label>
-                        <select name="shift" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="shift" required>
+                        <select name="shift" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="editShift" required>
                             <option disabled selected>Pilih Shift</option>
                             <option value="Pagi">Pagi</option>
                             <option value="Sore">Sore</option>
                             <option value="Malam">Malam</option>
                         </select>
                     </div>
+
                     
                     <!-- Total -->
                     <div class="mb-4">
                         <label for="editTotal" class="block text-sm font-medium text-gray-700">
                             <b>Total</b>
                         </label>
-                        <input type="number" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="editTotal" name="total" step="0.01" required>
+                        <input type="number" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="editTotal" name="total" step="0.01"  required>
                     </div>
                     
                     <br>
@@ -141,6 +139,8 @@
 
 @push('js')
 <script>
+    
+
  $(document).ready(function() {
     // Cek dan hancurkan DataTable jika sudah ada
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
@@ -155,32 +155,33 @@
     });
 
 $('.editButton').on('click', function() {
+    let myModal = new bootstrap.Modal(document.getElementById('editModal'));
+    myModal.show();
     var uuid = $(this).data('id');
 
     // Send AJAX request to get data for the selected item
     $.ajax({
-        url: '/barang-terjual/' + uuid + '/edit',
+        url: '/penjualan-acara/' + uuid + '/edit',
         type: 'GET',
         success: function(response) {
-            // Populate modal fields with the fetched data
-            let date = new Date(response.created_at);
-            let formattedDate = date.toISOString().split('T')[0];
+    // Set data ke dalam input modal yang benar
+    $('#editModal').find('#editTanggal').val(response.tanggal);
+    $('#editModal').find('#editPersonil').val(response.nama_personil).trigger('change');
+    $('#editModal').find('#editShift').val(response.shift);
+    $('#editModal').find('#editTotal').val(response.total);
 
-            $('#tanggal').val(formattedDate);
-            $('#nama_personil').val(response.nama_personil);
-            $('#shift').val(response.shift);
-            $('#editTotal').val(response.total);
+    // Set action form
+    $('#editForm').attr('action', '/penjualan-acara/' + uuid);
 
-            // Set form action to update the data
-            $('#editForm').attr('action', '/barang-terjual/' + uuid);
+    // Tampilkan modal
+    $('#editModal').modal('show');
 
-            // Show modal
-            $('#editModal').modal('show');
+    // Select2 untuk nama personil
+    $("#editPersonil").select2({
+        dropdownParent: $('#editModal')
+    });
+}
 
-            $("#nama_personil").select2({
-                dropdownParent: $('#editModal')
-            });
-        }
     });
 });
 

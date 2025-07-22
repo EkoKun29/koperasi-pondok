@@ -244,12 +244,14 @@ public function update(Request $request, $uuid)
 public function DeleteBarangTerjual($uuid)
 {
     $terjual = BarangTerjual::where('uuid', $uuid)->first();
-    if ($terjual) {
-        $terjual->delete(); // Ini akan memicu cascade delete jika sudah diatur di model dan database
-        return redirect()->back()->with('success', 'Data berhasil dihapus');
-    } else {
-        return redirect()->back()->with('error', 'Data tidak ditemukan');
+    if (!$terjual) {
+        return redirect()->back()->with('error', 'Barang terjual tidak ditemukan');
     }
+    // Hapus detail barang terjual terkait
+    DetailBarangTerjual::where('uuid_terjual', $terjual->uuid)->
+    delete();
+    // Hapus barang terjual
+    $terjual->delete();
     return redirect()->back()->with('success', 'Data berhasil dihapus');
 }
 

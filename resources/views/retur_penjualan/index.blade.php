@@ -50,12 +50,12 @@
                     <td class="border px-4 py-2">
                         <div class="d-flex">
                             <a href="{{ route('retur-penjualan.detail', $ret['uuid']) }}"
-                                class="btn btn-info btn-sm">Detail</a>
-                            <a href="javascript:void(0);" data-id="{{ $ret['uuid'] }}" class="btn btn-primary btn-sm editButton">Edit</a>
+                                class="btn btn-info btn-sm ml-2">Detail</a>
+                            <a href="javascript:void(0);" data-id="{{ $ret['uuid'] }}" class="btn btn-primary btn-sm ml-2 editButton">Edit</a>
                             <a href="{{ route('retur-penjualan.print', $ret['uuid']) }}"
-                                class="btn btn-secondary btn-sm">Print</a>
+                                class="btn btn-secondary btn-sm ml-2">Print</a>
                             <a href="{{ route('delete-retur-penjualan', $ret['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $ret->nota_retur }} Ini ??')"
-                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
+                                value="Delete" class="btn btn-danger btn-sm ml-2">Hapus</a>
                         </div>
                     </td>
                 </tr>

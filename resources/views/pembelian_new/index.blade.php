@@ -64,16 +64,16 @@
                         <div class="d-flex">
                           
                               <a href="{{ route('pembelian-new.detail', $trj['uuid']) }}"
-                                class="btn btn-info btn-sm">Detail</a>
+                                class="btn btn-info btn-sm ml-2">Detail</a>
 
                               <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $trj->uuid }}"
-                                class="btn btn-warning btn-sm">Edit</button>
+                                class="btn btn-warning btn-sm ml-2">Edit</button>
 
                               <a href="{{ route('pembelian-new.print', $trj['uuid']) }}"
-                                class="btn btn-secondary btn-sm">Print</a>
+                                class="btn btn-secondary btn-sm ml-2">Print</a>
 
                              <a href="{{ route('delete-pembelian-new', $trj['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $trj->no_nota }} Ini ??')"
-                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
+                                value="Delete" class="btn btn-danger btn-sm ml-2">Hapus</a>
                             
                         </div>
                     </td>
@@ -85,48 +85,41 @@
     </div>
 </div>
 @endsection
-
 @push('js')
 <script>
- $(document).ready(function() {
-    // Cek DataTable jika sudah ada
-    if ($.fn.DataTable.isDataTable('#datatable-basic')) {
-        $('#datatable-basic').DataTable().destroy();
-    }
-    
-    // Inisialisasi DataTable
+$(document).ready(function() {
+    // Inisialisasi DataTables hanya sekali
     $('#datatable-basic').DataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
+        pageLength: 10,
+        lengthMenu: [10, 25, 50, 100],
+        deferRender: true,
+        language: {
+            url: "//cdn.datatables.net/plug-ins/1.11.5/i18n/English.json"
         }
     });
+
+    // Event tombol edit
     $('.editButton').on('click', function() {
-    var uuid = $(this).data('id');
+        var uuid = $(this).data('id');
 
-    // Send AJAX request to get data for the selected item
-    $.ajax({
-        url: '/pembelian-new/' + uuid + '/edit',
-        type: 'GET',
-        success: function(response) {
-            // Populate modal fields with the fetched data
-            $('#editModal').find('#tanggal').val(response.tanggal);
-            $('#nama_supplier').val(response.nama_supplier);
-            $('#nama_personil').val(response.nama_personil);
-            $('#ket_pembayaran').val(response.ket_pembayaran);
+        $.ajax({
+            url: '/pembelian-new/' + uuid + '/edit',
+            type: 'GET',
+            success: function(response) {
+                $('#editModal').find('#tanggal').val(response.tanggal);
+                $('#nama_supplier').val(response.nama_supplier);
+                $('#nama_personil').val(response.nama_personil);
+                $('#ket_pembayaran').val(response.ket_pembayaran);
 
-            // Set form action to update the data
-            $('#editForm').attr('action', '/pembelian-new/' + uuid);
+                $('#editForm').attr('action', '/pembelian-new/' + uuid);
+                $('#editModal').modal('show');
 
-            // Show modal
-            $('#editModal').modal('show');
-
-            $("#nama_personil").select2({
-                dropdownParent: $('#editModal')
-            });
-        }
+                $("#nama_personil").select2({
+                    dropdownParent: $('#editModal')
+                });
+            }
+        });
     });
 });
-});
-
 </script>
 @endpush

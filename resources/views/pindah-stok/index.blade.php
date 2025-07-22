@@ -48,12 +48,12 @@
                     <td class="border px-4 py-2">
                         <div class="d-flex">
                               <a href=""
-                                class="btn btn-info btn-sm">Detail</a>
-                              <a href="javascript:void(0);" data-id="" class="btn btn-primary btn-sm editButton">Edit</a>
+                                class="btn btn-info btn-sm ml-2">Detail</a>
+                              <a href="javascript:void(0);" data-id="" class="btn btn-primary btn-sm ml-2 editButton">Edit</a>
                               <a href="" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data  Ini ??')"
-                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
+                                value="Delete" class="btn btn-danger btn-sm ml-2">Hapus</a>
                               <a href=""
-                                class="btn btn-secondary btn-sm">Print</a>
+                                class="btn btn-secondary btn-sm ml-2">Print</a>
                         </div>
                     </td>
                 </tr>

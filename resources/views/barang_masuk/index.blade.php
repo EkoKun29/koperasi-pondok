@@ -60,16 +60,16 @@
                         <div class="d-flex">
                           
                               <a href="{{ route('barang-masuk.detail', $bm['uuid']) }}"
-                                class="btn btn-info btn-sm">Detail</a>
+                                class="btn btn-info btn-sm ml-2">Detail</a>
 
                               <button data-bs-toggle="modal" data-bs-target="#modal-edit-{{ $bm->uuid }}"
-                                class="btn btn-warning btn-sm">Edit</button>
+                                class="btn btn-warning btn-sm ml-2">Edit</button>
 
                                 <a href="{{ route('barang-masuk.print', $bm['uuid']) }}"
-                                class="btn btn-secondary btn-sm">Print</a>
+                                class="btn btn-secondary btn-sm ml-2">Print</a>
 
                               <a href="{{ route('delete-barang-masuk', $bm['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $bm->nota }} Ini ??')"
-                                value="Delete" class="btn btn-danger btn-sm">Hapus</a>
+                                value="Delete" class="btn btn-danger btn-sm ml-2">Hapus</a>
                             
                         </div>
                     </td>

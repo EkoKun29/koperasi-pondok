@@ -254,4 +254,17 @@ Route::get('/barang-sync', [App\Http\Controllers\NamaBarangController::class, 's
 //--------------------------------------buku piutang----------------------------------------------------------------------------------------------------------------------------------------------
 Route::resource('buku-piutang', App\Http\Controllers\BukuPiutangController::class);
 Route::get('/buku-piutang-sync', [App\Http\Controllers\BukuPiutangController::class, 'sync'])->name('buku-piutang.sync');
+
+//--------------------------------------Penjualan Acara----------------------------------------------------------------------------------------------------------------------------------------------
+Route::resource('penjualan-acara', App\Http\Controllers\PenjualanAcaraController::class);
+Route::post('penjualan-acara/create', [App\Http\Controllers\PenjualanAcaraController::class, 'store'])->name('penjualan-acara.store');
+Route::get('penjualan-acara/detail/{uuid}', [App\Http\Controllers\PenjualanAcaraController::class, 'detail'])->name('penjualan-acara.detail');
+Route::get('penjualan-acara/delete/{uuid}', [App\Http\Controllers\PenjualanAcaraController::class, 'delete'])->name('delete-penjualan-acara');
+Route::delete('/penjualan-acara/detail/delete/{uuid}', [App\Http\Controllers\PenjualanAcaraController::class, 'deleteDetail'])->name('delete-penjualan-acara-detail');
+Route::get('penjualan-acara/print/{uuid}', [App\Http\Controllers\PenjualanAcaraController::class, 'print'])->name('penjualan-acara.print');
+Route::post('penjualan-acara-detail/{uuid}', [App\Http\Controllers\PenjualanAcaraController::class, 'storeDetail'])->name('penjualan-acara-detail-create');
+Route::get('/penjualan-acara/{uuid}/edit', [App\Http\Controllers\PenjualanAcaraController::class, 'edit'])->name('penjualan-acara.edit');
+Route::put('/penjualan-acara/{uuid}', [App\Http\Controllers\PenjualanAcaraController::class, 'update'])->name('penjualan-acara.update');
+Route::put('/penjualan-acara/{uuid}/detail/update', [App\Http\Controllers\PenjualanAcaraController::class, 'updateDetail'])->name('penjualan-acara-update-detail'); 
+Route::get('/penjualan-acara/detail/edit/{id}', [App\Http\Controllers\PenjualanAcaraController::class, 'editDetail'])->name('penjualan-acara-edit-detail-create');
 });

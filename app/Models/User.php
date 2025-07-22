@@ -105,6 +105,9 @@ class User extends Authenticatable
         return $this->hasMany(ReturPenjualan::class);
     }
 
+    public function penjualanAcara(){
+        return $this->hasMany(PenjualanAcara::class);
+    }
 
 }
 
