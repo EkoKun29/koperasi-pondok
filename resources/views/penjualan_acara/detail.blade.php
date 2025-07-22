@@ -141,6 +141,15 @@ $(document).ready(function() {
     $("#barang").select2({
         dropdownParent: $("#modalTambahBarangForm{{$penjualanAcara->uuid}}")
     });
+
+    $("#editBarang").select2({
+                dropdownParent: $('#modalEditBarang')
+            });
+
+    $("#editKeterangan").select2({
+                dropdownParent: $('#modalEditBarang')
+            });
+            
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }
@@ -287,6 +296,8 @@ function updateItem() {
         success: function(response) {
             if (response.success) {
                 location.reload();
+                
+            
             } else {
                 alert('Gagal memperbarui barang!');
             }
@@ -295,6 +306,7 @@ function updateItem() {
             console.error(xhr.responseText);
             alert('Gagal memperbarui barang!');
         }
+        
     });
 }
 
