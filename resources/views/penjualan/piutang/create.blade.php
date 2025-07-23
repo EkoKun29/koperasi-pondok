@@ -27,9 +27,17 @@
             <div class="p-6">
                 <div class="flex">
                     <div class="w-full md:w-1/2">
+                        @php
+                            $uniquePersonil = collect($p_piutang)->unique('nama_pembeli');
+                        @endphp
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Nama Pembeli</b></label>
-                            <input type="text" id="nama_pembeli" name="nama_pembeli" placeholder="Pembeli" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <select id="nama_pembeli" name="nama_pembeli" class="form-control" required>
+                                <option disabled selected>Pilih Pembeli</option>
+                                @foreach($uniquePersonil as $p)
+                                    <option value="{{ $p->nama_pembeli }}">{{ $p->nama_pembeli }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
@@ -142,6 +150,16 @@
 
 @push('js')
 <script src="{{ asset('assets/js/navbar-sticky.js') }}"></script>
+<script>
+$(document).ready(function() {
+    $('#nama_pembeli').select2({
+        tags: true,
+        placeholder: "Pilih atau ketik pembeli...",
+        allowClear: true,
+        width: '100%' // supaya penuh
+    });
+});
+</script>
 
 <script>
     var globalData = [];

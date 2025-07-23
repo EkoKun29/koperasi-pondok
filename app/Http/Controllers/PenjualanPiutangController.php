@@ -69,8 +69,9 @@ class PenjualanPiutangController extends Controller
 
     public function create()
     {
+        $p_piutang = PenjualanPiutang::all();
         $data = NamaBarang::all();
-        return view('penjualan.piutang.create', compact('data'));
+        return view('penjualan.piutang.create', compact('data', 'p_piutang'));
     }
 
     public function store(Request $request)
