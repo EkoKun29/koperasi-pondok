@@ -93,14 +93,15 @@
                         </label>
                         <input type="date" id="tanggal" name="created_at" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
-                    <!-- Nama Pembeli Input -->
-                    <div class="mb-4">
-                        <label for="nama_pembeli" class="block text-sm font-medium text-gray-700">
-                            <b>Nama Pembeli</b>
-                        </label>
-                        <input type="text" id="nama_pembeli" name="nama_pembeli" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" placeholder="Masukkan Nama Pembeli" required>
-                    </div>
-                    
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-gray-700"><b>Nama Pembeli</b></label>
+                            <select id="nama_pembeli" name="nama_pembeli" class="form-control" required>
+                                <option disabled selected>Pilih Pembeli</option>
+                                @foreach($data as $barang)
+                                <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
+                            @endforeach
+                            </select>
+                        </div>
                     <!-- Nama Personil Dropdown -->
                     <div class="mb-4">
                         <label for="nama_personil" class="block text-sm font-medium text-gray-700">
@@ -174,7 +175,14 @@ $('.editButton').on('click', function() {
             let formattedDate = date.toISOString().split('T')[0];
 
             $('#tanggal').val(formattedDate);
-            $('#nama_pembeli').val(response.nama_pembeli); // Update input field for Nama Pembeli
+            // Tambahkan opsi baru jika belum ada
+            if ($('#nama_pembeli option[value="' + response.nama_pembeli + '"]').length === 0) {
+                var newOption = new Option(response.nama_pembeli, response.nama_pembeli, true, true);
+                $('#nama_pembeli').append(newOption).trigger('change');
+            } else {
+                $('#nama_pembeli').val(response.nama_pembeli).trigger('change');
+            }
+ // Update input field for Nama Pembeli
             $('#nama_personil').val(response.nama_personil);
             $('#shift').val(response.shift);
             $('#editTotal').val(response.total);
@@ -187,6 +195,17 @@ $('.editButton').on('click', function() {
 
             $("#nama_personil").select2({
                 dropdownParent: $('#editModal')
+            });
+
+            $("#nama_pembeli").select2({
+                dropdownParent: $('#editModal')
+            });
+
+            $('#nama_pembeli').select2({
+            tags: true,
+            placeholder: "Pilih atau ketik pembeli...",
+            allowClear: true,
+            width: '100%' 
             });
         }
     });

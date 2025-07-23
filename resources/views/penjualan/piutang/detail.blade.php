@@ -72,12 +72,12 @@
                         <input type="number" id="qty" name="qty" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700"><b>Keterangan</b></label>
-                        <select name="keterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="keterangan">
+                        <label for="keterangan">Keterangan</label>
+                        <select id="keterangan" name="keterangan" style="width: 100%" class="form-select mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                             <option disabled selected>Pilih Keterangan</option>
-                            <option value="Dus">Dus</option>
-                            <option value="Pcs">Pcs</option>
-                            <option value="Pack">Pack</option>
+                            @foreach($db as $k)
+                                <option value="{{ $k->satuan }}">{{ $k->satuan }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -117,16 +117,15 @@
                         <label for="editQty">Qty</label>
                         <input type="number" id="editQty" name="editQty" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
-                </div>
-                <div class="mb-4">
-                    <label for="editKeterangan" class="block text-sm font-medium text-gray-700"><b>Keterangan</b></label>
-                    <select name="editKeterangan" id="editKeterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                        <option disabled selected>Pilih Keterangan</option>
-                        <option value="Dus" {{ old('keterangan', $dtl->keterangan ?? '') == 'Dus' ? 'selected' : '' }}>Dus</option>
-                        <option value="Pcs" {{ old('keterangan', $dtl->keterangan ?? '') == 'Pcs' ? 'selected' : '' }}>Pcs</option>
-                        <option value="Pack" {{ old('keterangan', $dtl->keterangan ?? '') == 'Pack' ? 'selected' : '' }}>Pack</option>
-                    </select>
-                </div>                                
+                    <div class="mb-4">
+                        <label for="editKeterangan">Keterangan</label>
+                        <select id="editKeterangan" name="editKeterangan" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            @foreach($db as $k)
+                                <option value="{{ $k->satuan }}">{{ $k->satuan }}</option>
+                            @endforeach
+                        </select>
+                    </div> 
+                </div>                             
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="updateItem()">Update</button>
                 </div>
@@ -143,7 +142,15 @@ $(document).ready(function() {
         dropdownParent: $("#modalTambahBarangForm{{$piutang->uuid}}")
     });
 
+    $("#keterangan").select2({
+        dropdownParent: $("#modalTambahBarangForm{{$piutang->uuid}}")
+    });
+
     $("#editBarang").select2({
+        dropdownParent: $("#modalEditBarang")
+    });
+
+     $("#editKeterangan").select2({
         dropdownParent: $("#modalEditBarang")
     });
 

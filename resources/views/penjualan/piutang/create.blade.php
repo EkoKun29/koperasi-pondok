@@ -27,15 +27,12 @@
             <div class="p-6">
                 <div class="flex">
                     <div class="w-full md:w-1/2">
-                        @php
-                            $uniquePersonil = collect($p_piutang)->unique('nama_pembeli');
-                        @endphp
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Nama Pembeli</b></label>
                             <select id="nama_pembeli" name="nama_pembeli" class="form-control" required>
                                 <option disabled selected>Pilih Pembeli</option>
-                                @foreach($uniquePersonil as $p)
-                                    <option value="{{ $p->nama_pembeli }}">{{ $p->nama_pembeli }}</option>
+                                @foreach($data as $barang)
+                                    <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -129,12 +126,12 @@
                         <input type="number" id="qty" name="qty" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700"><b>Keterangan</b></label>
-                        <select name="keterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="keterangan">
+                        <label for="keterangan">Keterangan</label>
+                        <select id="keterangan" name="keterangan" style="width: 100%" class="form-select mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                             <option disabled selected>Pilih Keterangan</option>
-                            <option value="Dus">Dus</option>
-                            <option value="Pcs">Pcs</option>
-                            <option value="Pack">Pack</option>
+                            @foreach($db as $k)
+                                <option value="{{ $k->satuan }}">{{ $k->satuan }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -150,16 +147,6 @@
 
 @push('js')
 <script src="{{ asset('assets/js/navbar-sticky.js') }}"></script>
-<script>
-$(document).ready(function() {
-    $('#nama_pembeli').select2({
-        tags: true,
-        placeholder: "Pilih atau ketik pembeli...",
-        allowClear: true,
-        width: '100%' // supaya penuh
-    });
-});
-</script>
 
 <script>
     var globalData = [];
@@ -247,13 +234,22 @@ $(document).ready(function() {
     // Event handler untuk reset form setelah modal ditutup
     $(document).ready(function() {
     $("#nama_personil").select2();
+    $("#nama_pembeli").select2();
     $("#barang").select2({
-    dropdownParent: $("#modalTambahBarang")
+        dropdownParent: $("#modalTambahBarang")
     });
+
+    $("#keterangan").select2({
+        dropdownParent: $("#modalTambahBarang")
+    });
+
     $('#modalTambahBarang').on('hidden.bs.modal', function () {
         $('#createPenjualanPiutang')[0].reset();
     });
 });
+
+
+
 
     // Submit semua data
     function submitAll() { 
@@ -291,6 +287,7 @@ $(document).ready(function() {
                 } else {
                     alert("Gagal menyimpan data.");
                 }
+                
             },
             error: function(xhr, status, error) {
                 console.log("Error details:", xhr.responseText);

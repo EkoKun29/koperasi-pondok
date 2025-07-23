@@ -10,6 +10,7 @@ use Laravel\Ui\Presets\Vue;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\User;
+use GuzzleHttp\Client;
 
 class PenjualanPiutangController extends Controller
 {
@@ -39,9 +40,9 @@ class PenjualanPiutangController extends Controller
         }else{
             abort(403, 'Unauthorized action.');
         }
-
+        $p_piutang = PenjualanPiutang::pluck('nama_pembeli')->unique();
         $data=NamaBarang::all();
-        return view('penjualan.piutang.index',compact('piutang', 'data'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('penjualan.piutang.index',compact('piutang', 'data', 'p_piutang'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
 
@@ -69,9 +70,24 @@ class PenjualanPiutangController extends Controller
 
     public function create()
     {
-        $p_piutang = PenjualanPiutang::all();
+        try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
         $data = NamaBarang::all();
-        return view('penjualan.piutang.create', compact('data', 'p_piutang'));
+        return view('penjualan.piutang.create', compact('data', 'db'));
     }
 
     public function store(Request $request)
@@ -195,6 +211,22 @@ public function update(Request $request, $uuid)
     
     public function show($uuid)
     {
+        try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
         $data = NamaBarang::all();
         $piutang = PenjualanPiutang::where('uuid', $uuid)->first();
         if (!$piutang) {
@@ -206,17 +238,33 @@ public function update(Request $request, $uuid)
             dd('Detail Penjualan Piutang tidak ditemukan');
         }
 
-        return view('penjualan.piutang.detail', compact('piutang', 'detail', 'data'));
+        return view('penjualan.piutang.detail', compact('piutang', 'detail', 'data', 'db'));
     }
 
     public function editDetail($id)
     {
+        try {
+            $client = new Client();
+            $user = Auth::user()->role;
+            $urlDB= "https://script.google.com/macros/s/AKfycbxkPyYzkbcPMICgq1NDGmOQGGILgIDI-iWNxofklBA1jS14eM8HGOEOmRWH7KuNm1um/exec";
+
+            $responseDB = $client->request('GET', $urlDB, [
+                'verify'  => false,
+            ]);
+
+            $dataDB = json_decode($responseDB->getBody());
+
+            $db = collect($dataDB); // Change to collection
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('danger', 'Gagal Mengambil Data Supplier!.');
+        }
         $data = NamaBarang::all();
         $piutang = PenjualanPiutang::where('id', $id)->first();
         $detail = DetailPenjualanPiutang::where('uuid_penjualan', $piutang->uuid)->get();
         $dtl = DetailPenjualanPiutang::findOrFail($id); // Change this as per your actual logic
     
-        return view('penjualan.piutang.edit-detail', compact('piutang', 'detail', 'data', 'dtl'));
+        return view('penjualan.piutang.edit-detail', compact('piutang', 'detail', 'data', 'dtl', 'db'));
     }
 
     public function updateDetail(Request $request, $uuid)
