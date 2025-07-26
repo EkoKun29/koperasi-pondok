@@ -112,7 +112,7 @@
                                 <label for="add_nama_konsumen" class="block text-sm font-medium text-gray-700"><b>Nama Konsumen</b></label>
                                 <select id="add_nama_konsumen" name="nama_konsumen" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Konsumen</option>
-                                    @foreach($dataKonsumen as $konsumen)
+                                    @foreach(collect($dataKonsumen)->unique('konsumen') as $konsumen)
                                         <option value="{{ $konsumen['konsumen'] }}">{{ $konsumen['konsumen'] }}</option>
                                     @endforeach
                                 </select>
@@ -122,7 +122,7 @@
                                 <label for="add_nota_penjualan_piutang" class="block text-sm font-medium text-gray-700"><b>Nota Penjualan Piutang</b></label>
                                 <select id="add_nota_penjualan_piutang" name="nota_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Nota Penjualan</option>
-                                    @foreach($dataKonsumen as $konsumen)
+                                    @foreach(collect($dataKonsumen)->unique('no_nota') as $konsumen)
                                         <option value="{{ $konsumen['no_nota'] }}">{{ $konsumen['no_nota'] }}</option>
                                     @endforeach
                                 </select>
@@ -132,7 +132,7 @@
                                 <label for="add_tanggal_penjualan_piutang" class="block text-sm font-medium text-gray-700"><b>Tanggal Penjualan Piutang</b></label>
                                 <select id="add_tanggal_penjualan_piutang" name="tanggal_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Tanggal Penjualan Piutang</option>
-                                    @foreach($dataKonsumen as $konsumen)
+                                    @foreach(collect($dataKonsumen)->unique('tanggal') as $konsumen)
                                         @if($konsumen['tanggal_valid'])
                                             @php
                                                 $tanggal = \Carbon\Carbon::createFromFormat('d-m-Y', $konsumen['tanggal']);
@@ -187,7 +187,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="editPelunasanModalLabel">Edit Pelunasan</h5>
+                <h5 class="modal-title">Edit Pelunasan</h5>
                 <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -201,7 +201,7 @@
                         <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="edit_nama_personil" class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
-                                <select id="edit_nama_personil" name="nama_personil" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                                <select id="edit_nama_personil" name="penyetor" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Personil</option>
                                     @foreach($data as $barang)
                                         <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
@@ -213,7 +213,7 @@
                                 <label for="edit_nama_konsumen" class="block text-sm font-medium text-gray-700"><b>Nama Konsumen</b></label>
                                 <select id="edit_nama_konsumen" name="nama_konsumen" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Konsumen</option>
-                                    @foreach($dataKonsumen as $konsumen)
+                                    @foreach(collect($dataKonsumen)->unique('konsumen') as $konsumen)
                                         <option value="{{ $konsumen['konsumen'] }}">{{ $konsumen['konsumen'] }}</option>
                                     @endforeach
                                 </select>
@@ -223,7 +223,7 @@
                                 <label for="edit_nota_penjualan_piutang" class="block text-sm font-medium text-gray-700"><b>Nota Penjualan Piutang</b></label>
                                 <select id="edit_nota_penjualan_piutang" name="nota_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Nota Penjualan</option>
-                                    @foreach($dataKonsumen as $konsumen)
+                                    @foreach(collect($dataKonsumen)->unique('no_nota') as $konsumen)
                                         <option value="{{ $konsumen['no_nota'] }}">{{ $konsumen['no_nota'] }}</option>
                                     @endforeach
                                 </select>
@@ -233,12 +233,12 @@
                                 <label for="edit_tanggal_penjualan_piutang" class="block text-sm font-medium text-gray-700"><b>Tanggal Penjualan Piutang</b></label>
                                 <select id="edit_tanggal_penjualan_piutang" name="tanggal_penjualan_piutang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                     <option disabled selected>Pilih Tanggal Penjualan Piutang</option>
-                                    @foreach($dataKonsumen as $konsumen)
+                                    @foreach(collect($dataKonsumen)->unique('tanggal') as $konsumen)
                                         @if($konsumen['tanggal_valid'])
                                             @php
                                                 $tanggal = \Carbon\Carbon::createFromFormat('d-m-Y', $konsumen['tanggal']);
                                             @endphp
-                                            <option value="{{ $tanggal->format('d-m-Y') }}">{{ $tanggal->format('Y-m-d') }}</option>
+                                            <option value="{{ $tanggal->format('Y-m-d') }}">{{ $tanggal->format('Y-m-d') }}</option>
                                         @else
                                             <option disabled>{{ $konsumen['tanggal'] ?? 'Tanggal Tidak Valid' }} (Invalid)</option>
                                         @endif
@@ -276,7 +276,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" id="btn-simpan" class="btn btn-primary">Simpan Perubahan</button>
+                    <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
                 </form>
             </div>
         </div>
@@ -303,9 +303,7 @@
         $('.editButton').on('click', function() {
             var uuid = $(this).data('id');
             var url = "{{ route('pelunasan.update', ':uuid') }}"; // Prepare the route
-            url = url.replace(':uuid', uuid); // Replace placeholder with actual UUID
-
-            $('#editPelunasanForm').attr('action', url); // Set the action attribute of the form
+            url = url.replace(':uuid', uuid); 
 
             // AJAX call to get the pelunasan details by UUID
             $.ajax({
@@ -319,36 +317,33 @@
                     }
 
                     // Populate modal fields with fetched data
-                    $('#edit_nama_personil').val(data.penyetor).trigger('change');
-                    $('#edit_nama_konsumen').val(data.nama_konsumen).trigger('change');
-                    $('#edit_nota_penjualan_piutang').val(data.nota_penjualan_piutang).trigger('change');
-                    
-                    // Format tanggal_penjualan_piutang from 'YYYY-MM-DD' to 'DD-MM-YYYY'
-                    var formattedDate = formatDate(data.tanggal_penjualan_piutang);
-                    $('#edit_tanggal_penjualan_piutang').val(formattedDate).trigger('change');
+                    $('#edit_nama_personil').val(data.penyetor);
+                    $('#edit_nama_konsumen').val(data.nama_konsumen);
+                    $('#edit_nota_penjualan_piutang').val(data.nota_penjualan_piutang);
+
+                    $('#edit_tanggal_penjualan_piutang').val(data.tanggal_penjualan_piutang);
 
                     $('#edit_sisa_piutang_sebelumnya').val(data.sisa_piutang_sebelumnya);
                     $('#edit_tunai').val(data.tunai);
                     $('#edit_transfer').val(data.transfer);
-                    $('#edit_bank').val(data.bank).trigger('change');
+                    $('#edit_bank').val(data.bank);
 
                     // Update form action to include the pelunasan UUID for update
                     $('#editPelunasanForm').attr('action', '/pelunasan/' + uuid);
                     
                     // Show the modal
                     $('#editPelunasanModal').modal('show');
+
+                    $('#edit_nama_personil, #edit_nama_konsumen, #edit_nota_penjualan_piutang, #edit_tanggal_penjualan_piutang, #edit_bank').select2({
+                        dropdownParent: $('#editPelunasanModal')
+                    });
                 },
                 error: function() {
                     alert('Gagal mengambil data pelunasan.');
                 }
             });
         });
-
-
-        // Initialize Select2 for the edit modal
-        $('#edit_nama_personil, #edit_nama_konsumen, #edit_nota_penjualan_piutang, #edit_tanggal_penjualan_piutang, #edit_bank').select2({
-            dropdownParent: $('#editPelunasanModal')
-        });
+        
 
         // Fetch sisa_piutang when fields in add modal are selected
         $('#add_nama_konsumen, #add_tanggal_penjualan_piutang, #add_nota_penjualan_piutang').on('change', function() {

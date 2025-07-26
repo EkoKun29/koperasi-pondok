@@ -77,7 +77,7 @@ class PelunasanController extends Controller
         }
     
         // Ambil data barang
-        $data = NamaBarang::all();
+        $data = NamaBarang::all()->unique();
     
         // Periksa jika data barang kosong
         if ($data->isEmpty()) {
@@ -180,8 +180,16 @@ public function store(Request $request)
 public function edit($uuid)
 {
     $pelunasan = Pelunasan::where('uuid', $uuid)->firstOrFail();
-    $pelunasan->tanggal_penjualan_piutang = Carbon::parse($pelunasan->tanggal_penjualan_piutang)->format('d-m-Y');
-    return response()->json($pelunasan); // Send pelunasan data as JSON
+   return response()->json([
+        'penyetor' => $pelunasan->penyetor,
+        'nama_konsumen' => $pelunasan->nama_konsumen,
+        'nota_penjualan_piutang' => $pelunasan->nota_penjualan_piutang,
+        'tanggal_penjualan_piutang' => Carbon::parse($pelunasan->tanggal_penjualan_piutang)->format('Y-m-d'),
+        'sisa_piutang_sebelumnya' => $pelunasan->sisa_piutang_sebelumnya, 
+        'tunai' => $pelunasan->tunai,
+        'transfer' => $pelunasan->transfer,
+        'bank' => $pelunasan->bank,
+    ]);
 }
 
 public function update(Request $request, $uuid)
@@ -204,7 +212,7 @@ public function update(Request $request, $uuid)
     $pelunasan->no_nota = $pelunasan->no_nota; 
     $pelunasan->tanggal_penjualan_piutang = Carbon::createFromFormat('Y-m-d', $request->tanggal_penjualan_piutang)->format('Y-m-d');
     $pelunasan->nama_koperasi = 'KAMPUS ' . Auth::user()->role;
-    $pelunasan->penyetor = $request->nama_personil;
+    $pelunasan->penyetor = $request->penyetor;
     $pelunasan->nama_konsumen = $request->nama_konsumen;
     $pelunasan->nota_penjualan_piutang = $request->nota_penjualan_piutang;
     $pelunasan->sisa_piutang_sebelumnya = $request->sisa_piutang_sebelumnya;
