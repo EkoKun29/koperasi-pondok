@@ -29,7 +29,7 @@
                     <div class="w-full md:w-1/2">
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Tanggal Retur</b></label>
-                            <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <input type="date" id="tanggal" name="tanggal" placeholder="Tanggal" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
                         </div>
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
@@ -241,6 +241,9 @@
     $("#barang").select2({
     dropdownParent: $("#modalTambahBarang")
     });
+     $("#satuan").select2({
+    dropdownParent: $("#modalTambahBarang")
+    });
     $('#modalTambahBarang').on('hidden.bs.modal', function () {
         $('#createPenjualanPiutang')[0].reset();
     });
@@ -267,7 +270,7 @@
         submitButton.text('Menyimpan...');
 
         $.ajax({
-            url: "{{ route('retur-penjualan.store') }}",  // Route Laravel untuk penyimpanan
+            url: "{{ route('retur-pembelian.store') }}",  // Route Laravel untuk penyimpanan
             method: "POST",
             data: {
                 nama_personil: nama_personil,
@@ -283,7 +286,7 @@
                     var uuid = response.uuid;
                     
                     // Redirect ke halaman print dengan UUID
-                    window.location.href = "{{ url('retur-penjualan/print') }}/" + uuid;
+                    window.location.href = "{{ url('retur-pembelian/print') }}/" + uuid;
                 } else {
                     alert("Gagal menyimpan data.");
                 }

@@ -30,10 +30,10 @@
                     <td class="border px-4 py-2">
                         <div class="d-flex">
                             <button data-bs-toggle="modal" data-bs-target="#modal-edit-detail{{ $dtl->uuid }}"
-                                class="btn btn-warning btn-sm">Edit</button>
+                                class="btn btn-warning btn-sm ml-2">Edit</button>
 
                              <a href="{{ route('delete-barang-masuk-produksi-detail', $dtl['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')"
-                                class="btn btn-danger btn-sm">Hapus</a>
+                                class="btn btn-danger btn-sm ml-2">Hapus</a>
                         </div>
                     </td>
                     @include('barang_masuk_produksi.edit-detail')
@@ -91,6 +91,11 @@ $(document).ready(function() {
     $("#nama_barang").select2({
         dropdownParent: $("#modalTambahBarangForm{{$barangMasukProduksi->uuid}}")
     });
+
+    $("#satuan").select2({
+        dropdownParent: $("#modalTambahBarangForm{{$barangMasukProduksi->uuid}}")
+    });
+
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }

@@ -99,6 +99,11 @@ $(document).ready(function() {
     $("#barang").select2({
         dropdownParent: $("#modalTambahBarangForm{{$pembelian->uuid}}")
     });
+
+    $("#satuan").select2({
+        dropdownParent: $("#modalTambahBarangForm{{$pembelian->uuid}}")
+    });
+
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }
@@ -115,7 +120,7 @@ $(document).ready(function() {
         url: '/pembelian-new/' + uuid + '/edit/detail',
         type: 'GET',
         success: function(response) {
-            $('#barang').val(response.barang);
+            $('#nama_barang').val(response.nama_barang);
             $('#satuan').val(response.satuan); 
 
             // Set form action to update the data
@@ -124,9 +129,6 @@ $(document).ready(function() {
             // Show modal
             // $('#editDetailModal').modal('showDetail');
 
-            $("#barang").select2({
-                dropdownParent: $('#editDetailModal')
-            });
         }
     });
     });

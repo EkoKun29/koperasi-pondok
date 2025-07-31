@@ -80,7 +80,6 @@
                         </select>
                     </div>     
                 </div> 
-                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="addItem()">Simpan</button>
                 </div>
@@ -139,6 +138,10 @@
 <script>
 $(document).ready(function() {
     $("#barang").select2({
+        dropdownParent: $("#modalTambahBarangForm{{$penjualanAcara->uuid}}")
+    });
+
+    $("#keterangan").select2({
         dropdownParent: $("#modalTambahBarangForm{{$penjualanAcara->uuid}}")
     });
 

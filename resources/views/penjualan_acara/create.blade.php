@@ -20,7 +20,7 @@
 </nav>
 
 <!-- Page content -->
-<div class="container mx-auto mt-6">
+<div id="Indukmodal" class="container mx-auto mt-6">
     <div class="w-full">
         <div class="bg-white shadow-md rounded-lg">
             <div class="p-6">
@@ -227,9 +227,18 @@
     }
 
     $(document).ready(function() {
+    $("#nama_personil").select2({
+    dropdownParent: $("#Indukmodal")
+    });
+
     $("#barang").select2({
     dropdownParent: $("#modalTambahBarang")
     });
+    
+    $("#keterangan").select2({
+        dropdownParent: $("#modalTambahBarang")
+    });
+
     $('#modalTambahBarang').on('hidden.bs.modal', function () {
         $('#createBarangTerjual')[0].reset();
     });

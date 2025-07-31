@@ -53,7 +53,7 @@ class ReturPenjualanController extends Controller
             ->merge($barangMasukProduksi->pluck('nota'))
             ->unique();
 
-        return view('retur_penjualan.index',compact('retur', 'data', 'dataNoNota'))->with('i', (request()->input('page', 1) - 1) * 10);
+        return view('retur_pembelian.index',compact('retur', 'data', 'dataNoNota'))->with('i', (request()->input('page', 1) - 1) * 10);
     }
 
     private function generateNota()
@@ -102,7 +102,7 @@ class ReturPenjualanController extends Controller
         $dataNoNota = $barangMasuk->pluck('nota')
             ->merge($barangMasukProduksi->pluck('nota'))
             ->unique();
-        return view('retur_penjualan.create', compact('data', 'dataNoNota', 'db'));
+        return view('retur_pembelian.create', compact('data', 'dataNoNota', 'db'));
     }
 
     public function store(Request $request)
@@ -172,7 +172,7 @@ class ReturPenjualanController extends Controller
     {
         $retur = ReturPenjualan::where('uuid', $uuid)->first();
         if (!$retur) {
-            return redirect()->route('retur_penjualan.index')->with('error', 'Retur Penjualan tidak ditemukan.');
+            return redirect()->route('retur_pembelian.index')->with('error', 'Retur Pembelian tidak ditemukan.');
         }
 
         $data = NamaBarang::all();
@@ -204,7 +204,7 @@ class ReturPenjualanController extends Controller
 
         $retur = ReturPenjualan::where('uuid', $uuid)->first();
         if (!$retur) {
-            return redirect()->route('retur_penjualan.index')->with('error', 'Retur Penjualan tidak ditemukan.');
+            return redirect()->route('retur_pembelian.index')->with('error', 'Retur Pembelian tidak ditemukan.');
         }
 
         $retur->update([
@@ -240,12 +240,12 @@ class ReturPenjualanController extends Controller
         }
         $retur = ReturPenjualan::where('uuid', $uuid)->first();
         if (!$retur) {
-            return redirect()->route('retur_penjualan.index')->with('error', 'Retur Penjualan tidak ditemukan.');
+            return redirect()->route('retur_pembelian.index')->with('error', 'Retur Pembelian tidak ditemukan.');
         }
 
         $detailRetur = DetailReturPenjualan::where('uuid_retur_penjualan', $uuid)->get();
         $data = NamaBarang::all();
-        return view('retur_penjualan.detail', compact('retur', 'detailRetur', 'data', 'db'));
+        return view('retur_pembelian.detail', compact('retur', 'detailRetur', 'data', 'db'));
     }
 
     public function editDetail($uuid)
@@ -271,7 +271,7 @@ class ReturPenjualanController extends Controller
 
         $data = NamaBarang::all();
 
-        return view('retur_penjualan.edit_detail', compact('retur', 'detail', 'data', 'db'));
+        return view('retur_pembelian.edit_detail', compact('retur', 'detail', 'data', 'db'));
     }
 
     public function updateDetail(Request $request, $uuid)
@@ -335,7 +335,7 @@ class ReturPenjualanController extends Controller
         if ($jumlahDetail == 1) {
         $detail->delete();
         $detail->returPenjualan?->delete();
-        return redirect()->route('retur-penjualan.index')->with('success', 'Data retur penjualan & detail terakhir berhasil dihapus');
+        return redirect()->route('retur-pembelian.index')->with('success', 'Data retur pembelian & detail terakhir berhasil dihapus');
         }
         
         // if ($detail->returPenjualan) {
@@ -346,7 +346,7 @@ class ReturPenjualanController extends Controller
         // Hapus detail retur penjualan
         $detail->delete();
 
-        return redirect()->back()->with('success', 'Detail retur penjualan berhasil dihapus.');
+        return redirect()->back()->with('success', 'Detail retur pembelian berhasil dihapus.');
     }
 
     public function print($uuid)
@@ -354,7 +354,7 @@ class ReturPenjualanController extends Controller
         $retur = ReturPenjualan::where('uuid', $uuid)->firstOrFail();
         $detailRetur = DetailReturPenjualan::where('uuid_retur_penjualan', $retur->uuid)->get();
 
-        return view('retur_penjualan.print', compact('retur', 'detailRetur'));
+        return view('retur_pembelian.print', compact('retur', 'detailRetur'));
     }
 
 }

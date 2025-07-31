@@ -34,7 +34,7 @@
                     <td class="border px-4 py-2">
                     <div class="d-flex">
                         <a href="javascript:void(0)" onclick="openEditModal({{ $dtl->id }}, '{{ $dtl->nama_barang }}', {{ $dtl->qty }}, {{ $dtl->harga }}, '{{ $dtl->keterangan }}')" class="btn btn-warning btn-sm ml-2">Edit</a>
-                        <a href="{{ route('delete-penjualan-piutang-detail', $dtl['id']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')" class="btn btn-danger btn-sm">Hapus</a>
+                        <a href="{{ route('delete-penjualan-piutang-detail', $dtl['id']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')" class="btn btn-danger btn-sm ml-2">Hapus</a>
                         </div>
                     </td>
                 </tr>

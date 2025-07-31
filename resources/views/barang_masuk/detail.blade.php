@@ -91,6 +91,11 @@ $(document).ready(function() {
     $("#nama_barang").select2({
         dropdownParent: $("#modalTambahBarangForm{{$barangMasuk->uuid}}")
     });
+
+    $("#satuan").select2({
+        dropdownParent: $("#modalTambahBarangForm{{$barangMasuk->uuid}}")
+    });
+
     if ($.fn.DataTable.isDataTable('#datatable-basic')) {
         $('#datatable-basic').DataTable().destroy();
     }

@@ -22,7 +22,7 @@
 <div class="container mx-auto px-4">
     <h1 class="text-xl font-semibold mb-4">Retur Pembelian</h1>
     <div class="mx-4">
-        <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('retur-penjualan.create') }}">Tambah Data</a>
+        <a style="text-decoration:none;" class="inline-block w-3   px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" href="{{ route('retur-pembelian.create') }}">Tambah Data</a>
     </div>
     <div class="table-responsive">
         <table id="datatable-basic" class="table-auto border-collapse w-full">
@@ -49,12 +49,12 @@
                     <td class="border px-4 py-2">{{ $ret->nama_supplier }}</td>
                     <td class="border px-4 py-2">
                         <div class="d-flex">
-                            <a href="{{ route('retur-penjualan.detail', $ret['uuid']) }}"
+                            <a href="{{ route('retur-pembelian.detail', $ret['uuid']) }}"
                                 class="btn btn-info btn-sm ml-2">Detail</a>
                             <a href="javascript:void(0);" data-id="{{ $ret['uuid'] }}" class="btn btn-primary btn-sm ml-2 editButton">Edit</a>
-                            <a href="{{ route('retur-penjualan.print', $ret['uuid']) }}"
+                            <a href="{{ route('retur-pembelian.print', $ret['uuid']) }}"
                                 class="btn btn-secondary btn-sm ml-2">Print</a>
-                            <a href="{{ route('delete-retur-penjualan', $ret['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $ret->nota_retur }} Ini ??')"
+                            <a href="{{ route('delete-retur-pembelian', $ret['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Data {{ $ret->nota_retur }} Ini ??')"
                                 value="Delete" class="btn btn-danger btn-sm ml-2">Hapus</a>
                         </div>
                     </td>
@@ -92,7 +92,7 @@
                             <label for="nama_personil" class="block text-sm font-medium text-gray-700">
                                 <b>Nama Personil</b>
                             </label>
-                            <select class="nama-personil" name="nama_personil" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                            <select id="nama_personil" class="nama-personil" name="nama_personil" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                 <option disabled selected>Pilih Personil</option>
                                 @foreach($data as $barang)
                                     <option value="{{ $barang->nama_personil }}">{{ $barang->nama_personil }}</option>
@@ -114,7 +114,7 @@
                     <div class="w-full md:w-1/2 px-2">
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700"><b>Nota Barang Masuk</b></label>
-                            <select class="nota-penjualan" name="nota_barang_masuk" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
+                            <select id="nota_barang_masuk" class="nota-penjualan" name="nota_barang_masuk" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                                 <option disabled selected>Pilih Nota Barang Masuk</option>
                                 @foreach($dataNoNota as $no_nota)
                                     <option value="{{ $no_nota }}">{{ $no_nota }}</option>
@@ -166,7 +166,7 @@ $('.editButton').on('click', function() {
 
     // Send AJAX request to get data for the selected item
     $.ajax({
-        url: '/retur-penjualan/' + uuid + '/edit',
+        url: '/retur-pembelian/' + uuid + '/edit',
         type: 'GET',
         success: function(response) {
             // Populate modal fields with the fetched data
@@ -179,7 +179,7 @@ $('.editButton').on('click', function() {
             $('#editTotal').val(response.total);
 
             // Set form action to update the data
-            $('#editForm').attr('action', '/retur-penjualan/' + uuid);
+            $('#editForm').attr('action', '/retur-pembelian/' + uuid);
 
             // Show modal
             $('#editModal').modal('show');
@@ -202,15 +202,11 @@ $('.editButton').on('click', function() {
             width: '100%'
         });
     });
-            // $("#nama_personil").select2({
-            //     dropdownParent: $('#editModal')
-            // });
-        //     $modal.find('.nama-personil').select2({
-        //     dropdownParent: $('#editModal'),
-        //     placeholder: 'Pilih Satuan',
-        //     allowClear: true,
-        //     width: '100%'
-        // });
+
+            $("#nama_personil").select2({
+                dropdownParent: $('#editModal')
+            });
+            
             $("#nota_barang_masuk").select2({
                 dropdownParent: $('#editModal')
             });

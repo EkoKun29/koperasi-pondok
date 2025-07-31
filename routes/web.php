@@ -223,16 +223,16 @@ Route::post('pindah-stok/create', [PindahController::class, 'store'])->name('pin
 Route::get('pindah-stok/print/{id}', [PindahController::class, 'print'])->name('pindah.print');
 
 //--------------------------------------RETUR PENJUALAN----------------------------------------------------------------------------------------------------------------------------------------------
-Route::resource('retur-penjualan', App\Http\Controllers\ReturPenjualanController::class);
-Route::post('retur-penjualan/create', [App\Http\Controllers\ReturPenjualanController::class, 'store'])->name('retur-penjualan.store');
-Route::post('retur-penjualan/store-detail/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'storeDetail'])->name('retur-penjualan.store-detail');
-Route::get('/retur-penjualan/{uuid}/edit', [App\Http\Controllers\ReturPenjualanController::class, 'edit'])->name('retur-penjualan.edit');
-Route::put('/retur-penjualan/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'update'])->name('retur-penjualan.update');
-Route::put('/retur-penjualan/{uuid}/detail/update', [App\Http\Controllers\ReturPenjualanController::class, 'updateDetail'])->name('retur-penjualan.detail.update');
-Route::get('retur-penjualan/detail/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'show'])->name('retur-penjualan.detail');
-Route::get('retur-penjualan/delete/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'destroy'])->name('delete-retur-penjualan');
-Route::get('retur-penjualan/detail/delete/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'destroyDetail'])->name('delete-retur-penjualan-detail');
-Route::get('retur-penjualan/print/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'print'])->name('retur-penjualan.print');
+Route::resource('retur-pembelian', App\Http\Controllers\ReturPenjualanController::class);
+Route::post('retur-pembelian/create', [App\Http\Controllers\ReturPenjualanController::class, 'store'])->name('retur-pembelian.store');
+Route::post('retur-pembelian/store-detail/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'storeDetail'])->name('retur-pembelian.store-detail');
+Route::get('/retur-pembelian/{uuid}/edit', [App\Http\Controllers\ReturPenjualanController::class, 'edit'])->name('retur-pembelian.edit');
+Route::put('/retur-pembelian/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'update'])->name('retur-pembelian.update');
+Route::put('/retur-pembelian/{uuid}/detail/update', [App\Http\Controllers\ReturPenjualanController::class, 'updateDetail'])->name('retur-pembelian.detail.update');
+Route::get('retur-pembelian/detail/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'show'])->name('retur-pembelian.detail');
+Route::get('retur-pembelian/delete/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'destroy'])->name('delete-retur-pembelian');
+Route::get('retur-pembelian/detail/delete/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'destroyDetail'])->name('delete-retur-pembelian-detail');
+Route::get('retur-pembelian/print/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'print'])->name('retur-pembelian.print');
 
 
 

@@ -20,7 +20,7 @@
 </nav>
 
 <!-- Page content -->
-<div class="container mx-auto mt-6">
+<div id="modalInduk" class="container mx-auto mt-6">
     <div class="w-full">
         <div class="bg-white shadow-md rounded-lg">
             <div class="p-6">
@@ -124,15 +124,6 @@
                             @endforeach
                         </select>
                     </div>
-                    {{-- <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700"><b>Keterangan</b></label>
-                        <select name="keterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" id="keterangan">
-                            <option disabled selected>Pilih Keterangan</option>
-                            <option value="Dus">Dus</option>
-                            <option value="Pcs">Pcs</option>
-                            <option value="Pack">Pack</option>
-                        </select>
-                    </div> --}}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="addItem()">Simpan</button>
@@ -191,7 +182,7 @@
         // Tutup modal setelah barang ditambahkan
         $('#modalTambahBarang').modal('hide');
         $('.modal-backdrop').remove();  // Menghapus backdrop jika masih ada
-
+        $('#modalInduk').modal('hide');
         // Reset form setelah barang ditambahkan
         $('#createBarangTerjual')[0].reset();
 
@@ -237,6 +228,10 @@
 
     $("#keterangan").select2({
     dropdownParent: $("#modalTambahBarang")
+    });
+
+    $("#nama_personil").select2({
+    dropdownParent: $("#modalInduk")
     });
 
     $('#modalTambahBarang').on('hidden.bs.modal', function () {

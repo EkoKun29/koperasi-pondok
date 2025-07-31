@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container mx-auto px-4">
-    <h1 class="text-xl font-semibold mb-4">Retur Penjualan Detail</h1>
+    <h1 class="text-xl font-semibold mb-4">Retur Pembelian Detail</h1>
 
     <div class="mx-4" id="modalTambahBarang">
         <a id="createPenjualanPiutang" style="text-decoration:none;" class="inline-block w-3 px-6 py-2 my-4 text-xs font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro bg-gradient-to-tl from-purple-700 to-pink-500 hover:shadow-soft-2xl hover:scale-102" 
@@ -30,7 +30,7 @@
                     <td class="border px-4 py-2">
                     <div class="d-flex">
                         <a href="javascript:void(0)" onclick="openEditModal({{ $dtl->id }}, '{{ $dtl->nama_barang }}', {{ $dtl->qty }}, '{{ $dtl->satuan }}')" class="btn btn-warning btn-sm ml-2">Edit</a>
-                        <a href="{{ route('delete-retur-penjualan-detail', $dtl['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')" class="btn btn-danger btn-sm ml-2">Hapus</a>
+                        <a href="{{ route('delete-retur-pembelian-detail', $dtl['uuid']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')" class="btn btn-danger btn-sm ml-2">Hapus</a>
                         </div>
                     </td>
                 </tr>
@@ -130,6 +130,10 @@ $(document).ready(function() {
         dropdownParent: $("#modalTambahBarangForm{{$retur->uuid}}")
     });
 
+    $("#satuan").select2({
+        dropdownParent: $("#modalTambahBarangForm{{$retur->uuid}}")
+    });
+
     $("#editBarang").select2({
         dropdownParent: $("#modalEditBarang")
     });
@@ -162,7 +166,7 @@ function addItem() {
 
     // Perform an AJAX request to add the item
     $.ajax({
-        url: "{{ route('retur-penjualan.store-detail', ['uuid' => $retur->uuid]) }}",  // Update to your actual route
+        url: "{{ route('retur-pembelian.store-detail', ['uuid' => $retur->uuid]) }}",  // Update to your actual route
         method: 'POST',
         data: {
             _token: '{{ csrf_token() }}',
@@ -183,7 +187,7 @@ function addItem() {
                             <div class="d-flex">
                                 <a href="javascript:void(0);" onclick="openEditModal(${response.detail.id}, '${response.detail.nama_barang}', ${response.detail.qty}, '${response.detail.satuan}')" 
                                    class="btn btn-warning btn-sm ml-2">Edit</a>
-                                <a href="{{ route('delete-retur-penjualan-detail', 'id_placeholder') }}" 
+                                <a href="{{ route('delete-retur-pembelian-detail', 'id_placeholder') }}" 
                                    id="btn-delete-post" 
                                    onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang ${response.detail.nama_barang} ??')" 
                                    class="btn btn-danger btn-sm">Hapus</a>
@@ -239,7 +243,7 @@ function updateItem() {
     }
 
     $.ajax({
-        url: "{{ route('retur-penjualan.detail.update', ['uuid' => $retur->uuid]) }}",
+        url: "{{ route('retur-pembelian.detail.update', ['uuid' => $retur->uuid]) }}",
         method: 'PUT',
         data: {
             _token: '{{ csrf_token() }}',
