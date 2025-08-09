@@ -3,66 +3,52 @@
 <head>
     <title>Print Label Cetak - {{ \Carbon\Carbon::parse($tanggal)->format('d-m-Y') }}</title>
     <style>
-        @page {
-            size: 58mm auto;
-            margin: 0;
-        }
-
-        body {
-            margin: 0;
-            padding: 0 3mm; /* beri jarak kiri-kanan */
-            font-family: Arial, sans-serif;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        td {
-            font-size: 20px;
-            text-align: center;
-            height: 35mm;
-            box-sizing: border-box;
-            border: 2px solid black; /* border kotak */
-            vertical-align: middle;
-            padding: 0 2px;
-            word-break: break-all;
-            max-width: 48mm;
-            white-space: normal;
-        }
-
         @media print {
             body {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
+                font-size: 14px;
             }
+
+            table {
+            border-collapse: collapse;
+            width: 110mm; /* penuh sesuai lebar kertas */
+            margin: 0; /* hilangkan margin */
+            }
+
             td {
-                border-color: black !important;
+                font-size: 20px; /* Ukuran teks */
+                text-align: center;
+                height: 35mm; /* Tinggi label tetap */
+                border: 1px dashed black; /* Bisa dihapus kalau tidak mau garis */
+                word-wrap: break-word; /* Pecah teks panjang */
+                vertical-align: middle; /* Teks rata tengah secara vertikal */
             }
         }
     </style>
 </head>
 <body>
 <div>
-    <table>
+    <table border="1" cellpadding="10" cellspacing="0">
         <tbody>
-            @foreach($labels as $label)
-            <tr>
-                <td>{{ $label->label }}</td>
-            </tr>
+            @foreach($labels as $index => $label)
+                <tr>
+    <td style="padding-top: 38px; padding-bottom: 38px; font-size: 39px; text-align:center;">
+        {{ $label->label }}
+    </td>
+</tr>
+
+
             @endforeach
         </tbody>
     </table>
 </div>
-
-<script>
-if (window.Android) {
-    window.Android.printPage();
-} else {
-    window.print();
-}
+    <script>
+    if (window.Android) {
+        window.Android.printPage();
+    } else {
+        window.print();
+    }
 </script>
+
 
 </body>
 </html>
