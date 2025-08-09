@@ -15,6 +15,7 @@
                 border: 1px dashed black; /* Bisa dihapus kalau tidak mau garis */
                 word-wrap: break-word; /* Pecah teks panjang */
                 vertical-align: middle; /* Teks rata tengah secara vertikal */
+                
             }
         }
     </style>

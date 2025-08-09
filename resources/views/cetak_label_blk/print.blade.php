@@ -8,19 +8,23 @@
                 font-size: 14px;
             }
 
-            table {
-            border-collapse: collapse;
-            width: 110mm; /* penuh sesuai lebar kertas */
-            margin: 0; /* hilangkan margin */
-            }
-
             td {
                 font-size: 20px; /* Ukuran teks */
                 text-align: center;
                 height: 35mm; /* Tinggi label tetap */
-                border: 1px dashed black; /* Bisa dihapus kalau tidak mau garis */
+                border: 1px solid black; /* Bisa dihapus kalau tidak mau garis */
                 word-wrap: break-word; /* Pecah teks panjang */
                 vertical-align: middle; /* Teks rata tengah secara vertikal */
+            }
+            @media print {
+                body {
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }
+                td {
+                    border-color: black !important;
+                    width: 58mm;
+                }
             }
         }
     </style>
