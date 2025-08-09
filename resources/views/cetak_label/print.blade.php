@@ -7,6 +7,15 @@
             body {
                 font-size: 14px;
             }
+
+            td {
+                font-size: 20px; /* Ukuran teks */
+                text-align: center;
+                height: 35mm; /* Tinggi label tetap */
+                border: 1px dashed black; /* Bisa dihapus kalau tidak mau garis */
+                word-wrap: break-word; /* Pecah teks panjang */
+                vertical-align: middle; /* Teks rata tengah secara vertikal */
+            }
         }
     </style>
 </head>
