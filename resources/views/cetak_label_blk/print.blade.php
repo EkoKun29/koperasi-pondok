@@ -4,13 +4,13 @@
     <title>Print Label Cetak - {{ \Carbon\Carbon::parse($tanggal)->format('d-m-Y') }}</title>
     <style>
         @page {
-            size: 58mm auto; /* Lebar fix 58mm */
+            size: 58mm auto;
             margin: 0;
         }
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 0 3mm; /* beri jarak kiri-kanan */
             font-family: Arial, sans-serif;
         }
 
@@ -20,14 +20,16 @@
         }
 
         td {
-            font-size: 25px;
+            font-size: 20px;
             text-align: center;
-            height: 35mm; /* Tinggi label tetap */
+            height: 35mm;
             box-sizing: border-box;
-            border-bottom: 2px solid black; /* Garis bawah tebal dan jelas */
+            border: 2px solid black; /* border kotak */
             vertical-align: middle;
-            padding: 0 4px;
-            word-wrap: break-word;
+            padding: 0 2px;
+            word-break: break-all;
+            max-width: 48mm;
+            white-space: normal;
         }
 
         @media print {
@@ -36,7 +38,7 @@
                 print-color-adjust: exact;
             }
             td {
-                border-color: black !important; /* Pastikan border tidak hilang */
+                border-color: black !important;
             }
         }
     </style>
