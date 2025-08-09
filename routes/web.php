@@ -235,14 +235,19 @@ Route::get('retur-pembelian/detail/delete/{uuid}', [App\Http\Controllers\ReturPe
 Route::get('retur-pembelian/print/{uuid}', [App\Http\Controllers\ReturPenjualanController::class, 'print'])->name('retur-pembelian.print');
 
 
-
-
-
 //--------------------------------------CETAK LABEL----------------------------------------------------------------------------------------------------------------------------------------------
 
 Route::resource('cetak-label', App\Http\Controllers\CetakLabelController::class)->only(['index', 'store']);
 Route::get('/cetak-label-sync', [App\Http\Controllers\CetakLabelController::class, 'sync'])->name('cetak-label.sync');
 Route::get('/cetak-label/print', [App\Http\Controllers\CetakLabelController::class, 'print'])->name('cetak-label.print');
+
+//-------------------------------------CETAK LABEL BLK-------------------------------------------------------------------------------------------------------------------------------------------
+
+Route::get('/cetak-label-blk', [App\Http\Controllers\CetakLabelController::class, 'indexBlk'])
+    ->name('cetak-label-blk.index');
+Route::get('/cetak-label-blk-sync', [App\Http\Controllers\CetakLabelController::class, 'syncBlk'])->name('cetak-label-blk.sync');
+Route::get('/cetak-label-blk/print', [App\Http\Controllers\CetakLabelController::class, 'printBlk'])->name('cetak-label-blk.print');
+
 
 
 

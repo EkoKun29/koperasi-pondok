@@ -39,21 +39,11 @@
                     ⏳ Sedang menyinkronkan data...
                 </div>
             @endif
-
-
-
-            {{-- <div class="container-fluid">
-                @if (session('success'))
-                    <div class="alert alert-success" id="myAlert">
-                        {{ session('success') }}
-                    </div>
-                @endif
-            </div> --}}
             <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h2 class="card-title"><b>DATA LABEL PONDOK</b></h2>
+                            <h2 class="card-title"><b>DATA LABEL BLK</b></h2>
                             <div class="w-full md:w-1/2 px-2">
                                 <div id="modalTambahBarang" class="mb-4">
                                     <div class="flex items-center gap-2">
@@ -147,7 +137,7 @@ document.getElementById('printButton').addEventListener('click', function () {
         }
 
         // Arahkan ke URL cetak dalam halaman yang sama
-        window.location.href = `/cetak-label/print?tanggal=${tanggal}`;
+        window.location.href = `/cetak-label-blk/print?tanggal=${tanggal}`;
     });
 </script>
 @endpush
