@@ -35,7 +35,7 @@
                     <td class="border px-4 py-2">{{ number_format($dtl->subtotal, 2) }}</td>
                     <td class="border px-4 py-2">
                         <a href="javascript:void(0);" onclick="openEditModal({{ $dtl->id }}, '{{ $dtl->nama_barang }}', {{ $dtl->qty }}, {{ $dtl->harga }}, '{{ $dtl->cek_barang }}', '{{ $dtl->keterangan }}')" class="btn btn-warning btn-sm ml-2">Edit</a>
-                        <a href="{{ route('delete-pembelian-cash-detail', $dtl['id']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')" class="btn btn-danger btn-sm">Hapus</a>
+                        <a href="{{ route('delete-pembelian-cash-detail', $dtl['id']) }}" id="btn-delete-post" onclick="return confirm('Apakah Anda Yakin Ingin Menghapus Barang {{ $dtl->nama_barang }} ??')" class="btn btn-danger btn-sm ml-2">Hapus</a>
                     </td>
                 </tr>
                 @endforeach
@@ -106,7 +106,7 @@
                 <div class="modal-body">
                     <input type="hidden" id="editItemId">
                     <div class="mb-4">
-                        <label for="editBarang">Nama Barang</label>
+                        <label for="editBarang" class="block text-sm font-medium text-gray-700">Nama Barang</label>
                         <select id="editBarang" name="editBarang" style="width: 100%" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
                             @foreach($data as $barang)
                                 <option value="{{ $barang->nama_barang }}">{{ $barang->nama_barang }}</option>
@@ -114,30 +114,30 @@
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label for="editHarga">Harga</label>
+                        <label for="editHarga" class="block text-sm font-medium text-gray-700">Harga</label>
                         <input type="number" id="editHarga" name="editHarga" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
                     <div class="mb-4">
-                        <label for="editQty">Qty</label>
+                        <label for="editQty" class="block text-sm font-medium text-gray-700">Qty</label>
                         <input type="number" id="editQty" name="editQty" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg" required>
                     </div>
-                </div>
-                <div class="mb-4">
-                    <label for="editCekBarang" class="block text-sm font-medium text-gray-700"><b>Cek Barang</b></label>
-                    <select name="editCekBarang" id="editCekBarang" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                        <option disabled selected>Cek Barang</option>
-                        <option value="Sesuai" {{ old('cek_barang', $dtl->cek_barang ?? '') == 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
-                        <option value="Kurang" {{ old('cek_barang', $dtl->cek_barang ?? '') == 'Kurang' ? 'selected' : '' }}>Kurang</option>
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label for="editKeterangan" class="block text-sm font-medium text-gray-700"><b>Keterangan</b></label>
-                    <select name="editKeterangan" id="editKeterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
-                        <option disabled selected>Pilih Keterangan</option>
-                        <option value="Produksi" {{ old('keterangan', $dtl->keterangan ?? '') == 'Produksi' ? 'selected' : '' }}>Produksi</option>
-                        <option value="Non Produksi" {{ old('keterangan', $dtl->keterangan ?? '') == 'Non Produksi' ? 'selected' : '' }}>Non Produksi</option>
-                    </select>
-                </div>                                
+                    <div class="mb-4">
+                        <label for="editCekBarang" class="block text-sm font-medium text-gray-700"><b>Cek Barang</b></label>
+                        <select name="editCekBarang" id="editCekBarang" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <option disabled selected>Cek Barang</option>
+                            <option value="Sesuai" {{ old('cek_barang', $dtl->cek_barang ?? '') == 'Sesuai' ? 'selected' : '' }}>Sesuai</option>
+                            <option value="Kurang" {{ old('cek_barang', $dtl->cek_barang ?? '') == 'Kurang' ? 'selected' : '' }}>Kurang</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="editKeterangan" class="block text-sm font-medium text-gray-700"><b>Keterangan</b></label>
+                        <select name="editKeterangan" id="editKeterangan" class="form-input mt-1 block w-full px-3 py-2 text-lg border-2 border-gray-400 rounded-lg">
+                            <option disabled selected>Pilih Keterangan</option>
+                            <option value="Produksi" {{ old('keterangan', $dtl->keterangan ?? '') == 'Produksi' ? 'selected' : '' }}>Produksi</option>
+                            <option value="Non Produksi" {{ old('keterangan', $dtl->keterangan ?? '') == 'Non Produksi' ? 'selected' : '' }}>Non Produksi</option>
+                        </select>
+                    </div>      
+                </div>                          
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" onclick="updateItem()">Update</button>
                 </div>

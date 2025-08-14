@@ -95,7 +95,7 @@
                 <form id="editForm" method="POST" action="">
                     @csrf
                     @method('PUT')
-                     <div class="mb-4">
+                    <div class="mb-4">
                                 <label for="nota" class="form-label">Nota</label>
                                 <input type="text" id="nota" name="nota" class="form-control" placeholder="Nota" readonly disabled>
                             </div>
@@ -103,12 +103,12 @@
                                 <label class="form-label">Tanggal Pembelian</label>
                                 <input type="date" id="tanggal" name="tanggal" class="form-control" placeholder="Tanggal" required>
                             </div>
-                            <div for="nama_personil" class="mb-4">
-                                <label class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
-                                <select class="nama-personil" id="nama_personil" name="nama_personil" style="width: 100%" required>
-                                    <option disabled {{ $bm->nama_personil ? '' : 'selected' }}>Pilih Personil</option>
+                           <div class="mb-4">
+                                <label for="nama_personil" class="block text-sm font-medium text-gray-700"><b>Nama Personil</b></label>
+                                <select id="nama_personil" name="nama_personil" style="width: 100%" required>
+                                    <option disabled>Pilih Personil</option>
                                     @foreach($data as $dbm)
-                                        <option value="{{ $dbm->nama_personil }}" {{ $dbm->nama_personil == $bm->nama_personil ? 'selected' : '' }}>
+                                        <option value="{{ $dbm->nama_personil }}">
                                             {{ $dbm->nama_personil }}
                                         </option>
                                     @endforeach

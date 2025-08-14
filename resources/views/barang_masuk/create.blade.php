@@ -66,7 +66,8 @@
 
                 <!-- Bottom Buttons -->
                 <div class="flex justify-end mt-6">
-                    <button id="submitBtn" class="btn btn-primary" type="button" onclick="submitAll()">Simpan</button>
+                    <a href="{{ route('barang-masuk.index') }}" class="btn btn-success ml-2" type="button">Kembali</a>
+                    <button id="submitBtn" class="btn btn-primary ml-2" type="button" onclick="submitAll()">Simpan</button>
                 </div>
             </div>
         </div>
